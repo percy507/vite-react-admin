@@ -1,0 +1,1 @@
+import"./index.788d9e22.js";import{P as e}from"./index.a3bd2b11.js";import{R as r}from"./vendor.4b7fa229.js";import{C as a}from"./antd.c7b5e5db.js";/* empty css                      */import"./recoil.e2eff219.js";import"./qs.864f1e8a.js";var s={};function t(){return r.createElement(e,{className:s.page3},r.createElement(a,null,"Page3"))}export{t as default};
