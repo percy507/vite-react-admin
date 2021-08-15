@@ -1,0 +1,38 @@
+.quillEditor {
+  background: #fff;
+
+  .ql-toolbar,
+  .ql-container {
+    line-height: 24px;
+  }
+
+  .ql-container.ql-snow {
+    height: 400px;
+    min-height: 300px;
+    padding: 12px 15px;
+  }
+
+  .ql-editor.ql-blank::before {
+    color: #bfbfbf;
+    font-size: 14px;
+    font-style: normal;
+    opacity: 1;
+  }
+
+  .ql-editor {
+    padding: 0;
+    color: #333;
+    font-size: 14px;
+  }
+
+  .ql-tooltip {
+    z-index: 11;
+  }
+}
+
+.editorContent {
+  width: 100%;
+  // Child inside parent with min-height: 100% not inheriting height
+  // https://stackoverflow.com/questions/8468066/child-inside-parent-with-min-height-100-not-inheriting-height/21836870#21836870
+  height: 1px;
+}
