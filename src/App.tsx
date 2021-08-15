@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import Exception from '@/components/Exception';
@@ -19,7 +19,7 @@ function App() {
 
   return (
     <RecoilRoot>
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route path="/login" exact component={LoginPage} />
           <Route
@@ -33,7 +33,7 @@ function App() {
           />
           <Route render={() => <Exception type={404} />} />
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </RecoilRoot>
   );
 }
