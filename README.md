@@ -5,6 +5,27 @@
   - 封装项目中常用的较复杂的组件
   - 学习一定的前端架构能力
 
+### 构建命令
+
+> npm 与 yarn 对新版 husky（v7.0.1+）的配置方式不太相同，我们这里只使用 npm
+>
+> <https://typicode.github.io/husky/#/?id=usage>
+
+```bash
+npm i -d              # 装依赖
+npm run dev           # 本地开发
+npm run build:dev     # 开发服务器生产环境打包
+npm run build:test    # 测试服务器生产环境打包
+npm run build:prod    # 生产服务器生产环境打包
+npm run preview       # 本地打包并预览打包后的页面
+
+npm run deploy        # 将打包后的代码推送到github远程仓库，以便预览
+# deploy 这里使用了 gh-pages依赖
+# 由于 github pages 的局限性，项目里只能使用 HashRouter，实际项目可替换为 BrowserRouter
+```
+
+### 核心依赖
+
 ```bash
 # 主要使用到的依赖
 Vite          v2.1.0+           一种新型前端构建工具
@@ -19,6 +40,9 @@ Typescript    v4.2.1+           为JavaScript提供强大的类型系统
 > [When Recoil is going to stop being experimental?](https://github.com/facebookexperimental/Recoil/issues/691)
 
 ```bash
+# 部署打包后的代码至 github Pages
+gh-pages
+
 # 代码提交、校验、格式化的相关工具
 husky         v7.0.1+           一款简化使用git hook的工具
 lint-staged   v11.1.2+          为git暂存区文件执行指定的校验程序
@@ -43,23 +67,6 @@ stylelint-config-standard                 提供一些常用的CSS编写规则
 stylelint-order                           强制按照某个顺序编写css
 stylelint-config-rational-order           提供一种css编写顺序的规则
 stylelint-config-prettier                 禁用非必要的以及与prettier有冲突的规则
-```
-
-### 构建命令
-
-> npm 与 yarn 对新版 husky（v7.0.1+）的配置方式不太相同，我们这里只使用 npm
->
-> <https://typicode.github.io/husky/#/?id=usage>
-
-```bash
-npm i -d              # 装依赖
-npm run dev           # 本地开发
-npm run build:dev     # 开发服务器生产环境打包
-npm run build:test    # 测试服务器生产环境打包
-npm run build:prod    # 生产服务器生产环境打包
-npm run preview       # 本地打包并预览打包后的页面
-
-npm run deploy        # 将打包后的代码推送到github远程仓库，以便预览
 ```
 
 ### 组件
