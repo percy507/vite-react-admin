@@ -58,6 +58,8 @@ npm run build:dev     # 开发服务器生产环境打包
 npm run build:test    # 测试服务器生产环境打包
 npm run build:prod    # 生产服务器生产环境打包
 npm run preview       # 本地打包并预览打包后的页面
+
+npm run deploy        # 将打包后的代码推送到github远程仓库，以便预览
 ```
 
 ### 组件
