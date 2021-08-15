@@ -17,7 +17,7 @@ declare global {
   }
 
   interface RouteProps {
-    path: string;
+    path?: string;
     exact?: boolean;
     component: React.LazyExoticComponent<(props: RouteComponentProps) => JSX.Element>;
     authcode?: string;

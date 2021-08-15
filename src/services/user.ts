@@ -5,7 +5,7 @@ export function requestUserInfo() {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        name: '张三丰',
+        name: '莉莉丝',
         permissions: [
           'l1',
           'l2',

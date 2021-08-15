@@ -31,7 +31,6 @@ export default function BasicLayout() {
       <Menu>
         <Menu.Item>个人中心</Menu.Item>
         <Menu.Divider />
-        <Menu.Item>修改密码</Menu.Item>
         <Menu.Item onClick={logoutFunc}>退出登录</Menu.Item>
       </Menu>
     );

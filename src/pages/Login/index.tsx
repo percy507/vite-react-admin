@@ -1,5 +1,6 @@
 import { Button, Form, Input } from 'antd';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { requestLogin } from '@/services/auth';
 import { setAuthToken } from '@/utils/token';
@@ -7,6 +8,7 @@ import { setAuthToken } from '@/utils/token';
 import styles from './style.module.less';
 
 export default function LoginPage() {
+  const history = useHistory();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const onSubmit = (values: any) => {
@@ -16,7 +18,7 @@ export default function LoginPage() {
     requestLogin()
       .then((token: any) => {
         setAuthToken(token);
-        location.href = '/';
+        history.push('/');
       })
       .finally(() => setSubmitting(false));
   };

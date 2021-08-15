@@ -3,6 +3,7 @@ import { lazy } from 'react';
 const Page1 = lazy(() => import('@/pages/Page1'));
 const Page2 = lazy(() => import('@/pages/Page2'));
 const Page3 = lazy(() => import('@/pages/Page3'));
+const Page404 = lazy(() => import('@/pages/Page404'));
 
 export const menuList: MenuModel[] = [
   {
@@ -63,6 +64,6 @@ export const routeList: RouteModel[] = [
     authcode: 'l1_testMenu3',
   },
   {
-    redirect: '/l1/testMenu1/testMenu1_1/list',
+    component: Page404,
   },
 ];
