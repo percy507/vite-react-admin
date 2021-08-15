@@ -8,9 +8,10 @@
     "build:prod": "tsc && cross-env VITE_BUILD_MODE=prod vite build",
     "preview": "npm run build:prod && vite preview",
     "prepare": "husky install ./.config/.husky",
-    "lint:fix": "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --ext .jsx,.js,.ts,.tsx --fix --quiet ./src",
+    "lint": "npm run lint:jsFix && npm run lint:styleFix && npm run lint:format",
+    "lint:jsFix": "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --ext .jsx,.js,.ts,.tsx --fix --quiet ./src",
     "lint:format": "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,less,md,json}\"",
-    "lint:style": "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix --quiet ./src/**/*?\\(.module\\).{css,less} ",
+    "lint:styleFix": "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix --quiet ./src/**/*?\\(.module\\).{css,less} ",
     "type-check": "tsc"
   },
   "dependencies": {
