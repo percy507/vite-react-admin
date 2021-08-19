@@ -4,8 +4,8 @@
   // prettier只支持前端常见的语言，不被支持的语言需要手动配置相关的格式化工具
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": false, // 启用eslint自动修复
-    "source.fixAll.stylelint": false // 启用stylelint自动修复
+    "source.fixAll.eslint": true, // 启用eslint自动修复
+    "source.fixAll.stylelint": true // 启用stylelint自动修复
   },
 
   // 配置vscode的eslint插件
