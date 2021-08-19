@@ -84,6 +84,7 @@ stylelint-config-prettier                 禁用非必要的以及与prettier有
 - **自定义业务组件**
 
   - QuillEditor: 富文本编辑器
+  - UploadImage: 图片上传组件（基于 antd 的 Upload 二次封装）
 
 ### hooks
 
