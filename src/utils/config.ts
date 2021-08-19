@@ -1,11 +1,11 @@
 export default {
   dev: {
-    BASE_API: 'http://xxx.dev.com/api',
+    BASE_API: 'https://xxx.dev.com/api',
   },
   test: {
-    BASE_API: 'http://xxx.test.com/api',
+    BASE_API: 'https://xxx.test.com/api',
   },
   prod: {
-    BASE_API: 'http://xxx.prod.com/api',
+    BASE_API: 'https://xxx.prod.com/api',
   },
 }[VITE_BUILD_MODE];

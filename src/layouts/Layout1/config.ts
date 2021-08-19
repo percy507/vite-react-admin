@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
-const Page1 = lazy(() => import('@/pages/Page1'));
-const Page2 = lazy(() => import('@/pages/Page2'));
+const RouteListPage = lazy(() => import('@/pages/RouteListPage'));
+const ComponentListPage = lazy(() => import('@/pages/ComponentListPage'));
 const Page3 = lazy(() => import('@/pages/Page3'));
 const Page404 = lazy(() => import('@/pages/Page404'));
 
@@ -46,12 +46,12 @@ export const routeList: RouteModel[] = [
   {
     path: '/l1/testMenu1/testMenu1_1/list',
     authcode: 'l1_testMenu1_1',
-    component: Page1,
+    component: RouteListPage,
   },
   {
     path: '/l1/testMenu1/testMenu1_2/list',
     authcode: 'l1_testMenu1_2',
-    component: Page2,
+    component: ComponentListPage,
   },
   {
     path: '/l1/testMenu2/list',
