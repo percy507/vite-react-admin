@@ -3,20 +3,23 @@ import React from 'react';
 
 import styles from './style.module.less';
 
-interface Props {
+interface ErrorBoundaryProps {
   children: JSX.Element;
 }
 
-interface State {
+interface ErrorBoundaryState {
   hasError: boolean;
 }
 
 /**
- * 捕获子组件
+ * 捕获子组件的异常，并降级UI展示
  * https://zh-hans.reactjs.org/docs/error-boundaries.html
  */
-export default class ErrorBoundary extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+export default class ErrorBoundary extends React.PureComponent<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       hasError: false,

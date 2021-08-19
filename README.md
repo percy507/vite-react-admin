@@ -83,7 +83,6 @@ stylelint-config-prettier                 禁用非必要的以及与prettier有
 
 - **自定义业务组件**
 
-  - IframeComponent: iframe 组件。用来渲染 html 字符串
   - QuillEditor: 富文本编辑器
 
 ### hooks
