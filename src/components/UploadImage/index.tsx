@@ -163,6 +163,17 @@ export default function UploadImage(props: UploadImageProps) {
     }
   };
 
+  // 取消裁剪
+  const cancelImageCrop = () => {
+    setInnerFileList((prevState: any) => {
+      const tempList = [...prevState];
+      tempList.pop();
+      return [...tempList];
+    });
+
+    setCropModalVisible(false);
+  };
+
   const innerBeforeUpload = async (file: File) => {
     if (isFileSizeError(file.size) || isImageAspectError(await getImageAspect(file))) {
       return Promise.reject();
@@ -267,7 +278,7 @@ export default function UploadImage(props: UploadImageProps) {
         title="图片裁剪"
         visible={cropModalVisible}
         onOk={handleImageCrop}
-        onCancel={() => setCropModalVisible(false)}
+        onCancel={cancelImageCrop}
         destroyOnClose
         maskClosable={false}
         okText="确认上传"
