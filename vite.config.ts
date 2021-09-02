@@ -13,7 +13,7 @@ const themeVariables = lessToJS(
 );
 
 function renderChunks(deps: Record<string, string>) {
-  let chunks = {};
+  let chunks: Record<string, string[]> = {};
   Object.keys(deps).forEach((key) => {
     if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
     chunks[key] = [key];

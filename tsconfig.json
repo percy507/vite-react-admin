@@ -5,7 +5,7 @@
     "types": ["vite/client", "node"],
     "allowJs": false,
     "skipLibCheck": false,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
@@ -22,6 +22,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["./src"],
+  "include": ["./src", "./*.ts"],
   "exclude": ["node_modules"]
 }
