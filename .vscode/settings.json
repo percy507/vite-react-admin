@@ -26,6 +26,7 @@
   "stylelint.enable": true,
   "css.validate": false,
   "less.validate": false,
+  "stylelint.validate": ["css", "less"],
   "stylelint.configFile": "./.config/.stylelintrc.js",
   "stylelint.ignorePath": "../.config/.stylelintignore" // 目前vscode的stylelint还不支持ignorePath属性
 }
