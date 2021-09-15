@@ -267,7 +267,7 @@ export default function UploadImage(props: UploadImageProps) {
       setInnerFileList(result);
       setPrevValue(value);
     }
-  }, [value]);
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={generateClassNameByConfig()}>

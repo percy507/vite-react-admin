@@ -23,7 +23,7 @@ export default function useMenuStatus(menuList: MenuModel[] = []): {
 
     setOpenKeys(isOneLevelMenu ? [] : [pathname2]);
     setSelectedKeys(isOneLevelMenu ? [pathname2] : [pathname3]);
-  }, [location]);
+  }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     openKeys,

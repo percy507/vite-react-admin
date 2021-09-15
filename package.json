@@ -10,9 +10,9 @@
     "preview": "npm run build:prod && vite preview",
     "prepare": "husky install ./.config/.husky",
     "lint": "npm run lint:jsFix && npm run lint:styleFix && npm run lint:format",
-    "lint:jsFix": "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --ext .jsx,.js,.ts,.tsx --fix --quiet ./src",
+    "lint:jsFix": "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --ext .jsx,.js,.ts,.tsx --fix ./src",
     "lint:format": "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,less,md,json}\"",
-    "lint:styleFix": "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix --quiet ./src/**/*?\\(.module\\).{css,less} ",
+    "lint:styleFix": "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix ./src/**/*?\\(.module\\).{css,less} ",
     "type-check": "tsc",
     "deploy": "npm run build:dev && gh-pages -d dist"
   },
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@types/eslint": "^7.28.0",
     "@types/katex": "^0.11.1",
     "@types/node": "^16.4.10",
     "@types/qs": "^6.9.7",
@@ -39,6 +40,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.8",
+    "@types/stylelint": "^13.13.2",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "@vitejs/plugin-legacy": "^1.5.1",
@@ -47,6 +49,7 @@
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "gh-pages": "^3.2.3",
     "husky": "^7.0.1",
@@ -66,11 +69,11 @@
   "license": "MIT",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --fix --quiet",
+      "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --fix",
       "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --write"
     ],
     "*.{css,less}": [
-      "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix --quiet",
+      "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix",
       "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --write"
     ],
     "*.{md,json}": "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --write"

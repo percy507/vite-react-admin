@@ -10,9 +10,12 @@ type AuthorizedProps = {
 };
 
 // 判断当前用户是否拥有指定的权限
-export function hasPermission(authcode: string = '') {
+export function useHasPermission() {
   const permissions = useRecoilValue(selectorUserPermissions);
-  return permissions.includes(authcode);
+
+  return (authcode: string = '') => {
+    return permissions.includes(authcode);
+  };
 }
 
 export default function Authorized(props: AuthorizedProps) {

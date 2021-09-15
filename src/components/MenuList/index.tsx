@@ -3,7 +3,7 @@ import { Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { hasPermission } from '@/components/Authorized';
+import { useHasPermission } from '@/components/Authorized';
 import IconFont from '@/components/IconFont';
 
 import styles from './style.module.less';
@@ -18,6 +18,7 @@ type MenuListProps = {
 export default function MenuList(props: MenuListProps) {
   const { list, openKeys = [], selectedKeys = [], ...restProps } = props;
 
+  const hasPermission = useHasPermission();
   const [innerOpenKeys, setInnerOpenKeys] = useState<string[]>(openKeys);
   const [innerSelectedKeys, setInnerSelectedKeys] = useState<string[]>(selectedKeys);
 
@@ -37,7 +38,7 @@ export default function MenuList(props: MenuListProps) {
       setInnerOpenKeys(openKeys);
       setInnerSelectedKeys(selectedKeys);
     }
-  }, [openKeys, selectedKeys]);
+  }, [openKeys, selectedKeys]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Menu

@@ -7,6 +7,18 @@ import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
 
 import { dependencies } from './package.json';
+import checkVscodeExtension from './plugins/check-vscode-extension';
+import eslintPlugin from './plugins/vite-plugin-eslint';
+import stylelintPlugin from './plugins/vite-plugin-stylelint';
+
+if (process.env.NODE_ENV === 'development') {
+  // check if required vscode extensions installed
+  checkVscodeExtension([
+    'dbaeumer.vscode-eslint',
+    'esbenp.prettier-vscode',
+    'stylelint.vscode-stylelint',
+  ]);
+}
 
 const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, './src/styles/variables.less'), 'utf8'),
@@ -28,6 +40,8 @@ export default defineConfig({
     VITE_BUILD_MODE: `"${process.env.VITE_BUILD_MODE || 'dev'}"`,
   },
   plugins: [
+    eslintPlugin(),
+    stylelintPlugin(),
     legacy({
       targets: ['ie >= 11'],
       additionalLegacyPolyfills: ['regenerator-runtime/runtime'],

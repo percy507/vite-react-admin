@@ -21,10 +21,10 @@ export default function BasicLayout() {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [userInfo, setUserInfo] = useRecoilState(atomUserInfo);
 
-  const logoutFunc = () => {
+  const logoutFunc = useCallback(() => {
     localStorage.clear();
     history.push('/login');
-  };
+  }, [history]);
 
   const dropdownMenu = useMemo(() => {
     return (
@@ -34,7 +34,7 @@ export default function BasicLayout() {
         <Menu.Item onClick={logoutFunc}>退出登录</Menu.Item>
       </Menu>
     );
-  }, []);
+  }, [logoutFunc]);
 
   const getUserInfo = useCallback(() => {
     requestUserInfo()
@@ -44,11 +44,9 @@ export default function BasicLayout() {
       .finally(() => {
         setIsFirstRender(false);
       });
-  }, []);
+  }, [setUserInfo]);
 
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+  useEffect(() => getUserInfo(), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setSelectedKeys([location.pathname.split('/')[1]]);

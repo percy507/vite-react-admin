@@ -241,17 +241,17 @@ export default function QuillEditor(props: QuillEditorProps) {
   useEffect(() => {
     beforeCreateEditor();
     createEditor();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (value !== innerValue) {
       setInnerValue(value || '');
     }
-  }, [value]);
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     onChange(innerValue);
-  }, [innerValue, editor]);
+  }, [innerValue, editor]); // eslint-disable-line react-hooks/exhaustive-deps
 
   console.log(innerValue);
 
