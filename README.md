@@ -57,6 +57,7 @@ commitlint    v13.1.0+          校验commit信息
 
 # eslint插件
 eslint-plugin-react                       提供一些用于校验react代码的规则
+eslint-plugin-react-hooks                 提供一些用于校验react hooks代码的规则
 eslint-plugin-simple-import-sort          eslint插件，用于自动对import、export语句以一定的规则排序
 @typescript-eslint/parser                 一种eslint解析器，用于支持eslint解析typescript
 @typescript-eslint/eslint-plugin          提供一些用于校验typescript代码的规则
@@ -69,12 +70,24 @@ stylelint-config-rational-order           提供一种css编写顺序的规则
 stylelint-config-prettier                 禁用非必要的以及与prettier有冲突的规则
 ```
 
+### 自定义 vite 插件或逻辑
+
+- 强制用户的 vscode 必须安装指定扩展，以便更好的开发项目
+- 自定义 vite eslint 插件，以支持 eslint 的警告、错误信息输出至 devServer 终端
+- 自定义 vite stylelint 插件，以支持 stylelint 的警告、错误信息输出至 devServer 终端
+
+> **反思一下 eslint，目前有三个地方用到了 eslint** （stylelint 同理）
+>
+> 1. vscode 的 eslint 扩展: 高亮异常代码、保存代码自动修复代码
+> 2. vite 的 eslint 插件: 支持在 devServer 终端输出 eslint 的警告、错误信息，以及强制用户必须修复 eslint 错误才能继续开发
+> 3. lint-staged 的自定义逻辑: 在 commit 代码前使用 eslint 校验、修复代码
+
 ### 组件
 
 - **核心组件**
 
   - MenuList: 菜单组件。用于渲染顶部菜单与侧边栏菜单的配置化数据
-  - Authorized: 权限组件。同时暴露出一个 `hasPermission` 函数用于逻辑上的权限判断
+  - Authorized: 权限组件。同时暴露出一个 hook `useHasPermission` 函数用于逻辑上的权限判断
   - ErrorBoundary: 错误边界组件。用来在子组件树渲染报错后，降级显示错误 UI
   - Exception: 异常页通用组件。比如 404 页面、403 页面、500 页面等
   - IconFont: 自定义图标组件。图标数据从 iconfont.cn 获取
