@@ -36,17 +36,19 @@ export default function BasicLayout() {
     );
   }, [logoutFunc]);
 
-  const getUserInfo = useCallback(() => {
-    requestUserInfo()
-      .then((data) => {
-        setUserInfo(data);
-      })
-      .finally(() => {
-        setIsFirstRender(false);
-      });
-  }, [setUserInfo]);
+  useEffect(() => {
+    const getUserInfo = () => {
+      requestUserInfo()
+        .then((data) => {
+          setUserInfo(data);
+        })
+        .finally(() => {
+          setIsFirstRender(false);
+        });
+    };
 
-  useEffect(() => getUserInfo(), []); // eslint-disable-line react-hooks/exhaustive-deps
+    getUserInfo();
+  }, [setUserInfo]);
 
   useEffect(() => {
     setSelectedKeys([location.pathname.split('/')[1]]);
@@ -62,7 +64,9 @@ export default function BasicLayout() {
             <div className={styles.header__left}>
               <div className={styles.logo}>
                 <img src={logoImg} alt="logo" />
-                <div>xx管理系统</div>
+                <div style={{ cursor: 'pointer' }} onClick={() => history.push('/')}>
+                  xx管理系统
+                </div>
               </div>
               <MenuList
                 theme="dark"

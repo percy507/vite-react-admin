@@ -44,6 +44,10 @@ export const menuList: MenuModel[] = [
 
 export const routeList: RouteModel[] = [
   {
+    path: '/l1',
+    redirect: '/l1/testMenu1/testMenu1_1/list',
+  },
+  {
     path: '/l1/testMenu1/testMenu1_1/list',
     authcode: 'l1_testMenu1_1',
     component: RouteListPage,

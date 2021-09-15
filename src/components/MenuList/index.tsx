@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useHasPermission } from '@/components/Authorized';
@@ -21,6 +21,7 @@ export default function MenuList(props: MenuListProps) {
   const hasPermission = useHasPermission();
   const [innerOpenKeys, setInnerOpenKeys] = useState<string[]>(openKeys);
   const [innerSelectedKeys, setInnerSelectedKeys] = useState<string[]>(selectedKeys);
+  const keysRef = useRef({ innerOpenKeys, innerSelectedKeys });
 
   const onOpenChange = (keys: React.Key[]) => {
     setInnerOpenKeys(keys as string[]);
@@ -31,6 +32,12 @@ export default function MenuList(props: MenuListProps) {
   };
 
   useEffect(() => {
+    keysRef.current = { innerOpenKeys, innerSelectedKeys };
+  });
+
+  useEffect(() => {
+    const { innerOpenKeys, innerSelectedKeys } = keysRef.current;
+
     if (
       openKeys.join(',') !== innerOpenKeys.join(',') ||
       selectedKeys.join(',') !== innerSelectedKeys.join(',')
@@ -38,7 +45,7 @@ export default function MenuList(props: MenuListProps) {
       setInnerOpenKeys(openKeys);
       setInnerSelectedKeys(selectedKeys);
     }
-  }, [openKeys, selectedKeys]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [openKeys, selectedKeys]);
 
   return (
     <Menu

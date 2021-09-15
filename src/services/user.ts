@@ -15,6 +15,6 @@ export function requestUserInfo() {
           'l1_testMenu3',
         ],
       });
-    }, 2000);
+    }, 1000);
   });
 }

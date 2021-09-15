@@ -26,6 +26,7 @@ declare global {
 
   interface RedirectProps {
     redirect: string;
+    path?: string;
   }
 
   type RouteModel = RouteProps | RedirectProps;

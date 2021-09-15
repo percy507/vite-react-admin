@@ -33,9 +33,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',
-    // 默认开启 exhaustive-deps, 对于某些确实不需要该规则的场景, 可使用面的注释关闭该规则
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // eslint-disable-line react-hooks/exhaustive-deps
     'react-hooks/exhaustive-deps': 'error',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],

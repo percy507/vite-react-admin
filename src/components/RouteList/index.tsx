@@ -32,7 +32,11 @@ export default function RouteList(props: RouteListProps) {
       <Switch>
         {list.map((route, index) => {
           if (route.redirect !== undefined) {
-            return <Redirect key={index} to={route.redirect} />;
+            return route.path !== undefined ? (
+              <Redirect key={index} from={route.path} exact to={route.redirect} />
+            ) : (
+              <Redirect key={index} to={route.redirect} />
+            );
           } else {
             const RouteComponent = route.component;
             return (

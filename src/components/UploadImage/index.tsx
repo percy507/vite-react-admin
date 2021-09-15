@@ -63,7 +63,7 @@ export default function UploadImage(props: UploadImageProps) {
   const [uploading, setUploading] = useState<boolean>(false);
 
   const [innerFileList, setInnerFileList] = useState<UploadFile[]>([]);
-  const [prevValue, setPrevValue] = useState<UploadValueItem[]>([]);
+  const prevValueRef = useRef<UploadValueItem[]>([]);
 
   // 根据传入的配置，动态生成组件根元素的 className
   const generateClassNameByConfig = () => {
@@ -249,7 +249,7 @@ export default function UploadImage(props: UploadImageProps) {
   };
 
   useEffect(() => {
-    if (value.length !== prevValue.length) {
+    if (value.length !== prevValueRef.current.length) {
       const result: UploadFile[] = [];
 
       value.forEach((item) => {
@@ -265,9 +265,9 @@ export default function UploadImage(props: UploadImageProps) {
       });
 
       setInnerFileList(result);
-      setPrevValue(value);
+      prevValueRef.current = value;
     }
-  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [value]);
 
   return (
     <div className={generateClassNameByConfig()}>
