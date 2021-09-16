@@ -2,6 +2,7 @@ import 'cropperjs/dist/cropper.css';
 
 import { Button, message, Modal, Upload } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/lib/upload/interface';
+import classNames from 'classnames';
 import Cropper from 'cropperjs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -55,6 +56,7 @@ export default function UploadImage(props: UploadImageProps) {
     accept = 'image/png,image/jpg,image/jpeg',
     ...restProps
   } = props;
+  const { className = '', disabled } = restProps;
 
   const imageRef = useRef<HTMLImageElement>(null);
   const [cropModalVisible, setCropModalVisible] = useState<boolean>(false);
@@ -65,21 +67,11 @@ export default function UploadImage(props: UploadImageProps) {
   const [innerFileList, setInnerFileList] = useState<UploadFile[]>([]);
   const prevValueRef = useRef<UploadValueItem[]>([]);
 
-  // 根据传入的配置，动态生成组件根元素的 className
-  const generateClassNameByConfig = () => {
-    const { className = '', disabled } = restProps;
-    const classNameList = [styles.uploadImage, className];
-
-    if (innerFileList.length >= maxFileNum) {
-      classNameList.push(styles.uploadImage__hideUploadBtn);
-    }
-
-    if (disabled) {
-      classNameList.push(styles.uploadImage__disabled);
-    }
-
-    return classNameList.join(' ');
-  };
+  const rootClassName = classNames(styles.uploadImage, {
+    className: !!className,
+    [styles.uploadImage__hideUploadBtn]: innerFileList.length >= maxFileNum,
+    [styles.uploadImage__disabled]: disabled,
+  });
 
   // 判断文件大小限制是否正确
   const isFileSizeError = useCallback(
@@ -270,7 +262,7 @@ export default function UploadImage(props: UploadImageProps) {
   }, [value]);
 
   return (
-    <div className={generateClassNameByConfig()}>
+    <div className={rootClassName}>
       <UploadTips />
       <Upload {...uploadProps}>{children}</Upload>
 

@@ -1,5 +1,6 @@
 import type { BreadcrumbProps, PageHeaderProps } from 'antd';
 import { PageHeader, Spin } from 'antd';
+import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +16,8 @@ type PageWrapProps = {
 export default function PageWrapper(props: PageWrapProps) {
   const { loading = false, header = null, children = null, className = '' } = props;
 
+  const rootClassName = classNames(styles.pageWrapper, { className: !!className });
+
   const itemRender = (route: { path?: string; breadcrumbName: string }) => {
     return route.path ? (
       <Link to={route.path}>{route.breadcrumbName}</Link>
@@ -28,7 +31,7 @@ export default function PageWrapper(props: PageWrapProps) {
   }
 
   return (
-    <div className={`${styles.pageWrapper} ${className}`}>
+    <div className={rootClassName}>
       <Spin spinning={loading}>
         {header && <PageHeader {...header} />}
         <div className={styles.pageContent}>{children}</div>
