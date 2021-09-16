@@ -105,6 +105,8 @@ export default function QuillEditor(props: QuillEditorProps) {
   const quillEditorClassNameRef = useRef<string>(styles.quillEditor);
   const editorContentClassNameRef = useRef<string>(styles.editorContent);
 
+  innerValueRef.current = innerValue;
+
   useEffect(() => {
     // 在创建editor实例前
     // 手动删除因hot-reload产生的多余的toolbar
@@ -248,10 +250,6 @@ export default function QuillEditor(props: QuillEditorProps) {
     beforeCreateEditor();
     createEditor();
   }, []);
-
-  useEffect(() => {
-    innerValueRef.current = innerValue;
-  });
 
   useEffect(() => {
     if (value !== innerValueRef.current) {

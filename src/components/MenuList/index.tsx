@@ -23,6 +23,8 @@ export default function MenuList(props: MenuListProps) {
   const [innerSelectedKeys, setInnerSelectedKeys] = useState<string[]>(selectedKeys);
   const keysRef = useRef({ innerOpenKeys, innerSelectedKeys });
 
+  keysRef.current = { innerOpenKeys, innerSelectedKeys };
+
   const onOpenChange = (keys: React.Key[]) => {
     setInnerOpenKeys(keys as string[]);
   };
@@ -30,10 +32,6 @@ export default function MenuList(props: MenuListProps) {
   const onSelect = ({ selectedKeys: keys }: { selectedKeys: string[] }) => {
     setInnerSelectedKeys(keys);
   };
-
-  useEffect(() => {
-    keysRef.current = { innerOpenKeys, innerSelectedKeys };
-  });
 
   useEffect(() => {
     const { innerOpenKeys, innerSelectedKeys } = keysRef.current;
