@@ -101,7 +101,7 @@ stylelint-config-prettier                 禁用非必要的以及与prettier有
 
 ### hooks
 
-- useMenuStatus: 获取当前侧边栏菜单默认被打开、选中的菜单项
+- useMenuStatus: 基于路由，获取当前侧边栏菜单默认被打开、选中的菜单项
 
 ### 架构设计
 

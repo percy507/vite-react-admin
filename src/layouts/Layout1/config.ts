@@ -20,7 +20,7 @@ export const menuList: MenuModel[] = [
       },
       {
         key: 'testMenu1_2',
-        label: '组件demo',
+        label: '组件列表',
         link: '/l1/testMenu1/testMenu1_2/list',
         authcode: 'l1_testMenu1_2',
       },
