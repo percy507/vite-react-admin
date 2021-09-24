@@ -16,7 +16,7 @@ type PageWrapProps = {
 export default function PageWrapper(props: PageWrapProps) {
   const { loading = false, header = null, children = null, className = '' } = props;
 
-  const rootClassName = classNames(styles.pageWrapper, { className: !!className });
+  const rootClassName = classNames(styles.pageWrapper, { [className]: !!className });
 
   const itemRender = (route: { path?: string; breadcrumbName: string }) => {
     return route.path ? (

@@ -36,6 +36,9 @@ function renderChunks(deps: Record<string, string>) {
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
+  server: {
+    port: 4000,
+  },
   define: {
     VITE_BUILD_MODE: `"${process.env.VITE_BUILD_MODE || 'dev'}"`,
   },

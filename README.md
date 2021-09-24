@@ -102,6 +102,9 @@ stylelint-config-prettier                 禁用非必要的以及与prettier有
 ### hooks
 
 - useMenuStatus: 基于路由，获取当前侧边栏菜单默认被打开、选中的菜单项
+- useRequest: 请求 hook，复用 loading、解析 data 等逻辑
+  - `utils/request.ts`: 全局处理响应数据，处理 HTTP 异常、业务异常并进行统一提示
+  - 业界有 `ahooks的useRequest`，感觉有点重，就没用，所以自己封装了
 
 ### 架构设计
 

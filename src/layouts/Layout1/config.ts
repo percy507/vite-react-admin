@@ -2,6 +2,7 @@ import { lazy } from 'react';
 
 const RouteListPage = lazy(() => import('@/pages/RouteListPage'));
 const ComponentListPage = lazy(() => import('@/pages/ComponentListPage'));
+const TestListPage = lazy(() => import('@/pages/TestList'));
 const Page3 = lazy(() => import('@/pages/Page3'));
 const Page404 = lazy(() => import('@/pages/Page404'));
 
@@ -22,6 +23,12 @@ export const menuList: MenuModel[] = [
         key: 'testMenu1_2',
         label: '组件列表',
         link: '/l1/testMenu1/testMenu1_2/list',
+        authcode: 'l1_testMenu1_2',
+      },
+      {
+        key: 'testMenu1_3',
+        label: '各种测试集合',
+        link: '/l1/testMenu1/testMenu1_3/list',
         authcode: 'l1_testMenu1_2',
       },
     ],
@@ -56,6 +63,11 @@ export const routeList: RouteModel[] = [
     path: '/l1/testMenu1/testMenu1_2/list',
     authcode: 'l1_testMenu1_2',
     component: ComponentListPage,
+  },
+  {
+    path: '/l1/testMenu1/testMenu1_3/list',
+    authcode: 'l1_testMenu1_2',
+    component: TestListPage,
   },
   {
     path: '/l1/testMenu2/list',

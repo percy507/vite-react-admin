@@ -12,11 +12,10 @@ export default function LoginPage() {
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const onSubmit = (values: any) => {
-    console.log('Login Success:', values);
-
     setSubmitting(true);
     requestLogin()
       .then((token: any) => {
+        console.log('Login Success:', values);
         setAuthToken(token);
         history.push('/');
       })
