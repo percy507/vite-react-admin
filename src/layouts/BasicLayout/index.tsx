@@ -69,6 +69,7 @@ export default function BasicLayout() {
                 </div>
               </div>
               <MenuList
+                style={{ width: 600 }}
                 theme="dark"
                 mode="horizontal"
                 selectedKeys={selectedKeys}

@@ -18,6 +18,8 @@ export default function LoginPage() {
         console.log('Login Success:', values);
         setAuthToken(token);
         history.push('/');
+        // In hashrouter, history.push seems not work.....
+        location.href = location.pathname;
       })
       .finally(() => setSubmitting(false));
   };
@@ -32,18 +34,21 @@ export default function LoginPage() {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           initialValues={{}}
-          onFinish={onSubmit}>
+          onFinish={onSubmit}
+        >
           <Form.Item
             label="账号"
             name="username"
-            rules={[{ required: true, message: '请输入账号' }]}>
+            rules={[{ required: true, message: '请输入账号' }]}
+          >
             <Input placeholder="admin" />
           </Form.Item>
 
           <Form.Item
             label="密码"
             name="password"
-            rules={[{ required: true, message: '请输入密码' }]}>
+            rules={[{ required: true, message: '请输入密码' }]}
+          >
             <Input.Password placeholder="123456" />
           </Form.Item>
 
