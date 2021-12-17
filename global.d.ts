@@ -9,8 +9,6 @@ declare module '*.json';
 declare module '*.css';
 declare module '*.less';
 
-declare module 'quill-delta';
-
 interface Window {}
 
 /** vite 打包环境变量 */
