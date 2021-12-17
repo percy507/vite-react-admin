@@ -1,35 +1,29 @@
-import { lazy } from 'react';
+import type { RouteObject } from 'react-router-dom';
 
-const Layout1 = lazy(() => import('@/layouts/Layout1'));
-const Layout2 = lazy(() => import('@/layouts/Layout2'));
+import type { MenuModel } from '@/components/MenuList';
+import { loadDC, navigateTo } from '@/utils/dom';
 
 export const menuList: MenuModel[] = [
   {
-    key: 'l1',
     label: '主菜单111',
-    link: '/l1/testMenu1/testMenu1_1/list',
+    link: '/l1',
     authcode: 'l1',
   },
   {
-    key: 'l2',
     label: '主菜单222',
-    link: '/l2/xxx/list',
+    link: '/l2',
     authcode: 'l2',
   },
 ];
 
-export const routeList: RouteModel[] = [
+export const routeList: RouteObject[] = [
   {
-    path: '/l1',
-    component: Layout1,
-    authcode: 'l1',
+    path: 'l1/*',
+    element: loadDC(import('@/layouts/Layout1')),
   },
   {
-    path: '/l2',
-    component: Layout2,
-    authcode: 'l2',
+    path: 'l2/*',
+    element: loadDC(import('@/layouts/Layout2')),
   },
-  {
-    redirect: '/l1',
-  },
+  { path: '*', element: navigateTo('l1') },
 ];

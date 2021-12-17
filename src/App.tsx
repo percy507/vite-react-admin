@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
+import { Route, Routes } from 'react-router-dom';
 
-import Exception from '@/components/Exception';
-import BasicLayout from '@/layouts/BasicLayout';
-import LoginPage from '@/pages/Login';
+import { loadDC, navigateTo } from '@/utils/dom';
 import { getAuthToken } from '@/utils/token';
 
-function App() {
+export default function App() {
   const isLogin = !!getAuthToken();
 
   // 异常上报
@@ -18,24 +15,12 @@ function App() {
   }, []);
 
   return (
-    <RecoilRoot>
-      <HashRouter>
-        <Switch>
-          <Route path="/login" exact component={LoginPage} />
-          <Route
-            render={({ location }) => {
-              if (isLogin) {
-                return <Route location={location} component={BasicLayout} />;
-              } else {
-                return <Redirect to="/login" />;
-              }
-            }}
-          />
-          <Route render={() => <Exception type={404} />} />
-        </Switch>
-      </HashRouter>
-    </RecoilRoot>
+    <Routes>
+      <Route
+        path="/*"
+        element={isLogin ? loadDC(import('@/layouts/BasicLayout')) : navigateTo('/login')}
+      />
+      <Route path="/login" element={loadDC(import('@/pages/Login'))} />
+    </Routes>
   );
 }
-
-export default App;

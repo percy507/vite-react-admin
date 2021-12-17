@@ -1,7 +1,7 @@
+import { useAtomValue } from 'jotai/utils';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 
-import { selectorUserPermissions } from '@/recoil/user';
+import { userPermissionAtom } from '@/store/user';
 
 type AuthorizedProps = {
   authcode?: string;
@@ -11,16 +11,17 @@ type AuthorizedProps = {
 
 // 判断当前用户是否拥有指定的权限
 export function useHasPermission() {
-  const permissions = useRecoilValue(selectorUserPermissions);
+  const permissions = useAtomValue(userPermissionAtom);
 
-  return (authcode: string = '') => {
+  return (authcode?: string) => {
+    if (!authcode) return true;
     return permissions.includes(authcode);
   };
 }
 
 export default function Authorized(props: AuthorizedProps) {
   const { authcode = '', fallback = null, children } = props;
-  const permissions = useRecoilValue(selectorUserPermissions);
+  const permissions = useAtomValue(userPermissionAtom);
   const isAuth = authcode === '' ? true : permissions.includes(authcode);
 
   return <>{isAuth ? children : fallback}</>;

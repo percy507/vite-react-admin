@@ -1,7 +1,7 @@
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import { useHasPermission } from '@/components/Authorized';
 import IconFont from '@/components/IconFont';
@@ -11,39 +11,68 @@ import styles from './style.module.less';
 const MenuItem = Menu.Item;
 const { SubMenu } = Menu;
 
+export interface MenuModel {
+  /** 唯一key，如果为空，则key使用label表示 */
+  key?: string;
+  /** 菜单标题 */
+  label: string;
+  /** 菜单 icon，从iconfont.cn中找 */
+  icon?: string;
+  /** 菜单链接 */
+  link?: string;
+  /** 权限码 */
+  authcode?: string;
+  /** 子菜单 */
+  children?: MenuModel[];
+}
+
 type MenuListProps = {
+  menuPosition: 'top' | 'side';
   list: MenuModel[];
 } & MenuProps;
 
-export default function MenuList(props: MenuListProps) {
-  const { list, openKeys = [], selectedKeys = [], ...restProps } = props;
+export function MenuList(props: MenuListProps) {
+  const { list, menuPosition, ...restProps } = props;
 
+  const location = useLocation();
   const hasPermission = useHasPermission();
-  const [innerOpenKeys, setInnerOpenKeys] = useState<string[]>(openKeys);
-  const [innerSelectedKeys, setInnerSelectedKeys] = useState<string[]>(selectedKeys);
-  const keysRef = useRef({ innerOpenKeys, innerSelectedKeys });
+  const [innerOpenKeys, setInnerOpenKeys] = useState<string[]>([]);
+  const [innerSelectedKeys, setInnerSelectedKeys] = useState<string[]>([]);
+  const keyRef = useRef<any>();
+  keyRef.current = { innerOpenKeys, innerSelectedKeys };
 
-  keysRef.current = { innerOpenKeys, innerSelectedKeys };
+  // 根据路由动态设置菜单的打开与选中
+  useLayoutEffect(() => {
+    let shouldOpenKeys: string[] = [];
+    let shouldSelectedKeys: string[] = [];
 
-  const onOpenChange = (keys: React.Key[]) => {
-    setInnerOpenKeys(keys as string[]);
-  };
+    list.forEach((el) => {
+      if (el.link === location.pathname) {
+        shouldSelectedKeys = [el.key || el.label];
+      } else if (
+        menuPosition === 'top' &&
+        el.link &&
+        location.pathname.startsWith(el.link)
+      ) {
+        shouldSelectedKeys = [el.key || el.label];
+      }
 
-  const onSelect = ({ selectedKeys: keys }: { selectedKeys: string[] }) => {
-    setInnerSelectedKeys(keys);
-  };
-
-  useEffect(() => {
-    const { innerOpenKeys, innerSelectedKeys } = keysRef.current;
+      (el.children || []).forEach((el2) => {
+        if (el2.link === location.pathname) {
+          shouldOpenKeys = [el.key || el.label];
+          shouldSelectedKeys = [el2.key || el2.label];
+        }
+      });
+    });
 
     if (
-      openKeys.join(',') !== innerOpenKeys.join(',') ||
-      selectedKeys.join(',') !== innerSelectedKeys.join(',')
+      shouldOpenKeys.join(',') !== keyRef.current.innerOpenKeys.join(',') ||
+      shouldSelectedKeys.join(',') !== keyRef.current.innerSelectedKeys.join(',')
     ) {
-      setInnerOpenKeys(openKeys);
-      setInnerSelectedKeys(selectedKeys);
+      setInnerOpenKeys(shouldOpenKeys);
+      setInnerSelectedKeys(shouldSelectedKeys);
     }
-  }, [openKeys, selectedKeys]);
+  }, [list, location.pathname, menuPosition]);
 
   return (
     <Menu
@@ -51,37 +80,44 @@ export default function MenuList(props: MenuListProps) {
       className={styles.menuList}
       openKeys={innerOpenKeys}
       selectedKeys={innerSelectedKeys}
-      onOpenChange={onOpenChange}
-      onSelect={onSelect}>
+      onOpenChange={(keys) => setInnerOpenKeys(keys)}
+      onSelect={({ selectedKeys }) => setInnerSelectedKeys(selectedKeys)}
+    >
       {list
         .filter((menu) => hasPermission(menu.authcode))
         .map((menu) => {
           const children = menu.children || [];
           if (children.length === 0) {
             return (
-              <MenuItem key={menu.key}>
+              <MenuItem key={menu.key || menu.label}>
                 <Link title={menu.label} to={menu.link as string}>
                   {menu.icon && <IconFont type={menu.icon} />}
-                  <span>{menu.label}</span>
+                  <span data-menukey={menu.key || menu.label}>{menu.label}</span>
                 </Link>
               </MenuItem>
             );
           } else {
             return (
               <SubMenu
-                key={menu.key}
+                key={menu.key || menu.label}
                 title={
                   <span>
                     {menu.icon && <IconFont type={menu.icon} />}
                     <span>{menu.label}</span>
                   </span>
-                }>
+                }
+              >
                 {children
                   .filter((child) => hasPermission(child.authcode))
                   .map((child) => {
                     return (
-                      <MenuItem key={child.key}>
-                        <Link to={child.link as string}>{child.label}</Link>
+                      <MenuItem key={child.key || child.label}>
+                        <Link
+                          to={child.link as string}
+                          data-menukey={child.key || child.label}
+                        >
+                          {child.label}
+                        </Link>
                       </MenuItem>
                     );
                   })}

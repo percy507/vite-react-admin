@@ -1,9 +1,8 @@
 import { Layout } from 'antd';
 import React from 'react';
+import { useRoutes } from 'react-router-dom';
 
-import MenuList from '@/components/MenuList';
-import RouteList from '@/components/RouteList';
-import useMenuStatus from '@/hooks/useMenuStatus';
+import { MenuList } from '@/components/MenuList';
 
 import { menuList, routeList } from './config';
 import styles from './style.module.less';
@@ -11,22 +10,19 @@ import styles from './style.module.less';
 const { Content, Sider } = Layout;
 
 export default function Layout1() {
-  const { openKeys, selectedKeys } = useMenuStatus(menuList);
+  const Routes = useRoutes(routeList);
 
   return (
     <Layout className={styles.layout1}>
       <Sider width={256}>
         <MenuList
           mode="inline"
-          openKeys={openKeys}
-          selectedKeys={selectedKeys}
           style={{ height: '100%', borderRight: 0 }}
           list={menuList}
+          menuPosition="side"
         />
       </Sider>
-      <Content>
-        <RouteList list={routeList} />
-      </Content>
+      <Content>{Routes}</Content>
     </Layout>
   );
 }

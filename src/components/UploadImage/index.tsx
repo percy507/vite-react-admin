@@ -140,7 +140,7 @@ export default function UploadImage(props: UploadImageProps) {
                     name: originalFile?.name,
                     status: 'done',
                     response: { data },
-                    thumbUrl: URL.createObjectURL(blob),
+                    thumbUrl: URL.createObjectURL(blob!),
                   },
                 ];
               });
@@ -275,7 +275,8 @@ export default function UploadImage(props: UploadImageProps) {
         maskClosable={false}
         okText="确认上传"
         okButtonProps={{ loading: uploading }}
-        cancelText="取消">
+        cancelText="取消"
+      >
         <div>
           <img
             style={{ maxWidth: '100%' }}

@@ -22,8 +22,8 @@ export default function viteStylelintPlugin(
   const filter = createFilter(/.*\.(css|less|scss|sass|postcss|vue)/, /node_modules/);
   const baseOptions = {
     fix: opts.fix,
-    configFile: path.resolve(__dirname, '../.config/.stylelintrc.js'),
-    ignorePath: path.resolve(__dirname, '../.config/.stylelintignore'),
+    configFile: path.resolve(__dirname, '../.stylelintrc.js'),
+    ignorePath: path.resolve(__dirname, '../.stylelintignore'),
   };
 
   return {

@@ -1,6 +1,5 @@
 import { Button, Form, Input } from 'antd';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { requestLogin } from '@/services/auth';
 import { setAuthToken } from '@/utils/token';
@@ -8,20 +7,16 @@ import { setAuthToken } from '@/utils/token';
 import styles from './style.module.less';
 
 export default function LoginPage() {
-  const history = useHistory();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const onSubmit = (values: any) => {
     setSubmitting(true);
-    requestLogin()
-      .then((token: any) => {
-        console.log('Login Success:', values);
-        setAuthToken(token);
-        history.push('/');
-        // In hashrouter, history.push seems not work.....
-        location.href = location.pathname;
-      })
-      .finally(() => setSubmitting(false));
+    requestLogin().then((token: any) => {
+      console.log('Login Success:', values);
+      setAuthToken(token);
+      setSubmitting(false);
+      window.location.href = '/';
+    });
   };
 
   return (

@@ -1,30 +1,28 @@
 import { Dropdown, Layout, Menu, Spin } from 'antd';
+import { useAtom } from 'jotai';
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useNavigate, useRoutes } from 'react-router-dom';
 
 import logoImg from '@/assets/logo.svg';
-import MenuList from '@/components/MenuList';
-import RouteList from '@/components/RouteList';
-import { atomUserInfo } from '@/recoil/user';
+import { MenuList } from '@/components/MenuList';
 import { requestUserInfo } from '@/services/user';
+import { userInfoAtom } from '@/store/user';
 
-import { menuList, routeList } from './config';
+import { routeList } from './config';
+import { menuList } from './config';
 import styles from './style.module.less';
 
 const { Header } = Layout;
 
 export default function BasicLayout() {
-  const history = useHistory();
-  const location = useLocation();
+  const Routes = useRoutes(routeList);
+  const nav = useNavigate();
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [userInfo, setUserInfo] = useRecoilState(atomUserInfo);
-
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom);
   const logoutFunc = useCallback(() => {
     localStorage.clear();
-    history.push('/login');
-  }, [history]);
+    nav('/login');
+  }, [nav]);
 
   const dropdownMenu = useMemo(() => {
     return (
@@ -50,10 +48,6 @@ export default function BasicLayout() {
     getUserInfo();
   }, [setUserInfo]);
 
-  useEffect(() => {
-    setSelectedKeys([location.pathname.split('/')[1]]);
-  }, [location]);
-
   return (
     <Layout className={styles.basicLayout}>
       {isFirstRender ? (
@@ -64,7 +58,7 @@ export default function BasicLayout() {
             <div className={styles.header__left}>
               <div className={styles.logo}>
                 <img src={logoImg} alt="logo" />
-                <div style={{ cursor: 'pointer' }} onClick={() => history.push('/')}>
+                <div style={{ cursor: 'pointer' }} onClick={() => nav('/')}>
                   xx管理系统
                 </div>
               </div>
@@ -72,8 +66,8 @@ export default function BasicLayout() {
                 style={{ width: 600 }}
                 theme="dark"
                 mode="horizontal"
-                selectedKeys={selectedKeys}
                 list={menuList}
+                menuPosition="top"
               />
             </div>
             <div className={styles.header__right}>
@@ -83,9 +77,7 @@ export default function BasicLayout() {
             </div>
           </Header>
 
-          <Layout className={styles.content}>
-            <RouteList list={routeList} />
-          </Layout>
+          <Layout className={styles.content}>{Routes}</Layout>
         </Fragment>
       )}
     </Layout>

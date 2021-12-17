@@ -10,7 +10,6 @@ declare module '*.css';
 declare module '*.less';
 
 declare module 'quill-delta';
-declare module 'less-vars-to-js';
 
 interface Window {}
 

@@ -6,7 +6,7 @@ import PageWrapper from '@/components/PageWrapper';
 
 import styles from './style.module.less';
 
-export default function RouteListPage() {
+export default function Page2() {
   const breadcrumbList = [
     {
       path: '/l1',
@@ -62,7 +62,8 @@ export default function RouteListPage() {
       header={{
         breadcrumb: { routes: breadcrumbList },
       }}
-      className={styles.routeListPage}>
+      className={styles.Page2}
+    >
       <Card title="页面列表">
         <List
           dataSource={list}

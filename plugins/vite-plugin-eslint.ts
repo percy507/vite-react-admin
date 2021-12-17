@@ -30,8 +30,8 @@ export default function viteEslintPlugin(
   const filter = createFilter(/.*\.(js|jsx|ts|tsx|vue)/, /node_modules/);
   const eslintOptions = {
     fix: opts.fix,
-    overrideConfigFile: path.resolve(__dirname, '../.config/.eslintrc.js'),
-    ignorePath: path.resolve(__dirname, '../.config/.eslintignore'),
+    overrideConfigFile: path.resolve(__dirname, '../.eslintrc.js'),
+    ignorePath: path.resolve(__dirname, '../.eslintignore'),
   };
   const eslint = new ESLint(eslintOptions);
   let formatter: ESLint.Formatter;

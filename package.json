@@ -3,41 +3,39 @@
   "version": "0.0.1",
   "homepage": "https://percy507.github.io/vite-react-admin/",
   "scripts": {
+    "prepare": "husky install .husky",
+    "preinstall": "npx only-allow pnpm",
     "dev": "vite",
     "build:dev": "tsc && cross-env VITE_BUILD_MODE=dev vite build",
     "build:test": "tsc && cross-env VITE_BUILD_MODE=test vite build",
     "build:prod": "tsc && cross-env VITE_BUILD_MODE=prod vite build",
-    "preview": "npm run build:prod && vite preview",
-    "prepare": "husky install ./.config/.husky",
-    "lint": "npm run lint:jsFix && npm run lint:styleFix && npm run lint:format",
-    "lint:jsFix": "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --ext .jsx,.js,.ts,.tsx --fix ./src",
-    "lint:format": "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,less,md,json}\"",
-    "lint:styleFix": "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix ./src/**/*?\\(.module\\).{css,less} ",
+    "preview": "pnpm build:prod && vite preview",
+    "lint": "pnpm lint:jsFix && pnpm lint:styleFix && pnpm lint:format",
+    "lint:jsFix": "eslint --ext .jsx,.js,.ts,.tsx --fix ./src",
+    "lint:format": "prettier --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,less,md,json}\"",
+    "lint:styleFix": "stylelint --fix ./src/**/*?\\(.module\\).{css,less} ",
     "type-check": "tsc",
-    "deploy": "npm run build:dev && gh-pages -d dist"
+    "deploy": "pnpm build:dev && gh-pages -d dist"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "antd": "^4.16.10",
     "classnames": "^2.3.1",
     "cropperjs": "^1.5.12",
-    "highlight.js": "^11.2.0",
-    "katex": "^0.13.13",
+    "jotai": "^1.4.8",
     "normalize.css": "^8.0.1",
     "qs": "^6.10.1",
-    "quill": "^1.3.7",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
-    "react-router-dom": "^5.2.0",
-    "recoil": "^0.4.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@rollup/pluginutils": "^4.1.2",
     "@types/eslint": "^7.28.0",
-    "@types/katex": "^0.11.1",
     "@types/node": "^16.4.10",
     "@types/qs": "^6.9.7",
-    "@types/quill": "^1.3.10",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.8",
@@ -55,7 +53,6 @@
     "gh-pages": "^3.2.3",
     "husky": "^7.0.1",
     "less": "^4.1.1",
-    "less-vars-to-js": "^1.3.0",
     "lint-staged": "^11.1.2",
     "prettier": "^2.2.1",
     "stylelint": "^13.13.1",
@@ -63,20 +60,20 @@
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
-    "typescript": "^4.1.2",
+    "typescript": "4.4.3",
     "vite": "^2.1.0",
     "vite-plugin-style-import": "^1.1.0"
   },
   "license": "MIT",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --config ./.config/.eslintrc.js --ignore-path ./.config/.eslintignore --fix",
-      "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --write"
+      "eslint --fix",
+      "prettier --write"
     ],
     "*.{css,less}": [
-      "stylelint --config ./.config/.stylelintrc.js --ignore-path ./.config/.stylelintignore --fix",
-      "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --write"
+      "stylelint --fix",
+      "prettier --write"
     ],
-    "*.{md,json}": "prettier --config ./.config/.prettierrc.js --ignore-path ./.config/.prettierignore --write"
+    "*.{md,json}": "prettier --write"
   }
 }

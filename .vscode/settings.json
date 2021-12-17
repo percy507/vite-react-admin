@@ -11,22 +11,11 @@
   // 配置vscode的eslint插件
   // https://github.com/microsoft/vscode-eslint#settings-options
   "eslint.alwaysShowStatus": true,
-  "eslint.options": {
-    // 设置eslint自定义路径的配置文件
-    "configFile": "./.config/.eslintrc.js",
-    "ignorePath": "./.config/.eslintignore"
-  },
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-
-  // 配置vscode的prettier插件
-  "prettier.configPath": "./.config/.prettierrc.js",
-  "prettier.ignorePath": "./.config/.prettierignore",
 
   // 配置vscode的stylelint插件
   "stylelint.enable": true,
   "css.validate": false,
   "less.validate": false,
-  "stylelint.validate": ["css", "less"],
-  "stylelint.configFile": "./.config/.stylelintrc.js",
-  "stylelint.ignorePath": "../.config/.stylelintignore" // 目前vscode的stylelint还不支持ignorePath属性
+  "stylelint.validate": ["css", "less"]
 }

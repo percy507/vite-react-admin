@@ -2,25 +2,19 @@ import { Button, Card, Collapse } from 'antd';
 import React, { useState } from 'react';
 
 import PageWrapper from '@/components/PageWrapper';
-import QuillEditor from '@/components/QuillEditor';
 import UploadImage from '@/components/UploadImage';
 
-import { htmlStr } from './data';
 import styles from './style.module.less';
 
 const { Panel } = Collapse;
 
-export default function ComponentListPage() {
+export default function Page1() {
   const [testMessage, setTestMessage] = useState<any>({ a: { b: 'xxxxx message' } });
   const handleClick = () => {
     setTestMessage({});
   };
 
   const componentList = [
-    {
-      title: 'QuillEditor 富文本编辑器',
-      children: <QuillEditor value={htmlStr} minContentHeight="300" />,
-    },
     {
       title: 'ErrorBoundary 捕获组件树异常',
       children: (
@@ -48,7 +42,7 @@ export default function ComponentListPage() {
   ];
 
   return (
-    <PageWrapper className={styles.ComponentListPage}>
+    <PageWrapper className={styles.Page1}>
       <Card title="组件列表">
         <Collapse accordion>
           {componentList.map((el) => {
