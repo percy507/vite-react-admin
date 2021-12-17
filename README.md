@@ -6,5 +6,10 @@
 >
 > - react-router 升级到 v6
 > - 状态管理工具替换：从 recoil 替换成更轻量的 [jotai](https://github.com/pmndrs/jotai)
+> - 包管理工具切换到 pnpm
 > - 构建工具的配置文件重新放到了根目录 😂
 > - 重构了不少逻辑
+
+### TODO
+
+- 按需加载貌似失效了
