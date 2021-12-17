@@ -1,11 +1,12 @@
+import { useAtomValue } from 'jotai/utils';
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import { isLoginAtom } from '@/store/user';
 import { loadDC, navigateTo } from '@/utils/dom';
-import { getAuthToken } from '@/utils/token';
 
 export default function App() {
-  const isLogin = !!getAuthToken();
+  const isLogin = useAtomValue(isLoginAtom);
 
   // 异常上报
   const reportFrontendErr = () => {};

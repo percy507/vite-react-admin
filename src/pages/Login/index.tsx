@@ -1,13 +1,18 @@
 import { Button, Form, Input } from 'antd';
+import { useUpdateAtom } from 'jotai/utils';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { requestLogin } from '@/services/auth';
+import { isLoginAtom } from '@/store/user';
 import { setAuthToken } from '@/utils/token';
 
 import styles from './style.module.less';
 
 export default function LoginPage() {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const setIsLogin = useUpdateAtom(isLoginAtom);
+  const navigate = useNavigate();
 
   const onSubmit = (values: any) => {
     setSubmitting(true);
@@ -15,7 +20,8 @@ export default function LoginPage() {
       console.log('Login Success:', values);
       setAuthToken(token);
       setSubmitting(false);
-      window.location.href = '/';
+      setIsLogin(true);
+      navigate('/');
     });
   };
 

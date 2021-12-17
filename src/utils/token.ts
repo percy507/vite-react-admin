@@ -1,5 +1,9 @@
 const AUTH_TOKEN_KEY = 'auth_token';
 
+export function getIsLogin() {
+  return !!getAuthToken();
+}
+
 export function getAuthToken(): string {
   return localStorage.getItem(AUTH_TOKEN_KEY) || '';
 }
