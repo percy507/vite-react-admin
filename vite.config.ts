@@ -1,5 +1,5 @@
 import legacy from '@vitejs/plugin-legacy';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
@@ -11,7 +11,7 @@ import stylelintPlugin from './plugins/vite-plugin-stylelint';
 export default defineConfig({
   base: './',
   server: {
-    port: 4000,
+    port: 4004,
   },
   define: {
     VITE_BUILD_MODE: `"${process.env.VITE_BUILD_MODE || 'dev'}"`,
@@ -23,7 +23,7 @@ export default defineConfig({
       targets: ['ie >= 11'],
       additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
     }),
-    reactRefresh(),
+    react(),
     // 按需加载样式文件
     styleImport({
       libs: [
