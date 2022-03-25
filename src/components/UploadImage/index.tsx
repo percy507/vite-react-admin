@@ -4,7 +4,7 @@ import { Button, message, Modal, Upload } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/lib/upload/interface';
 import classNames from 'classnames';
 import Cropper from 'cropperjs';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { requestUploadImage } from '@/services/upload';
 import { getImageAspect } from '@/utils';

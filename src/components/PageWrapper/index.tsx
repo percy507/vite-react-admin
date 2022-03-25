@@ -1,7 +1,6 @@
 import type { BreadcrumbProps, PageHeaderProps } from 'antd';
 import { PageHeader, Spin } from 'antd';
 import classNames from 'classnames';
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 import styles from './style.module.less';

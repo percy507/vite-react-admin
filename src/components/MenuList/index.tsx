@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useHasPermission } from '@/components/Authorized';

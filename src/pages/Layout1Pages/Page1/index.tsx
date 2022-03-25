@@ -1,5 +1,5 @@
 import { Button, Card, Collapse } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import PageWrapper from '@/components/PageWrapper';
 import UploadImage from '@/components/UploadImage';

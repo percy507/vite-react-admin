@@ -1,5 +1,5 @@
 import { WarningOutlined } from '@ant-design/icons';
-import React from 'react';
+import { PureComponent } from 'react';
 
 import styles from './style.module.less';
 
@@ -15,7 +15,7 @@ interface ErrorBoundaryState {
  * 捕获子组件的异常，并降级UI展示
  * https://zh-hans.reactjs.org/docs/error-boundaries.html
  */
-export default class ErrorBoundary extends React.PureComponent<
+export default class ErrorBoundary extends PureComponent<
   ErrorBoundaryProps,
   ErrorBoundaryState
 > {

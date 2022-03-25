@@ -1,5 +1,4 @@
 import { useAtomValue } from 'jotai/utils';
-import React from 'react';
 
 import { userPermissionAtom } from '@/store/user';
 

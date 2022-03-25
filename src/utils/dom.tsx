@@ -1,5 +1,5 @@
 import { Spin } from 'antd';
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import Authorized from '@/components/Authorized';

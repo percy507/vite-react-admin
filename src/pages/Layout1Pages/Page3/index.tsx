@@ -1,5 +1,4 @@
 import { Alert, Button, Card, Collapse, message, Tooltip } from 'antd';
-import React from 'react';
 
 import PageWrapper from '@/components/PageWrapper';
 import useRequest from '@/hooks/useRequest';

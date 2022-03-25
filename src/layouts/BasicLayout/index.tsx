@@ -1,6 +1,6 @@
 import { Dropdown, Layout, Menu, Spin } from 'antd';
 import { useAtom } from 'jotai';
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
 import logoImg from '@/assets/logo.svg';

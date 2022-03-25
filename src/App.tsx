@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai/utils';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { isLoginAtom } from '@/store/user';

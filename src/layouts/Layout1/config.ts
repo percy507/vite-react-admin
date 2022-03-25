@@ -23,20 +23,50 @@ export const menuList: MenuModel[] = [
     link: '/l1/page3',
     icon: 'icon-xianxingrongshu',
   },
+  {
+    label: '系统管理',
+    icon: 'icon-anquan',
+    children: [
+      {
+        label: '用户管理',
+        link: '/l1/system/user',
+      },
+      {
+        label: '角色管理',
+        link: '/l1/system/role',
+      },
+    ],
+  },
 ];
 
 export const routeList: RouteObject[] = [
   {
+    index: true,
+    element: navigateTo('page1'),
+  },
+  {
     path: 'page1',
-    element: loadDC(import('@/pages/Page1')),
+    element: loadDC(import('@/pages/Layout1Pages/Page1')),
   },
   {
     path: 'page2',
-    element: loadDC(import('@/pages/Page2')),
+    element: loadDC(import('@/pages/Layout1Pages/Page2')),
   },
   {
     path: 'page3',
-    element: loadDC(import('@/pages/Page3')),
+    element: loadDC(import('@/pages/Layout1Pages/Page3')),
   },
-  { path: '*', element: navigateTo('page1') },
+  {
+    path: 'system/user',
+    element: loadDC(import('@/pages/Layout1Pages/system/user')),
+  },
+  {
+    path: 'system/role',
+    element: loadDC(import('@/pages/Layout1Pages/system/role')),
+  },
+  {
+    path: '404',
+    element: loadDC(import('@/pages/404')),
+  },
+  { path: '*', element: navigateTo('/l1/404') },
 ];

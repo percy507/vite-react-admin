@@ -1,6 +1,6 @@
 import { Button, Form, Input } from 'antd';
 import { useUpdateAtom } from 'jotai/utils';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { requestLogin } from '@/services/auth';
