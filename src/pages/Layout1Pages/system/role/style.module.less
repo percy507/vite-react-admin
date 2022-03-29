@@ -1,0 +1,49 @@
+.pgroup {
+  width: 100%;
+  max-height: 700px;
+  overflow: auto;
+
+  &Item {
+    display: flex;
+    margin-bottom: 16px;
+    padding-bottom: 6px;
+    border-bottom: 1px dotted #ddd;
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+}
+
+.plabel {
+  width: 180px;
+  margin-right: 20px;
+  font-weight: bold;
+  font-size: 1.2em;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.pchildren {
+  width: calc(100% - 200px);
+
+  &Item {
+    margin-bottom: 12px;
+    padding-bottom: 2px;
+    border-bottom: 1px dashed #ddd;
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+
+  :global {
+    .ant-col {
+      margin-bottom: 10px;
+    }
+  }
+}

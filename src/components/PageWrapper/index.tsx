@@ -32,7 +32,7 @@ export default function PageWrapper(props: PageWrapProps) {
   return (
     <div className={rootClassName}>
       <Spin spinning={loading}>
-        {header && <PageHeader {...header} />}
+        {header && <PageHeader ghost={false} {...header} />}
         <div className={styles.pageContent}>{children}</div>
       </Spin>
     </div>
