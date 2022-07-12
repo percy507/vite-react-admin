@@ -1,24 +1,20 @@
 import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import autoprefixer from 'autoprefixer';
 import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
-
-import eslintPlugin from './plugins/vite-plugin-eslint';
-import stylelintPlugin from './plugins/vite-plugin-stylelint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
   server: {
-    port: 4004,
+    port: 4010,
   },
   define: {
     VITE_BUILD_MODE: `"${process.env.VITE_BUILD_MODE || 'dev'}"`,
   },
   plugins: [
-    eslintPlugin(),
-    stylelintPlugin(),
     legacy({
       targets: ['ie >= 11'],
       additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
@@ -38,7 +34,9 @@ export default defineConfig({
     }),
   ],
   css: {
-    // css modules
+    postcss: {
+      plugins: [autoprefixer()],
+    },
     modules: {
       scopeBehaviour: 'local',
       generateScopedName: '[local]_[hash:base64:6]',
@@ -46,7 +44,7 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,
-        modifyVars: { '@primary-color': '#4551A5' },
+        modifyVars: { '@primary-color': '#3e63dd' },
       },
     },
   },
@@ -63,7 +61,7 @@ export default defineConfig({
       output: {
         // 抽离公共模块代码
         manualChunks: {
-          vendor: ['react', 'react-router-dom', 'react-dom', 'qs'],
+          vendor: ['react', 'react-router-dom', 'react-dom', 'qss'],
         },
       },
     },

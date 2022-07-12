@@ -1,13 +1,8 @@
-.uploadImage {
+.superUpload {
+  display: flex;
   width: fit-content;
 
-  &__tips {
-    color: #999;
-    font-size: 14px;
-    line-height: 2;
-  }
-
-  &__hideUploadBtn {
+  &.hideUploadBtn {
     :global {
       .ant-upload {
         display: none !important;
@@ -15,7 +10,7 @@
     }
   }
 
-  &__disabled {
+  &.disabled {
     :global {
       .ant-upload {
         color: rgba(0, 0, 0, 0.25);
@@ -29,5 +24,17 @@
         }
       }
     }
+  }
+
+  :global {
+    .ant-upload-picture-card-wrapper {
+      width: unset;
+    }
+  }
+
+  .showTips {
+    color: #999;
+    font-size: 14px;
+    line-height: 2;
   }
 }

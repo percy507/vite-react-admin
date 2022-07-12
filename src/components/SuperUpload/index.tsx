@@ -1,12 +1,13 @@
 import 'cropperjs/dist/cropper.css';
 
+import { PlusOutlined } from '@ant-design/icons';
 import { Button, message, Modal, Upload } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/lib/upload/interface';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import Cropper from 'cropperjs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { requestUploadImage } from '@/services/upload';
+import { requestUpload, requestUploadConfig } from '@/services/upload';
 import { getImageAspect } from '@/utils';
 
 // import { getAuthToken } from '@/utils/token';
@@ -17,7 +18,7 @@ type UploadValueItem = {
   name: string;
 };
 
-type UploadImageProps = {
+type SuperUploadProps = {
   value?: UploadValueItem[];
   onChange?: (value: UploadValueItem[]) => void;
   className?: string;
@@ -27,7 +28,7 @@ type UploadImageProps = {
   children?: React.ReactNode;
   /** 允许上传图片的长宽尺寸。格式（宽x高，eg: 100x300） */
   imageAspect?: string;
-  /** 单张图片的最大大小，单位字节。 2MB = 2*1024*1024字节 */
+  /** 单张图片的最大大小，单位字节。 2MB = 2\*1024\*1024字节 */
   maxFileSize?: number;
   /** 允许上传的图片数量 */
   maxFileNum?: number;
@@ -38,39 +39,42 @@ type UploadImageProps = {
 } & UploadProps;
 
 /**
- * 图片上传组件，功能清单：
- * 1. 支持图片类型、大小、以及长宽尺寸校验
+ * 上传组件，功能清单：
+ * 1. 支持限制文件数量、单个文件大小
  * 2. 支持图片裁剪
+ * 3. 支持展示提示信息（支持的文件类型、文件数量、单个文件大小等）
  */
-export default function UploadImage(props: UploadImageProps) {
-  const {
+export function SuperUpload(props: SuperUploadProps) {
+  let {
     value = [],
     onChange = () => {},
     showTips = false,
-    children = <Button>上传</Button>,
     imageAspect,
     maxFileSize = 18 * 1024 * 1024,
     maxFileNum = 1,
     needCropImage = false,
-    cropAspectRatio = 1,
+    cropAspectRatio,
     accept = 'image/png,image/jpg,image/jpeg',
+    listType,
     ...restProps
   } = props;
   const { className = '', disabled } = restProps;
+
+  if (imageAspect) cropAspectRatio = eval(imageAspect.replace('x', '/'));
 
   const imageRef = useRef<HTMLImageElement>(null);
   const [cropModalVisible, setCropModalVisible] = useState<boolean>(false);
   const [cropImageUrl, setCropImageUrl] = useState<string>();
   const [cropperInstance, setCropperInstance] = useState<Cropper>();
   const [uploading, setUploading] = useState<boolean>(false);
+  const [uploadName, setName] = useState<string>('');
 
   const [innerFileList, setInnerFileList] = useState<UploadFile[]>([]);
   const prevValueRef = useRef<UploadValueItem[]>([]);
 
-  const rootClassName = classNames(styles.uploadImage, {
-    className: !!className,
-    [styles.uploadImage__hideUploadBtn]: innerFileList.length >= maxFileNum,
-    [styles.uploadImage__disabled]: disabled,
+  const rootClassName = clsx(styles.superUpload, className ? className : false, {
+    [styles.hideUploadBtn]: innerFileList.length >= maxFileNum,
+    [styles.disabled]: disabled,
   });
 
   // 判断文件大小限制是否正确
@@ -88,14 +92,7 @@ export default function UploadImage(props: UploadImageProps) {
 
   // 判断图片尺寸是否正确
   const isImageAspectError = useCallback(
-    (aspect: string) => {
-      if (imageAspect && imageAspect !== aspect) {
-        message.error(`请上传尺寸为${imageAspect}px的图片`);
-        return true;
-      }
-
-      return false;
-    },
+    (aspect: string) => imageAspect && imageAspect !== aspect,
     [imageAspect],
   );
 
@@ -121,28 +118,34 @@ export default function UploadImage(props: UploadImageProps) {
     if (cropperInstance) {
       cropperInstance.getCroppedCanvas().toBlob((blob) => {
         setUploading(true);
-        requestUploadImage({
-          key: '49e27928735c3bd80e8aa27349a34c5b',
-          image: blob,
-        })
-          .then(({ data }) => {
-            console.log('uploadImage & crop Response:', data);
 
-            if (data.url) {
+        requestUpload({
+          key: '49e27928735c3bd80e8aa27349a34c5b',
+          image: new File([blob!], uploadName || 'file.png'),
+        })
+          .then((res) => {
+            console.log('superUpload & crop Response:', res);
+
+            if (res?.data) {
               setCropModalVisible(false);
               setInnerFileList((prevState: any) => {
                 const tempList = [...prevState];
                 const originalFile = tempList.pop();
-                return [
+                const arr = [
                   ...tempList,
                   {
-                    uid: data.id,
+                    uid: res.data?.id,
+                    id: res.data?.id,
                     name: originalFile?.name,
                     status: 'done',
-                    response: { data },
+                    response: { data: res.data },
                     thumbUrl: URL.createObjectURL(blob!),
                   },
                 ];
+                setTimeout(() => {
+                  onChange(arr.map((el) => ({ id: el.id, name: el.name })));
+                });
+                return arr;
               });
             } else {
               message.error('图片上传失败');
@@ -167,18 +170,21 @@ export default function UploadImage(props: UploadImageProps) {
   };
 
   const innerBeforeUpload = async (file: File) => {
-    if (isFileSizeError(file.size) || isImageAspectError(await getImageAspect(file))) {
-      return Promise.reject();
+    if (isFileSizeError(file.size)) {
+      return Upload.LIST_IGNORE;
     }
 
-    if (needCropImage) {
+    if (
+      needCropImage ||
+      (imageAspect && isImageAspectError(await getImageAspect(file)))
+    ) {
+      setName(file.name);
       setCropModalVisible(true);
       setCropImageUrl(URL.createObjectURL(file));
-
-      return Promise.reject();
+      return Upload.LIST_IGNORE;
     }
 
-    return Promise.resolve();
+    return true;
   };
 
   const innerOnChange = ({ fileList }: { fileList: UploadFile[] }) => {
@@ -199,8 +205,13 @@ export default function UploadImage(props: UploadImageProps) {
       onChange(tempFileList);
     }
 
-    // this.setState({ fileList, value: tempFileList });
-    setInnerFileList(fileList);
+    setInnerFileList(
+      fileList.map((el) => {
+        // 上传过程中，禁用 antd Upload 组件默认的预览
+        if (el.status === 'uploading') delete el.originFileObj;
+        return el;
+      }),
+    );
   };
 
   const innerOnPreview = (file: UploadFile) => {
@@ -214,20 +225,25 @@ export default function UploadImage(props: UploadImageProps) {
   };
 
   const UploadTips = useCallback(() => {
-    const tipAccept = `支持的扩展名: ${accept
+    const tipMaxFileNum = `最多可以上传 ${maxFileNum} 份文件`;
+    const tipAccept = `支持的格式: ${accept
       .replace(/\b[^,]+?\//g, '.')
       .replace(/,/g, ', ')}`;
-    const tipMaxSize = `单个图片大小不能超过 ${maxFileSize / 1024 / 1024}MB`;
-    const tipMaxFileNum = maxFileNum > 1 ? `最多可以上传 ${maxFileNum} 份图片` : '';
+    const tipMaxSize = `单个文件大小不能超过 ${maxFileSize / 1024 / 1024}MB`;
 
     return showTips ? (
-      <div className={styles.uploadImage__tips}>
-        {`${tipAccept}; ${tipMaxSize}; ${tipMaxFileNum}`}
+      <div className={styles.showTips}>
+        {[tipMaxFileNum, tipAccept, tipMaxSize]
+          .filter((el) => !!el)
+          .map((el) => {
+            return <div key={el}>{el}</div>;
+          })}
       </div>
     ) : null;
   }, [showTips, accept, maxFileSize, maxFileNum]);
 
   const uploadProps: UploadProps = {
+    listType,
     accept,
     fileList: innerFileList,
     beforeUpload: innerBeforeUpload,
@@ -236,12 +252,15 @@ export default function UploadImage(props: UploadImageProps) {
     onRemove: innerOnRemove,
     headers: {
       // Authorization: getAuthToken(),
+      // @ts-ignore
+      'X-Requested-With': null,
     },
     ...restProps,
+    ...requestUploadConfig(),
   };
 
   useEffect(() => {
-    if (value.length !== prevValueRef.current.length) {
+    if (JSON.stringify(value) !== JSON.stringify(prevValueRef.current || '')) {
       const result: UploadFile[] = [];
 
       value.forEach((item) => {
@@ -261,10 +280,21 @@ export default function UploadImage(props: UploadImageProps) {
     }
   }, [value]);
 
+  let children = props.children || <Button>上传</Button>;
+
+  if (listType === 'picture-card') {
+    children = (
+      <div>
+        <PlusOutlined />
+        <div style={{ marginTop: 8 }}>上传</div>
+      </div>
+    );
+  }
+
   return (
     <div className={rootClassName}>
-      <UploadTips />
       <Upload {...uploadProps}>{children}</Upload>
+      <UploadTips />
 
       <Modal
         title="图片裁剪"

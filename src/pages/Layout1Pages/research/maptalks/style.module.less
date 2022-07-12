@@ -1,0 +1,26 @@
+.mapWrapper {
+  width: 100%;
+  height: 600px;
+}
+
+.toolbar {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 3px 3px #fff;
+
+  & > div {
+    height: 28px;
+    padding: 4px;
+    line-height: 20px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+}

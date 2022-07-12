@@ -1,5 +1,5 @@
 import { message, notification } from 'antd';
-import qs from 'qs';
+import * as qs from 'qss';
 
 import config from './config';
 // import { getAuthToken } from './token';
@@ -121,7 +121,7 @@ class Request {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
       method: 'POST',
-      body: qs.stringify(data),
+      body: qs.encode(data),
     });
   };
 

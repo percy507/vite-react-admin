@@ -35,22 +35,19 @@ export default function LoginPage() {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           initialValues={{}}
-          onFinish={onSubmit}
-        >
+          onFinish={onSubmit}>
           <Form.Item
             label="账号"
             name="username"
-            rules={[{ required: true, message: '请输入账号' }]}
-          >
-            <Input placeholder="admin" />
+            rules={[{ required: true, message: '请输入账号' }]}>
+            <Input placeholder="随便填" />
           </Form.Item>
 
           <Form.Item
             label="密码"
             name="password"
-            rules={[{ required: true, message: '请输入密码' }]}
-          >
-            <Input.Password placeholder="123456" />
+            rules={[{ required: true, message: '请输入密码' }]}>
+            <Input.Password placeholder="随便填" />
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

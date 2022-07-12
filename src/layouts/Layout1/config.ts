@@ -5,27 +5,27 @@ import { loadDC, navigateTo } from '@/utils/dom';
 
 export const menuList: MenuModel[] = [
   {
-    label: '测试菜单1',
-    icon: 'icon-xianxingdongqing',
+    label: '组件列表',
+    icon: 'icon-layout-masonry-fill',
+    link: '/l1/cplist',
+  },
+  {
+    label: '技术调研集合',
+    icon: 'icon-truck-fill',
     children: [
       {
-        label: '页面列表',
-        link: '/l1/page1',
+        label: '试用 maptalks',
+        link: '/l1/research/maptalks',
       },
       {
-        label: '组件列表',
-        link: '/l1/page2',
+        label: '测试 useRequest',
+        link: '/l1/research/request',
       },
     ],
   },
   {
-    label: '各种测试集合',
-    link: '/l1/page3',
-    icon: 'icon-xianxingrongshu',
-  },
-  {
     label: '系统管理',
-    icon: 'icon-anquan',
+    icon: 'icon-settings-5-fill',
     children: [
       {
         label: '用户管理',
@@ -42,27 +42,37 @@ export const menuList: MenuModel[] = [
 export const routeList: RouteObject[] = [
   {
     index: true,
-    element: navigateTo('page1'),
+    element: navigateTo('cplist'),
   },
   {
-    path: 'page1',
-    element: loadDC(import('@/pages/Layout1Pages/Page1')),
+    path: 'cplist',
+    element: loadDC(import('@/pages/Layout1Pages/componentList')),
   },
   {
-    path: 'page2',
-    element: loadDC(import('@/pages/Layout1Pages/Page2')),
+    path: 'research',
+    children: [
+      {
+        path: 'maptalks',
+        element: loadDC(import('@/pages/Layout1Pages/research/maptalks')),
+      },
+      {
+        path: 'request',
+        element: loadDC(import('@/pages/Layout1Pages/research/request')),
+      },
+    ],
   },
   {
-    path: 'page3',
-    element: loadDC(import('@/pages/Layout1Pages/Page3')),
-  },
-  {
-    path: 'system/user',
-    element: loadDC(import('@/pages/Layout1Pages/system/user')),
-  },
-  {
-    path: 'system/role',
-    element: loadDC(import('@/pages/Layout1Pages/system/role')),
+    path: 'system',
+    children: [
+      {
+        path: 'user',
+        element: loadDC(import('@/pages/Layout1Pages/system/user')),
+      },
+      {
+        path: 'role',
+        element: loadDC(import('@/pages/Layout1Pages/system/role')),
+      },
+    ],
   },
   {
     path: '404',

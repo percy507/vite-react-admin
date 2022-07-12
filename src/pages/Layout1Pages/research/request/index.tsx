@@ -1,6 +1,6 @@
 import { Alert, Button, Card, Collapse, message, Tooltip } from 'antd';
 
-import PageWrapper from '@/components/PageWrapper';
+import { PageWrapper } from '@/components/PageWrapper';
 import useRequest from '@/hooks/useRequest';
 import {
   requestBusinessError,

@@ -8,15 +8,15 @@ module.exports = {
       jsx: true,
     },
   },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
   env: {
     browser: true,
     amd: true,
     node: true,
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
   },
   extends: [
     'eslint:recommended',

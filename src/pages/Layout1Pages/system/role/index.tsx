@@ -3,7 +3,7 @@ import { Button, Card, Col, Row, Space, Table } from 'antd';
 import { useState } from 'react';
 
 import AsyncButton from '@/components/AsyncButton';
-import PageWrapper from '@/components/PageWrapper';
+import { PageWrapper } from '@/components/PageWrapper';
 
 import EditModal from './EditModal';
 import styles from './style.module.less';

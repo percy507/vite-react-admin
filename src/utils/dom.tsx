@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import Authorized from '@/components/Authorized';
 import Exception from '@/components/Exception';
 
-export const SuspenseLoading: React.FC = (props) => {
+export const SuspenseLoading = ({ children }: { children: React.ReactNode }) => {
   return (
     <Suspense
       fallback={
@@ -22,7 +22,7 @@ export const SuspenseLoading: React.FC = (props) => {
         </div>
       }
     >
-      {props.children}
+      {children}
     </Suspense>
   );
 };
