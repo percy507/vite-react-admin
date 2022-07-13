@@ -33,8 +33,7 @@ export function DragableModal(props: DragableModalProps) {
         <Draggable bounds={bounds} onStart={(event, uiData) => onStart(event, uiData)}>
           <div ref={draggleRef}>{modal}</div>
         </Draggable>
-      )}
-    >
+      )}>
       {children}
     </Modal>
   );

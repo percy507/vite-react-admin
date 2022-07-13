@@ -59,8 +59,7 @@ export default function Page3() {
                 <a
                   href="https://github.com/percy507/koa2-template"
                   target="_blank"
-                  rel="noreferrer"
-                >
+                  rel="noreferrer">
                   参考这里
                 </a>
               </div>
@@ -73,16 +72,18 @@ export default function Page3() {
             <Button onClick={() => getArticleDetail0()}>业务异常</Button>
             <Tooltip
               placement="bottom"
-              title={<pre>{data111 ? JSON.stringify(data111, null, 4) : '暂无数据'}</pre>}
-            >
+              title={
+                <pre>{data111 ? JSON.stringify(data111, null, 4) : '暂无数据'}</pre>
+              }>
               <Button loading={loading1} onClick={() => getArticleDetail()}>
                 测试响应成功1
               </Button>
             </Tooltip>
             <Tooltip
               placement="bottom"
-              title={<pre>{data111 ? JSON.stringify(data222, null, 4) : '暂无数据'}</pre>}
-            >
+              title={
+                <pre>{data111 ? JSON.stringify(data222, null, 4) : '暂无数据'}</pre>
+              }>
               <Button loading={loading2} onClick={() => getArticleDetail2()}>
                 测试响应成功2
               </Button>

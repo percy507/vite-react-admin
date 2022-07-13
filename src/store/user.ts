@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 
-import { getIsLogin } from '@/utils/token';
+import { getIsLogin } from '@/utils/storage';
 
 export const isLoginAtom = atom(getIsLogin());
 

@@ -1,4 +1,4 @@
-import { useAtomValue } from 'jotai/utils';
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ export default function App() {
         path="/*"
         element={isLogin ? loadDC(import('@/layouts/BasicLayout')) : navigateTo('/login')}
       />
-      <Route path="/login" element={loadDC(import('@/pages/Login'))} />
+      <Route path="/login" element={loadDC(import('@/pages/login'))} />
     </Routes>
   );
 }

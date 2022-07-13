@@ -1,27 +1,31 @@
-import { useAtomValue } from 'jotai/utils';
+import { useAtomValue } from 'jotai';
 
 import { userPermissionAtom } from '@/store/user';
 
-type AuthorizedProps = {
-  authcode?: string;
-  fallback?: React.ReactNode;
-  children: React.ReactNode;
-};
-
-// 判断当前用户是否拥有指定的权限
+/**
+ * [react-hook] 返回一个函数，用于判断当前用户是否拥有指定的单个权限或
+ * 拥有指定权限集合中的某个权限
+ */
 export function useHasPermission() {
   const permissions = useAtomValue(userPermissionAtom);
-
-  return (authcode?: string) => {
-    if (!authcode) return true;
-    return permissions.includes(authcode);
+  return (auth?: string | string[]) => {
+    if (!auth) return true;
+    if (typeof auth === 'string') return permissions.includes(auth);
+    return !!auth.find((el) => permissions.includes(el));
   };
 }
 
-export default function Authorized(props: AuthorizedProps) {
-  const { authcode = '', fallback = null, children } = props;
-  const permissions = useAtomValue(userPermissionAtom);
-  const isAuth = authcode === '' ? true : permissions.includes(authcode);
+interface AuthorizedProps {
+  auth?: string | string[];
+  /** 该字段表示没有权限时展示的内容，默认为 null */
+  fallback?: React.ReactNode;
+  children: React.ReactNode;
+}
 
-  return <>{isAuth ? children : fallback}</>;
+/**
+ * 根据权限，条件式渲染组件
+ */
+export function Authorized(props: AuthorizedProps) {
+  const hasPermission = useHasPermission();
+  return <>{hasPermission(props.auth) ? props.children : props.fallback}</>;
 }

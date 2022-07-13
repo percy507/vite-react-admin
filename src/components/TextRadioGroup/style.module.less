@@ -1,0 +1,18 @@
+.textGroup {
+  display: block;
+}
+
+.item {
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &[active] {
+    color: red;
+    font-weight: 500;
+    border-bottom: 1px solid red;
+  }
+}

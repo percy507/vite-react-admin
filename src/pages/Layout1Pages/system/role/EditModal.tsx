@@ -31,8 +31,7 @@ export default function EditModal(props: EditModalProps) {
       visible={visible}
       width={isEdit ? 1200 : 520}
       onOk={handleOk}
-      onCancel={handleCancel}
-    >
+      onCancel={handleCancel}>
       <Form form={form} {...formLayout} initialValues={data || undefined}>
         {isEdit ? (
           <Form.Item name="permits">{PermissionCheckboxGroup()}</Form.Item>
@@ -46,8 +45,7 @@ export default function EditModal(props: EditModalProps) {
                   required: true,
                   message: 'Please input your name!',
                 },
-              ]}
-            >
+              ]}>
               <Input />
             </Form.Item>
             <Form.Item label="描述" name="desc">

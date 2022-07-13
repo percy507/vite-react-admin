@@ -13,7 +13,7 @@
     "preview": "pnpm build:prod && vite preview",
     "lint": "pnpm lint:jsFix && pnpm lint:styleFix && pnpm lint:format",
     "lint:jsFix": "eslint --ext .jsx,.js,.ts,.tsx --fix ./src",
-    "lint:format": "prettier --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,less,md,json}\"",
+    "lint:format": "prettier --loglevel warn --write \"./src/**/*.{js,jsx,ts,tsx,css,less,md,json}\"",
     "lint:styleFix": "stylelint --fix ./src/**/*?\\(.module\\).{css,less} ",
     "type-check": "tsc",
     "deploy": "pnpm build:dev && gh-pages -d dist"
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@stitches/react": "^1.2.8",
     "antd": "^4.21.5",
     "clsx": "^1.2.1",
     "cropperjs": "^1.5.12",
@@ -43,7 +44,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
-    "react-router-dom": "^6.1.1"
+    "react-photo-view": "^1.2.1",
+    "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
@@ -53,7 +55,6 @@
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
-    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "@vitejs/plugin-legacy": "^1.5.1",

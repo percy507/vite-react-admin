@@ -2,7 +2,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Input, Row, Space, Table, Tag } from 'antd';
 import { useState } from 'react';
 
-import AsyncButton from '@/components/AsyncButton';
+import { AsyncButton } from '@/components/AsyncButton';
 import { PageWrapper } from '@/components/PageWrapper';
 
 import EditModal from './EditModal';
@@ -68,9 +68,8 @@ export default function UserManage() {
         <Space size="middle">
           <a onClick={() => showModal(record)}>编辑</a>
           <AsyncButton
-            label="删除"
-            color="red"
-            title="确定删除?"
+            content="删除"
+            popContent="确定删除?"
             asyncService={() => {
               return new Promise((resolve) => {
                 setTimeout(() => resolve(null), 1200);

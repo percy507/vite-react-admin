@@ -7,12 +7,12 @@ export const menuList: MenuModel[] = [
   {
     label: '主菜单111',
     link: '/l1',
-    authcode: 'l1',
+    auth: 'l1',
   },
   {
     label: '主菜单222',
     link: '/l2',
-    authcode: 'l2',
+    auth: 'l2',
   },
 ];
 

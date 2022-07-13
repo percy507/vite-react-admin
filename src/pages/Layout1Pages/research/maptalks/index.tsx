@@ -45,7 +45,17 @@ export default function LandHome() {
     <PageWrapper>
       <Card title="试用 maptalks">
         <Alert
-          message="maptalks+天地图"
+          message={
+            <div>
+              <a href="https://maptalks.org/" target="_blank" rel="noreferrer">
+                maptalks
+              </a>{' '}
+              +{' '}
+              <a href="https://www.tianditu.gov.cn/" target="_blank" rel="noreferrer">
+                天地图
+              </a>
+            </div>
+          }
           type="info"
           showIcon
           style={{ marginBottom: 24 }}
@@ -64,8 +74,9 @@ export default function LandHome() {
         mask={false}
         maskClosable={false}
         visible={detailModal.visible}
-        onCancel={() => setDetailModal((prevState) => ({ ...prevState, visible: false }))}
-      >
+        onCancel={() =>
+          setDetailModal((prevState) => ({ ...prevState, visible: false }))
+        }>
         <iframe
           src={detailModal.data?.link}
           frameBorder="0"

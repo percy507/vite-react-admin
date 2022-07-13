@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useHasPermission } from '@/components/Authorized';
-import IconFont from '@/components/IconFont';
+import { IconFont } from '@/components/IconFont';
 
 import styles from './style.module.less';
 
@@ -16,12 +16,12 @@ export interface MenuModel {
   key?: string;
   /** 菜单标题 */
   label: string;
-  /** 菜单 icon，从iconfont.cn中找 */
+  /** 菜单 icon 名称 */
   icon?: string;
   /** 菜单链接 */
   link?: string;
   /** 权限码 */
-  authcode?: string;
+  auth?: string;
   /** 子菜单 */
   children?: MenuModel[];
 }
@@ -81,10 +81,9 @@ export function MenuList(props: MenuListProps) {
       openKeys={innerOpenKeys}
       selectedKeys={innerSelectedKeys}
       onOpenChange={(keys) => setInnerOpenKeys(keys)}
-      onSelect={({ selectedKeys }) => setInnerSelectedKeys(selectedKeys)}
-    >
+      onSelect={({ selectedKeys }) => setInnerSelectedKeys(selectedKeys)}>
       {list
-        .filter((menu) => hasPermission(menu.authcode))
+        .filter((menu) => hasPermission(menu.auth))
         .map((menu) => {
           const children = menu.children || [];
           if (children.length === 0) {
@@ -105,17 +104,15 @@ export function MenuList(props: MenuListProps) {
                     {menu.icon && <IconFont type={menu.icon} />}
                     <span>{menu.label}</span>
                   </span>
-                }
-              >
+                }>
                 {children
-                  .filter((child) => hasPermission(child.authcode))
+                  .filter((child) => hasPermission(child.auth))
                   .map((child) => {
                     return (
                       <MenuItem key={child.key || child.label}>
                         <Link
                           to={child.link as string}
-                          data-menukey={child.key || child.label}
-                        >
+                          data-menukey={child.key || child.label}>
                           {child.label}
                         </Link>
                       </MenuItem>

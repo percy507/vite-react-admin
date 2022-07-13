@@ -1,4 +1,4 @@
-import Exception from '@/components/Exception';
+import { Exception } from '@/components/Exception';
 import { PageWrapper } from '@/components/PageWrapper';
 
 import styles from './style.module.less';

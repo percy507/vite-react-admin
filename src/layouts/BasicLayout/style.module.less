@@ -1,4 +1,4 @@
-@headerHeight: 64px;
+@headerHeight: 56px;
 
 .basicLayout {
   width: 100%;
@@ -18,36 +18,51 @@
   }
 
   .header {
+    position: relative;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: @headerHeight;
     padding: 0;
+    line-height: @headerHeight;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
-    &__left {
+    &Left {
       display: flex;
+      align-items: center;
 
       .logo {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        width: 280px;
-        color: #fff;
-        font-size: 20px;
+        min-width: 280px;
+        padding: 0 24px;
+        color: #333;
+        font-weight: bold;
+        font-size: 18px;
 
         img {
-          width: 50px;
+          width: 30px;
+          margin-right: 16px;
         }
       }
     }
 
-    &__right {
+    &Right {
+      display: flex;
+      align-items: center;
       padding-right: 24px;
 
+      .userInfo {
+        display: flex;
+        align-items: center;
+      }
+
       .userName {
-        width: 100px;
-        color: #dc0000;
-        font-size: 18px;
+        margin-left: 10px;
+        color: #333;
+        font-size: 14px;
         text-align: center;
       }
     }

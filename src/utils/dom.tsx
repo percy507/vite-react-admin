@@ -2,8 +2,8 @@ import { Spin } from 'antd';
 import { lazy, Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import Authorized from '@/components/Authorized';
-import Exception from '@/components/Exception';
+import { Authorized } from '@/components/Authorized';
+import { Exception } from '@/components/Exception';
 
 export const SuspenseLoading = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -16,12 +16,10 @@ export const SuspenseLoading = ({ children }: { children: React.ReactNode }) => 
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <Spin spinning />
         </div>
-      }
-    >
+      }>
       {children}
     </Suspense>
   );
@@ -35,7 +33,7 @@ export const loadDC = (c: Promise<{ default: React.FC<any> }>, auth?: string) =>
   const Element = lazy(() => c);
   return (
     <SuspenseLoading>
-      <Authorized authcode={auth} fallback={<Exception type={403} />}>
+      <Authorized auth={auth} fallback={<Exception type={403} />}>
         <Element />
       </Authorized>
     </SuspenseLoading>

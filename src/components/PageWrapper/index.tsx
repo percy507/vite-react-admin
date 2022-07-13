@@ -22,7 +22,7 @@ export function PageWrapper(props: PageWrapProps) {
     footer = null,
   } = props;
 
-  const rootClassName = clsx(styles.pageWrapper, className ? className : false);
+  const rootClassName = clsx(styles.pageWrapper, className);
 
   const itemRender = (route: { path?: string; breadcrumbName: string }) => {
     return route.path ? (
@@ -45,8 +45,7 @@ export function PageWrapper(props: PageWrapProps) {
             styles.pageContent,
             header ? styles.hasHeader : false,
             footer ? styles.hasFooter : false,
-          ])}
-        >
+          ])}>
           {children}
         </div>
         {footer && <div className={styles.stickyFooter}>{footer}</div>}

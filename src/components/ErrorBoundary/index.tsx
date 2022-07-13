@@ -1,13 +1,13 @@
 import { WarningOutlined } from '@ant-design/icons';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 
 import styles from './style.module.less';
 
-interface ErrorBoundaryProps {
+interface EBProps {
   children: JSX.Element;
 }
 
-interface ErrorBoundaryState {
+interface EBState {
   hasError: boolean;
 }
 
@@ -15,15 +15,10 @@ interface ErrorBoundaryState {
  * 捕获子组件的异常，并降级UI展示
  * https://zh-hans.reactjs.org/docs/error-boundaries.html
  */
-export default class ErrorBoundary extends PureComponent<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
-  constructor(props: ErrorBoundaryProps) {
+export class ErrorBoundary extends Component<EBProps, EBState> {
+  constructor(props: EBProps) {
     super(props);
-    this.state = {
-      hasError: false,
-    };
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError() {
@@ -37,15 +32,12 @@ export default class ErrorBoundary extends PureComponent<
   }
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <div className={styles.errorBoundary}>
-          <WarningOutlined className={styles.errorIcon} />
-          <div>加载出错,请刷新页面</div>
-        </div>
-      );
-    }
-
-    return this.props.children;
+    if (!this.state.hasError) return this.props.children;
+    return (
+      <div className={styles.errorBoundary}>
+        <WarningOutlined className={styles.errorIcon} />
+        <div>加载出错,请刷新页面</div>
+      </div>
+    );
   }
 }

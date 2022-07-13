@@ -1,5 +1,6 @@
 import type { RouteObject } from 'react-router-dom';
 
+import type { useHasPermission } from '@/components/Authorized';
 import type { MenuModel } from '@/components/MenuList';
 import { loadDC, navigateTo } from '@/utils/dom';
 
@@ -39,25 +40,25 @@ export const menuList: MenuModel[] = [
   },
 ];
 
-export const routeList: RouteObject[] = [
+export const routeList: (RouteObject & { auth?: string })[] = [
   {
     index: true,
     element: navigateTo('cplist'),
   },
   {
     path: 'cplist',
-    element: loadDC(import('@/pages/Layout1Pages/componentList')),
+    element: loadDC(import('@/pages/layout1Pages/componentList')),
   },
   {
     path: 'research',
     children: [
       {
         path: 'maptalks',
-        element: loadDC(import('@/pages/Layout1Pages/research/maptalks')),
+        element: loadDC(import('@/pages/layout1Pages/research/maptalks')),
       },
       {
         path: 'request',
-        element: loadDC(import('@/pages/Layout1Pages/research/request')),
+        element: loadDC(import('@/pages/layout1Pages/research/request')),
       },
     ],
   },
@@ -66,11 +67,11 @@ export const routeList: RouteObject[] = [
     children: [
       {
         path: 'user',
-        element: loadDC(import('@/pages/Layout1Pages/system/user')),
+        element: loadDC(import('@/pages/layout1Pages/system/user')),
       },
       {
         path: 'role',
-        element: loadDC(import('@/pages/Layout1Pages/system/role')),
+        element: loadDC(import('@/pages/layout1Pages/system/role')),
       },
     ],
   },
@@ -80,3 +81,7 @@ export const routeList: RouteObject[] = [
   },
   { path: '*', element: navigateTo('/l1/404') },
 ];
+
+export const getRouteList = (hasPermission: ReturnType<typeof useHasPermission>) => {
+  return routeList.filter((route) => hasPermission(route.auth));
+};

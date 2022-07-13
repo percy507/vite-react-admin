@@ -29,14 +29,12 @@ export default function EditModal(props: EditModalProps) {
       title={isEdit ? '编辑用户' : '添加用户'}
       visible={visible}
       onOk={handleOk}
-      onCancel={handleCancel}
-    >
+      onCancel={handleCancel}>
       <Form
         form={form}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 16 }}
-        initialValues={data || undefined}
-      >
+        initialValues={data || undefined}>
         <Form.Item
           label="用户名"
           name="name"
@@ -45,8 +43,7 @@ export default function EditModal(props: EditModalProps) {
               required: true,
               message: 'Please input your name!',
             },
-          ]}
-        >
+          ]}>
           <Input placeholder="请输入" />
         </Form.Item>
 

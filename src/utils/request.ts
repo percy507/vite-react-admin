@@ -2,7 +2,7 @@ import { message, notification } from 'antd';
 import * as qs from 'qss';
 
 import config from './config';
-// import { getAuthToken } from './token';
+// import { getAuthToken } from './storage';
 
 // 标准后端响应数据格式
 export interface STD_RESPONSE_FORMAT {

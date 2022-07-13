@@ -1,4 +1,4 @@
-import { Dropdown, Layout, Menu, Spin } from 'antd';
+import { Avatar, Dropdown, Layout, Menu, Spin } from 'antd';
 import { useAtom } from 'jotai';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
@@ -27,8 +27,6 @@ export default function BasicLayout() {
   const dropdownMenu = useMemo(() => {
     return (
       <Menu>
-        <Menu.Item>个人中心</Menu.Item>
-        <Menu.Divider />
         <Menu.Item onClick={logoutFunc}>退出登录</Menu.Item>
       </Menu>
     );
@@ -55,28 +53,33 @@ export default function BasicLayout() {
       ) : (
         <Fragment>
           <Header className={styles.header}>
-            <div className={styles.header__left}>
+            <div className={styles.headerLeft}>
               <div className={styles.logo}>
                 <img src={logoImg} alt="logo" />
                 <div style={{ cursor: 'pointer' }} onClick={() => nav('/')}>
-                  xx管理系统
+                  落云宗内部管理系统
                 </div>
               </div>
               <MenuList
                 style={{ width: 600 }}
-                theme="dark"
                 mode="horizontal"
                 list={menuList}
                 menuPosition="top"
               />
             </div>
-            <div className={styles.header__right}>
+            <div className={styles.headerRight}>
               <Dropdown overlay={dropdownMenu}>
-                <div className={styles.userName}>{userInfo.name}</div>
+                <div className={styles.userInfo}>
+                  <Avatar
+                    size={32}
+                    src={userInfo.avatar}
+                    style={{ background: 'rgb(62, 99, 221)' }}
+                  />
+                  <div className={styles.userName}>{userInfo.name}</div>
+                </div>
               </Dropdown>
             </div>
           </Header>
-
           <Layout className={styles.content}>{Routes}</Layout>
         </Fragment>
       )}

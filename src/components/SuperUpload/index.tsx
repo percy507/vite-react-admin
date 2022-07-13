@@ -7,10 +7,10 @@ import { clsx } from 'clsx';
 import Cropper from 'cropperjs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { requestUpload, requestUploadConfig } from '@/services/upload';
+import { requestUpload, requestUploadConfig } from '@/services/common';
 import { getImageAspect } from '@/utils';
 
-// import { getAuthToken } from '@/utils/token';
+// import { getAuthToken } from '@/utils/storage';
 import styles from './style.module.less';
 
 type UploadValueItem = {
@@ -72,7 +72,7 @@ export function SuperUpload(props: SuperUploadProps) {
   const [innerFileList, setInnerFileList] = useState<UploadFile[]>([]);
   const prevValueRef = useRef<UploadValueItem[]>([]);
 
-  const rootClassName = clsx(styles.superUpload, className ? className : false, {
+  const rootClassName = clsx(styles.superUpload, className, {
     [styles.hideUploadBtn]: innerFileList.length >= maxFileNum,
     [styles.disabled]: disabled,
   });
@@ -305,8 +305,7 @@ export function SuperUpload(props: SuperUploadProps) {
         maskClosable={false}
         okText="确认上传"
         okButtonProps={{ loading: uploading }}
-        cancelText="取消"
-      >
+        cancelText="取消">
         <div>
           <img
             style={{ maxWidth: '100%' }}
