@@ -2,7 +2,7 @@ import { styled } from '@stitches/react';
 import { Empty, Switch } from 'antd';
 import { useState } from 'react';
 
-import { TinyMCE } from '@/components/TinyMCE';
+import { TinyMCE } from './index';
 
 export const DemoTinyMCE = () => ({
   title: 'TinyMCE',

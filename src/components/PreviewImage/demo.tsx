@@ -1,4 +1,4 @@
-import { PreviewImage } from '@/components/PreviewImage';
+import { PreviewImage } from './index';
 
 export const DemoPreviewImage = () => ({
   title: 'PreviewImage',

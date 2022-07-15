@@ -1,7 +1,7 @@
 import { Button, message } from 'antd';
 import { useState } from 'react';
 
-import { DragableModal } from '@/components/DragableModal';
+import { DragableModal } from './index';
 
 export const DemoDragableModal = () => ({
   title: 'DragableModal',

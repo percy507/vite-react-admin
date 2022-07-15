@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { SuperTable } from './index';
+
 const { RangePicker } = DatePicker;
 
 export const DemoSuperTable = () => ({

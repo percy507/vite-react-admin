@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { DemoAsyncButton } from '@/components/AsyncButton/demo';
 import { DemoAuthorized } from '@/components/Authorized/demo';
 import { DemoDragableModal } from '@/components/DragableModal/demo';
+import { DemoEnumManager } from '@/components/EnumManager/demo';
 import { DemoErrorBoundary } from '@/components/ErrorBoundary/demo';
 import { DemoException } from '@/components/Exception/demo';
 import { DemoFormItemList } from '@/components/FormItemList/demo';
+import { DemoNumberRange } from '@/components/NumberRange/demo';
 import { PageWrapper } from '@/components/PageWrapper';
 import { DemoPageWrapper } from '@/components/PageWrapper/demo';
 import { DemoPreviewImage } from '@/components/PreviewImage/demo';
@@ -21,7 +23,6 @@ import styles from './style.module.less';
 interface Itemmm {
   title: string;
   desc?: React.ReactNode;
-  extra?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -36,11 +37,13 @@ export default function ComponentList() {
     DemoException(),
     DemoPreviewImage(),
     DemoPageWrapper(),
+    DemoEnumManager(),
+    DemoFormItemList(),
+    DemoNumberRange(),
     DemoSuperUpload(),
     DemoSearchForm(),
     DemoSuperTable(),
     DemoTextRadioGroup(),
-    DemoFormItemList(),
     DemoTinyMCE(),
   ];
 
@@ -50,7 +53,7 @@ export default function ComponentList() {
         {componentList.map((el) => (
           <Tooltip key={el.title} title={el.desc} placement="bottom">
             <Tag
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', margin: 5 }}
               onClick={() => {
                 nav(`#${el.title}`);
                 document.getElementById(el.title)?.scrollIntoView({ behavior: 'smooth' });
