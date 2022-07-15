@@ -58,7 +58,7 @@ function Demo() {
             <TinyMCE value={value} onChange={(val) => setValue(val)} />
           )}
         </div>
-        <PreWrapper contentEditable>{value}</PreWrapper>
+        <PreWrapper>{value}</PreWrapper>
       </div>
     </div>
   );

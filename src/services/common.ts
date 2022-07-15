@@ -3,8 +3,11 @@ import { message } from 'antd';
 
 import request from '@/utils/request';
 
-export function requestUpload(params: any) {
-  return request.postFormData('https://api.imgbb.com/1/upload', params);
+export function requestUpload(file: File) {
+  return request.postFormData('https://api.imgbb.com/1/upload', {
+    key: '49e27928735c3bd80e8aa27349a34c5b',
+    image: file,
+  });
 }
 
 export const requestUploadConfig = (): Pick<UploadProps, 'action' | 'data'> => ({
