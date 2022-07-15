@@ -153,7 +153,7 @@ function requestList(params: any) {
   const response = {
     data: {
       total: records.length,
-      totals: [14, 6, 5, 3],
+      totals: [14, 5, 5, 4],
       records,
     },
   };
