@@ -48,7 +48,7 @@ export default function ComponentList() {
   ];
 
   return (
-    <PageWrapper style={{ position: 'relative' }}>
+    <PageWrapper className={styles.componentList}>
       <Card size="small" className={styles.header}>
         {componentList.map((el) => (
           <Tooltip key={el.title} title={el.desc} placement="bottom">
@@ -63,7 +63,7 @@ export default function ComponentList() {
           </Tooltip>
         ))}
       </Card>
-      <div className={styles.componentList}>
+      <div className={styles.list}>
         {componentList.map((el) => {
           return (
             <Card

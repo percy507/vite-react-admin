@@ -1,37 +1,39 @@
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  margin-bottom: 24px;
-  background: #3e63dd;
-}
-
 .componentList {
-  :global {
-    .ant-card-head {
-      background: #c6d4f9;
-    }
-
-    .ant-card-bordered {
-      border-color: #c6d4f9;
-    }
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-bottom: 24px;
+    background: #3e63dd;
   }
 
-  .desc {
-    display: flex;
-    margin-bottom: 16px;
-    color: #454545;
+  .list {
+    :global {
+      .ant-card-head {
+        background: #c6d4f9;
+      }
 
-    & > div:first-child {
-      flex-shrink: 0;
-      padding-right: 6px;
-      color: red;
-      font-weight: bold;
+      .ant-card-bordered {
+        border-color: #c6d4f9;
+      }
     }
-  }
 
-  .demoWrapper {
-    padding: 16px;
-    border: 1px dashed #ddd;
+    .desc {
+      display: flex;
+      margin-bottom: 16px;
+      color: #454545;
+
+      & > div:first-child {
+        flex-shrink: 0;
+        padding-right: 6px;
+        color: red;
+        font-weight: bold;
+      }
+    }
+
+    .demoWrapper {
+      padding: 16px;
+      border: 1px dashed #ddd;
+    }
   }
 }
