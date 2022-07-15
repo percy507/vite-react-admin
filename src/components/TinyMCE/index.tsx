@@ -46,7 +46,7 @@ export function TinyMCE(props: TinyMCEProps) {
       max_height: readOnly ? undefined : 600,
       images_upload_handler: (blobInfo) => {
         return new Promise((resolve, reject) => {
-          requestUpload({ file: new File([blobInfo.blob()], blobInfo.filename()) })
+          requestUpload(new File([blobInfo.blob()], blobInfo.filename()))
             .then((url) => resolve(url))
             .catch((err) => reject(err));
         });
