@@ -1,13 +1,13 @@
 import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 import autoprefixer from 'autoprefixer';
+import path from 'path';
 import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   server: {
     port: 4010,
   },
