@@ -1,9 +1,9 @@
 import 'normalize.css'; // A modern alternative to CSS resets
 import './styles/global.less';
-import 'moment/locale/zh-cn';
+import 'moment/dist/locale/zh-cn';
 
 import { ConfigProvider } from 'antd';
-import zhCN from 'antd/lib/locale/zh_CN';
+import zhCN from 'antd/es/locale/zh_CN';
 import { Provider } from 'jotai';
 import moment from 'moment';
 import React from 'react';

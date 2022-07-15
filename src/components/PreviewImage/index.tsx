@@ -9,8 +9,8 @@ import styles from './style.module.less';
 interface PreviewImageProps {
   imgs: string | string[];
   /** @default 100 */
-  thumbWidth?: number;
-  thumbHeight?: number;
+  thumbWidth?: React.CSSProperties['width'];
+  thumbHeight?: React.CSSProperties['height'];
   hideHint?: boolean;
   style?: React.CSSProperties;
 }

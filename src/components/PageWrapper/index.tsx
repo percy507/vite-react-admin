@@ -6,23 +6,23 @@ import { Link } from 'react-router-dom';
 import styles from './style.module.less';
 
 type PageWrapProps = {
+  className?: string;
+  style?: React.CSSProperties;
   loading?: boolean;
   header?: PageHeaderProps;
   children?: React.ReactNode;
-  className?: string;
   footer?: React.ReactNode;
 };
 
 export function PageWrapper(props: PageWrapProps) {
   const {
+    className,
+    style,
     loading = false,
     header = null,
     children = null,
-    className = '',
     footer = null,
   } = props;
-
-  const rootClassName = clsx(styles.pageWrapper, className);
 
   const itemRender = (route: { path?: string; breadcrumbName: string }) => {
     return route.path ? (
@@ -37,7 +37,7 @@ export function PageWrapper(props: PageWrapProps) {
   }
 
   return (
-    <div className={rootClassName}>
+    <div className={clsx(styles.pageWrapper, className)} style={style}>
       <Spin spinning={loading}>
         {header && <PageHeader {...header} />}
         <div

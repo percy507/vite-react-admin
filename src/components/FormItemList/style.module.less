@@ -1,0 +1,26 @@
+.formItemList {
+  margin-bottom: 0;
+
+  .formItem {
+    :global {
+      .ant-form-item-explain > .ant-form-item-explain-error {
+        display: none;
+
+        &:first-of-type {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .deleteBtn {
+    margin-left: 12px;
+    color: red;
+  }
+
+  .addFormItem {
+    &.hasError {
+      margin-bottom: 2px;
+    }
+  }
+}

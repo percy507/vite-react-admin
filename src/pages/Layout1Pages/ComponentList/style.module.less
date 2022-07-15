@@ -1,3 +1,11 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin-bottom: 24px;
+  background: #3e63dd;
+}
+
 .componentList {
   :global {
     .ant-card-head {
@@ -12,10 +20,13 @@
   .desc {
     display: flex;
     margin-bottom: 16px;
-    color: #34f;
+    color: #454545;
 
     & > div:first-child {
       flex-shrink: 0;
+      padding-right: 6px;
+      color: red;
+      font-weight: bold;
     }
   }
 

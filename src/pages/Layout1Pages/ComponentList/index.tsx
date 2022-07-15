@@ -6,16 +6,21 @@ import { DemoAuthorized } from '@/components/Authorized/demo';
 import { DemoDragableModal } from '@/components/DragableModal/demo';
 import { DemoErrorBoundary } from '@/components/ErrorBoundary/demo';
 import { DemoException } from '@/components/Exception/demo';
+import { DemoFormItemList } from '@/components/FormItemList/demo';
 import { PageWrapper } from '@/components/PageWrapper';
+import { DemoPageWrapper } from '@/components/PageWrapper/demo';
 import { DemoPreviewImage } from '@/components/PreviewImage/demo';
+import { DemoSearchForm } from '@/components/SearchForm/demo';
+import { DemoSuperTable } from '@/components/SuperTable/demo';
 import { DemoSuperUpload } from '@/components/SuperUpload/demo';
 import { DemoTextRadioGroup } from '@/components/TextRadioGroup/demo';
+import { DemoTinyMCE } from '@/components/TinyMCE/demo';
 
 import styles from './style.module.less';
 
 interface Itemmm {
   title: string;
-  desc?: string;
+  desc?: React.ReactNode;
   extra?: React.ReactNode;
   children: React.ReactNode;
 }
@@ -29,14 +34,19 @@ export default function ComponentList() {
     DemoDragableModal(),
     DemoErrorBoundary(),
     DemoException(),
-    DemoSuperUpload(),
-    DemoTextRadioGroup(),
     DemoPreviewImage(),
+    DemoPageWrapper(),
+    DemoSuperUpload(),
+    DemoSearchForm(),
+    DemoSuperTable(),
+    DemoTextRadioGroup(),
+    DemoFormItemList(),
+    DemoTinyMCE(),
   ];
 
   return (
-    <PageWrapper>
-      <Card size="small" style={{ marginBottom: 24 }}>
+    <PageWrapper style={{ position: 'relative' }}>
+      <Card size="small" className={styles.header}>
         {componentList.map((el) => (
           <Tooltip key={el.title} title={el.desc} placement="bottom">
             <Tag
@@ -59,11 +69,8 @@ export default function ComponentList() {
               size="small"
               style={{ marginBottom: 24 }}>
               <div className={styles.desc}>
-                <div style={{ fontWeight: 'bold', paddingRight: 6 }}>描述:</div>
-                <div>
-                  <div>{el.desc}</div>
-                  <div style={{ paddingTop: 10 }}>{el.extra}</div>
-                </div>
+                <div>描述:</div>
+                <div>{el.desc}</div>
               </div>
               <div className={styles.demoWrapper}>{el.children}</div>
             </Card>

@@ -1,0 +1,17 @@
+.tinymce {
+  min-height: 200px;
+
+  &.readOnly {
+    width: 100%;
+
+    :global {
+      .tox-tinymce {
+        border: none;
+      }
+
+      .tox-editor-header {
+        display: none;
+      }
+    }
+  }
+}

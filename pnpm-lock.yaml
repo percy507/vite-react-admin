@@ -31,6 +31,7 @@ specifiers:
   lint-staged: ^12.3.4
   maptalks: ^1.0.0-beta.7
   moment: ^2.29.1
+  nanoid: ^4.0.0
   normalize.css: ^8.0.1
   polylabel: ^1.1.0
   postcss-less: ^6.0.0
@@ -59,6 +60,7 @@ dependencies:
   jotai: 1.7.4_react@18.2.0
   maptalks: 1.0.0-rc.6
   moment: 2.29.4
+  nanoid: 4.0.0
   normalize.css: 8.0.1
   polylabel: 1.1.0
   qss: 2.0.3
@@ -4081,6 +4083,12 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: true
+
+  /nanoid/4.0.0:
+    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
 
   /nanomatch/1.2.13:
     resolution: {integrity: sha512-fpoe2T0RbHwBTBUOftAfBPaDEi06ufaUai0mE6Yn1kacc3SnTErfb/h+X94VXzI64rKFHYImXSvdwGGCmwOqCA==}

@@ -2,7 +2,18 @@ import { PreviewImage } from '@/components/PreviewImage';
 
 export const DemoPreviewImage = () => ({
   title: 'PreviewImage',
-  desc: '预览图片(依赖`react-photo-view`)',
+  desc: (
+    <div>
+      预览图片(依赖{' '}
+      <a
+        href="https://github.com/MinJieLiu/react-photo-view"
+        target="_blank"
+        rel="noreferrer">
+        react-photo-view
+      </a>
+      )
+    </div>
+  ),
   children: <Demo />,
 });
 
