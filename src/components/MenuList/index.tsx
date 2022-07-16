@@ -47,18 +47,17 @@ export function MenuList(props: MenuListProps) {
     let shouldSelectedKeys: string[] = [];
 
     list.forEach((el) => {
-      if (el.link === location.pathname) {
+      if (menuPosition === 'top' && el.link && location.pathname.startsWith(el.link)) {
         shouldSelectedKeys = [el.key || el.label];
       } else if (
-        menuPosition === 'top' &&
-        el.link &&
-        location.pathname.startsWith(el.link)
+        el.link === location.pathname ||
+        (el.link && location.pathname.startsWith(el.link))
       ) {
         shouldSelectedKeys = [el.key || el.label];
       }
 
       (el.children || []).forEach((el2) => {
-        if (el2.link === location.pathname) {
+        if (el2.link && location.pathname.startsWith(el2.link)) {
           shouldOpenKeys = [el.key || el.label];
           shouldSelectedKeys = [el2.key || el2.label];
         }
@@ -83,7 +82,10 @@ export function MenuList(props: MenuListProps) {
       onOpenChange={(keys) => setInnerOpenKeys(keys)}
       onSelect={({ selectedKeys }) => setInnerSelectedKeys(selectedKeys)}>
       {list
-        .filter((menu) => hasPermission(menu.auth))
+        .filter((menu) => {
+          if (!menu.children) return hasPermission(menu.auth);
+          return menu.children.filter((el) => hasPermission(el.auth)).length !== 0;
+        })
         .map((menu) => {
           const children = menu.children || [];
           if (children.length === 0) {

@@ -11,6 +11,16 @@ export const menuList: MenuModel[] = [
     link: '/l1/cplist',
   },
   {
+    label: 'Demo合集',
+    icon: 'icon-building-4-fill',
+    children: [
+      {
+        label: '常规列表页+增删改查',
+        link: '/l1/demos/page1',
+      },
+    ],
+  },
+  {
     label: '技术调研集合',
     icon: 'icon-truck-fill',
     children: [
@@ -48,6 +58,32 @@ export const routeList: (RouteObject & { auth?: string })[] = [
   {
     path: 'cplist',
     element: loadDC(import('@/pages/layout1Pages/componentList')),
+  },
+  {
+    path: 'demos',
+    children: [
+      {
+        path: 'page1',
+        children: [
+          {
+            index: true,
+            element: loadDC(import('@/pages/layout1Pages/demos/page1')),
+          },
+          {
+            path: 'add',
+            element: loadDC(import('@/pages/layout1Pages/demos/page1/edit')),
+          },
+          {
+            path: 'edit/:id',
+            element: loadDC(import('@/pages/layout1Pages/demos/page1/edit')),
+          },
+          {
+            path: 'detail/:id',
+            element: loadDC(import('@/pages/layout1Pages/demos/page1/detail')),
+          },
+        ],
+      },
+    ],
   },
   {
     path: 'research',
