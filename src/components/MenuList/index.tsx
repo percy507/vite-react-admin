@@ -8,9 +8,6 @@ import { IconFont } from '@/components/IconFont';
 
 import styles from './style.module.less';
 
-const MenuItem = Menu.Item;
-const { SubMenu } = Menu;
-
 export interface MenuModel {
   /** 唯一key，如果为空，则key使用label表示 */
   key?: string;
@@ -73,6 +70,48 @@ export function MenuList(props: MenuListProps) {
     }
   }, [list, location.pathname, menuPosition]);
 
+  const items: MenuProps['items'] = list
+    .filter((menu) => {
+      if (!menu.children) return hasPermission(menu.auth);
+      return menu.children.filter((el) => hasPermission(el.auth)).length !== 0;
+    })
+    .map((menu) => {
+      const children = menu.children || [];
+      if (children.length === 0) {
+        return {
+          key: menu.key || menu.label,
+          label: (
+            <Link title={menu.label} to={menu.link as string}>
+              {menu.icon && <IconFont type={menu.icon} />}
+              <span data-menukey={menu.key || menu.label}>{menu.label}</span>
+            </Link>
+          ),
+        };
+      } else {
+        return {
+          key: menu.key || menu.label,
+          label: (
+            <span>
+              {menu.icon && <IconFont type={menu.icon} />}
+              <span>{menu.label}</span>
+            </span>
+          ),
+          children: children
+            .filter((child) => hasPermission(child.auth))
+            .map((child) => {
+              return {
+                key: child.key || child.label,
+                label: (
+                  <Link to={child.link as string} data-menukey={child.key || child.label}>
+                    {child.label}
+                  </Link>
+                ),
+              };
+            }),
+        };
+      }
+    });
+
   return (
     <Menu
       {...restProps}
@@ -80,50 +119,8 @@ export function MenuList(props: MenuListProps) {
       openKeys={innerOpenKeys}
       selectedKeys={innerSelectedKeys}
       onOpenChange={(keys) => setInnerOpenKeys(keys)}
-      onSelect={({ selectedKeys }) => setInnerSelectedKeys(selectedKeys)}>
-      {list
-        .filter((menu) => {
-          if (!menu.children) return hasPermission(menu.auth);
-          return menu.children.filter((el) => hasPermission(el.auth)).length !== 0;
-        })
-        .map((menu) => {
-          const children = menu.children || [];
-          if (children.length === 0) {
-            return (
-              <MenuItem key={menu.key || menu.label}>
-                <Link title={menu.label} to={menu.link as string}>
-                  {menu.icon && <IconFont type={menu.icon} />}
-                  <span data-menukey={menu.key || menu.label}>{menu.label}</span>
-                </Link>
-              </MenuItem>
-            );
-          } else {
-            return (
-              <SubMenu
-                key={menu.key || menu.label}
-                title={
-                  <span>
-                    {menu.icon && <IconFont type={menu.icon} />}
-                    <span>{menu.label}</span>
-                  </span>
-                }>
-                {children
-                  .filter((child) => hasPermission(child.auth))
-                  .map((child) => {
-                    return (
-                      <MenuItem key={child.key || child.label}>
-                        <Link
-                          to={child.link as string}
-                          data-menukey={child.key || child.label}>
-                          {child.label}
-                        </Link>
-                      </MenuItem>
-                    );
-                  })}
-              </SubMenu>
-            );
-          }
-        })}
-    </Menu>
+      onSelect={({ selectedKeys }) => setInnerSelectedKeys(selectedKeys)}
+      items={items}
+    />
   );
 }

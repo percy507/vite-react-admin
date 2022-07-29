@@ -1,11 +1,21 @@
 import type { TableProps, TabPaneProps, TabsProps } from 'antd';
 import { Card, Table, Tabs } from 'antd';
-import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 
 import type { SearchFormProps } from '@/components/SearchForm';
 import { SearchForm } from '@/components/SearchForm';
 
 import styles from './style.module.less';
+
+export type { SearchFormProps } from '@/components/SearchForm';
+export type { ColumnsType } from 'antd/es/table';
 
 const { TabPane } = Tabs;
 
@@ -60,7 +70,7 @@ interface SuperTableProps {
   paginationParams?: { current?: number; size?: number };
 }
 
-export const SuperTable = React.forwardRef<SuperTableRefProps, SuperTableProps>(
+export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
   function InnerSuperTable(props, ref) {
     const {
       searchForm,
@@ -84,15 +94,16 @@ export const SuperTable = React.forwardRef<SuperTableRefProps, SuperTableProps>(
     });
 
     const [loading, setLoading] = useState(false);
+    const spRef = useRef(serviceParams);
     const request = useCallback(() => {
       setLoading(true);
-      service({ ...params, ...serviceParams })
+      service({ ...params, ...spRef.current })
         .then(({ data }) => {
           setData(data);
           if (afterService) afterService();
         })
         .finally(() => setLoading(false));
-    }, [service, params, afterService, serviceParams]);
+    }, [service, params, afterService]);
 
     useImperativeHandle(ref, () => ({ request, params }), [request, params]);
     useEffect(() => request(), [request]);
@@ -102,7 +113,10 @@ export const SuperTable = React.forwardRef<SuperTableRefProps, SuperTableProps>(
         {searchForm && (
           <SearchForm
             {...searchForm}
-            onSearch={(values) => setParams((val) => ({ ...val, current: 1, ...values }))}
+            onSearch={(values) => {
+              if (!values) setParams((val) => ({ current: 1, size: val.pageSize }));
+              else setParams((val) => ({ ...val, current: 1, ...values }));
+            }}
           />
         )}
         {tabs && tabs.root && Array.isArray(tabs.panes) && tabs.panes.length > 0 ? (
@@ -124,6 +138,11 @@ export const SuperTable = React.forwardRef<SuperTableRefProps, SuperTableProps>(
         ) : null}
         <Table
           {...tableProps}
+          columns={(tableProps.columns || []).map((el) => {
+            if (!el.render) el.render = (v) => v ?? '-';
+            if (el.ellipsis === undefined) el.ellipsis = true;
+            return el;
+          })}
           dataSource={data.records || []}
           loading={loading}
           pagination={{

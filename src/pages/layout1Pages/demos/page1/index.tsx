@@ -11,19 +11,19 @@ import { Authorized, useHasPermission } from '@/components/Authorized';
 import { PageWrapper } from '@/components/PageWrapper';
 import { SuperTable } from '@/components/SuperTable';
 import { requestDelete, requestList, requestPublish } from '@/services/page1';
+import {
+  enumTag,
+  PROCESS_STATUS,
+  PROCESS_STATUS_COLOR,
+  selectOptions,
+} from '@/utils/enum';
 
-import { EnumStatus, renderStatusTag } from './helper';
 import styles from './style.module.less';
 
 export default function ActivityManage() {
   const hasPermission = useHasPermission();
   const nav = useNavigate();
   const tableRef = useRef<React.ElementRef<typeof SuperTable>>(null);
-
-  const bclist = [
-    { path: '', breadcrumbName: '一级菜单' },
-    { path: '', breadcrumbName: '二级菜单' },
-  ];
 
   const onPublish = (val, record) => {
     requestPublish(record, val).then(() => {
@@ -43,18 +43,11 @@ export default function ActivityManage() {
     items: [
       { label: '活动标题', name: 'title', children: <Input placeholder="请输入" /> },
       {
-        label: '活动状态',
+        label: '流程状态',
         name: 'status',
         children: (
-          <Select placeholder="请选择">
-            <Select.Option value=""> 全部</Select.Option>
-            {Object.keys(EnumStatus).map((k) => {
-              return (
-                <Select.Option key={k} value={+k}>
-                  {EnumStatus[k]}
-                </Select.Option>
-              );
-            })}
+          <Select placeholder="请选择" allowClear>
+            {selectOptions(PROCESS_STATUS)}
           </Select>
         ),
       },
@@ -91,14 +84,14 @@ export default function ActivityManage() {
       // dataIndex: 'timeRange',
       render: (_, data) =>
         moment(data.startTime).format('YYYY-MM-DD') +
-        '----' +
+        ' ~ ' +
         moment(data.endTime).format('YYYY-MM-DD'),
     },
     {
       title: '状态',
       width: 100,
       dataIndex: 'status',
-      render: (v) => (v != null ? renderStatusTag(v) : '-'),
+      render: (v) => enumTag(v, PROCESS_STATUS, PROCESS_STATUS_COLOR, '-'),
     },
     {
       title: '人数',
@@ -161,9 +154,7 @@ export default function ActivityManage() {
   ];
 
   return (
-    <PageWrapper
-      className={styles.UserManage}
-      header={{ breadcrumb: { routes: bclist } }}>
+    <PageWrapper className={styles.UserManage} header={{ title: '大标题' }}>
       <SuperTable
         ref={tableRef}
         service={requestList}

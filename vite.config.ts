@@ -9,7 +9,7 @@ import styleImport from 'vite-plugin-style-import';
 export default defineConfig({
   base: '/',
   server: {
-    port: 4010,
+    port: 4014,
   },
   define: {
     VITE_BUILD_MODE: `"${process.env.VITE_BUILD_MODE || 'dev'}"`,

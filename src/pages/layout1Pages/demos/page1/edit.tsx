@@ -47,36 +47,42 @@ export default function RoleManage() {
   }, [id, form, isEdit]);
   const handleOk = (pub: number) => {
     // 保存 0 发布 1
-    return new Promise((resolve) => {
-      form.validateFields().then((value) => {
-        const request = requestEdit;
-        console.log(value, 'value');
-        // const request = isEdit ? requestEditHuoDong : requestEditHuoDong;
-        if (pub) setPublishing(true);
-        else setSaving(true);
-        request({
-          ...value,
-          display: pub === 1 ? true : false,
-          id: isEdit ? id : undefined,
-          startTime: value.range[0].format('YYYY-MM-DD'),
-          endTime: value.range[1].format('YYYY-MM-DD'),
-          coverFiles: (value.coverFiles || []).map((el) => ({
-            name: el.id,
-            // url: el.id,
-            id: el.id,
-          })),
-          range: undefined,
-        })
-          .then(() => {
-            message.success(pub ? '发布成功' : '保存成功');
-            nav('../');
+    return new Promise((resolve, reject) => {
+      form
+        .validateFields()
+        .then((value) => {
+          const request = requestEdit;
+          console.log(value, 'value');
+          // const request = isEdit ? requestEditHuoDong : requestEditHuoDong;
+          if (pub) setPublishing(true);
+          else setSaving(true);
+          request({
+            ...value,
+            display: pub === 1 ? true : false,
+            id: isEdit ? id : undefined,
+            startTime: value.range[0].format('YYYY-MM-DD'),
+            endTime: value.range[1].format('YYYY-MM-DD'),
+            coverFiles: (value.coverFiles || []).map((el) => ({
+              name: el.id,
+              // url: el.id,
+              id: el.id,
+            })),
+            range: undefined,
           })
-          .finally(() => {
-            setSaving(false);
-            setPublishing(false);
-            resolve(null);
-          });
-      });
+            .then(() => {
+              message.success(pub ? '发布成功' : '保存成功');
+              nav('../');
+            })
+            .finally(() => {
+              setSaving(false);
+              setPublishing(false);
+              resolve(null);
+            });
+        })
+        .catch((errorInfo) => {
+          console.log(errorInfo);
+          reject();
+        });
     });
   };
 

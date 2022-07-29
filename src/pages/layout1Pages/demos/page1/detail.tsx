@@ -7,8 +7,8 @@ import { IconFont } from '@/components/IconFont';
 import { PageWrapper } from '@/components/PageWrapper';
 import { TinyMCE } from '@/components/TinyMCE';
 import { requestDetail } from '@/services/page1';
+import { enumTag, PROCESS_STATUS, PROCESS_STATUS_COLOR } from '@/utils/enum';
 
-import { renderStatusTag } from './helper';
 import styles from './style.module.less';
 
 export default function RoleManage() {
@@ -16,12 +16,6 @@ export default function RoleManage() {
   const nav = useNavigate();
   const [form] = Form.useForm();
   const { id } = useParams();
-
-  const breadcrumbList = [
-    { path: '', breadcrumbName: '一级菜单' },
-    { path: '../', breadcrumbName: '二级菜单' },
-    { path: '', breadcrumbName: '查看详情' },
-  ];
 
   useEffect(() => {
     requestDetail(id).then(({ data }) => {
@@ -31,8 +25,17 @@ export default function RoleManage() {
 
   return (
     <PageWrapper
+      pageType="detail"
       className={styles.detail}
-      header={{ breadcrumb: { routes: breadcrumbList } }}
+      header={{
+        subTitle: '二级标题',
+        breadcrumb: {
+          routes: [
+            { path: '../', breadcrumbName: '一级菜单' },
+            { path: '', breadcrumbName: '查看详情' },
+          ],
+        },
+      }}
       footer={
         <div>
           <Button type="primary" style={{ marginRight: 16 }} onClick={() => nav(-1)}>
@@ -47,7 +50,7 @@ export default function RoleManage() {
             <div className={styles.detailTitle}>
               <IconFont type="icon-layout-masonry-fill" />
               <span style={{ padding: '0 10px' }}>{data.title}</span>
-              {renderStatusTag(data.status || 0)}
+              {enumTag(data.status || 1, PROCESS_STATUS, PROCESS_STATUS_COLOR)}
             </div>
           }>
           <div className={styles.numberTitle}>

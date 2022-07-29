@@ -4,6 +4,7 @@ import moment from 'moment';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import type { SearchFormProps } from './index';
 import { SuperTable } from './index';
 
 const { RangePicker } = DatePicker;
@@ -79,7 +80,7 @@ function Demo() {
     },
   ];
 
-  const searchFormConfig = () => ({
+  const searchFormConfig: () => SearchFormProps = () => ({
     actionBar: (
       <Button type="primary" icon={<PlusOutlined />} onClick={() => nav('/')}>
         添加
@@ -103,7 +104,10 @@ function Demo() {
       {
         label: '发布日期',
         name: 'pubDate',
-        realNames: ['startTime', 'endTime'],
+        converter: (v) => ({
+          startTime: v[0].format('YYYY-MM-DD'),
+          endTime: v[1].format('YYYY-MM-DD'),
+        }),
         children: <RangePicker style={{ width: '100%' }} />,
       },
       undefined,

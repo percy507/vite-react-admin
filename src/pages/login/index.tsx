@@ -1,29 +1,28 @@
 import { Button, Form, Input } from 'antd';
-import { useSetAtom } from 'jotai';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { VerifyCode } from '@/components/VerifyCode';
 import { requestLogin } from '@/services/user';
-import { isLoginAtom } from '@/store/user';
 import { setAuthToken } from '@/utils/storage';
 
 import styles from './style.module.less';
 
 export default function LoginPage() {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const setIsLogin = useSetAtom(isLoginAtom);
-  const navigate = useNavigate();
   const [cert, setCert] = useState('');
   const [showChangePassword, setShowChangePassword] = useState(false);
+
+  const query = new URLSearchParams(location.search);
 
   const onSubmit = (values: any) => {
     setSubmitting(true);
     requestLogin({ ...values, cert }).then((token: any) => {
       setAuthToken(token);
       setSubmitting(false);
-      setIsLogin(true);
-      navigate('/');
+
+      let from = query.get('from_page');
+      if (from) location.href = decodeURIComponent(from);
+      else location.href = '/';
     });
   };
 

@@ -1,5 +1,4 @@
 import { Button, Col, Divider, Form, Row, Space } from 'antd';
-import moment from 'moment';
 
 import styles from './style.module.less';
 
@@ -12,8 +11,8 @@ export interface SearchFormProps {
     | {
         /** 用于接口的字段名称，日期区间的表单除外 */
         name: string;
-        /** 用于接口的字段名称，一般用于日期区间的字段 */
-        realNames?: string[];
+        /** 用于转换表单值为接口字段 */
+        converter?: (value: NonNullable<any>) => Record<string, any>;
         /** 用于展示的字段名称 */
         label: string;
         children: JSX.Element;
@@ -23,7 +22,7 @@ export interface SearchFormProps {
   /** 定义 SearchForm 组件下方的内容（一般为操作按钮） */
   actionBar?: JSX.Element;
   /** 点击查询按钮的回调函数 */
-  onSearch: (value) => void;
+  onSearch?: (value) => void;
   /** 查询和重置的按钮组是否向右浮动，默认不浮动 */
   buttonFloatRight?: boolean;
 }
@@ -37,23 +36,18 @@ export function SearchForm(props: SearchFormProps) {
       <Form
         form={form}
         layout="inline"
+        labelWrap
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         onFinish={(values) => {
           let params = { ...values };
-          for (let key in values) {
-            const val = values[key];
-            if (moment.isMoment(val)) {
-              params[key] = val.format('YYYY-MM-DD HH:mm:ss');
-            } else if (Array.isArray(val) && val.find((el) => moment.isMoment(el))) {
-              delete params[key];
-              const targetItem = items.find((el) => el?.name === key)!;
-              targetItem.realNames?.forEach((name, index) => {
-                params[name] = val[index].format('YYYY-MM-DD HH:mm:ss');
-              });
+          items.forEach((el) => {
+            if (el && el.converter && params[el.name] !== undefined) {
+              params = { ...params, ...el.converter(params[el.name]) };
+              delete params[el.name];
             }
-          }
-          onSearch(params);
+          });
+          if (onSearch) onSearch(params);
         }}>
         <Row style={{ width: '100%' }}>
           {items.map((el, index) => (
@@ -77,7 +71,7 @@ export function SearchForm(props: SearchFormProps) {
                   htmlType="button"
                   onClick={() => {
                     form.resetFields();
-                    onSearch({});
+                    if (onSearch) onSearch({});
                   }}>
                   重置
                 </Button>

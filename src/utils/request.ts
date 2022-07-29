@@ -2,7 +2,7 @@ import { message, notification } from 'antd';
 import * as qs from 'qss';
 
 import config from './config';
-// import { getAuthToken } from './storage';
+import { getAuthToken } from './storage';
 
 // 标准后端响应数据格式
 export interface STD_RESPONSE_FORMAT {
@@ -24,16 +24,12 @@ class Request {
   serverUrl = config.BASE_API;
 
   fetch = (url: string, options: RequestInit = {}) => {
-    const realUrl = url.match(/^(http)|(\/\/)/) ? url : `${this.serverUrl}${url}`;
+    let realUrl = url.match(/^(http)|(\/\/)/) ? url : `${this.serverUrl}${url}`;
+    let headers = { ...(options.headers ? options.headers : {}) };
+    if (getAuthToken()) headers['Authorization'] = getAuthToken();
 
     const promiseList = [
-      window.fetch(realUrl, {
-        ...options,
-        headers: {
-          // Authorization: getAuthToken(),
-          ...(options.headers ? options.headers : {}),
-        },
-      }),
+      window.fetch(realUrl, { ...options, headers }),
       // fetch 请求60秒超时判断
       new Promise((_resolve, reject) => {
         setTimeout(() => reject(new Error('请求超时')), 60000);
@@ -51,6 +47,7 @@ class Request {
   };
 
   toLogin = () => {
+    localStorage.clear();
     window.location.href = `/login?from_page=${encodeURIComponent(location.href)}`;
   };
 

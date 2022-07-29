@@ -5,17 +5,22 @@ import { Link } from 'react-router-dom';
 
 import styles from './style.module.less';
 
-type PageWrapProps = {
+interface PageWrapProps {
+  /**
+   * 页面类型：列表页, 详情页, 表单页。设置该字段会自动添加相关的css类，以便添加自定义的全局样式。
+   */
+  pageType?: 'list' | 'detail' | 'form';
   className?: string;
   style?: React.CSSProperties;
   loading?: boolean;
   header?: PageHeaderProps;
   children?: React.ReactNode;
   footer?: React.ReactNode;
-};
+}
 
 export function PageWrapper(props: PageWrapProps) {
   const {
+    pageType,
     className,
     style,
     loading = false,
@@ -37,9 +42,15 @@ export function PageWrapper(props: PageWrapProps) {
   }
 
   return (
-    <div className={clsx(styles.pageWrapper, className)} style={style}>
+    <div
+      className={clsx(styles.pageWrapper, className, {
+        [styles.listPage]: pageType === 'list',
+        [styles.detailPage]: pageType === 'detail',
+        [styles.formPage]: pageType === 'form',
+      })}
+      style={style}>
       <Spin spinning={loading}>
-        {header && <PageHeader {...header} />}
+        {header && <PageHeader {...{ ...header, ghost: false }} />}
         <div
           className={clsx([
             styles.pageContent,

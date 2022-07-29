@@ -41,7 +41,7 @@ function Demo() {
       {
         label: '发布日期',
         name: 'pubDate',
-        realNames: ['startTime', 'endTime'],
+        converter: (v) => ({ startTime: v[0].valueOf(), endTime: v[1].valueOf() }),
         children: <RangePicker style={{ width: '100%' }} />,
       },
       undefined,

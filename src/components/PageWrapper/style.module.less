@@ -11,14 +11,20 @@
       height: 100%;
       overflow: auto;
     }
+
+    .ant-page-header {
+      &-heading-title {
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 16px;
+      }
+    }
   }
 
   .pageContent {
     width: 100%;
-    padding: 16px 24px 24px;
+    padding: 16px;
 
     &.hasHeader {
-      padding-top: 0;
     }
 
     &.hasFooter {
@@ -37,5 +43,74 @@
     height: 60px;
     background: #fff;
     box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// 自定义列表页全局样式
+.listPage {
+}
+
+// 自定义详情页全局样式
+.detailPage {
+  :global {
+    .Card();
+
+    .ant-form-item {
+      margin: 6px 0;
+      color: rgba(0, 0, 0, 0.85);
+
+      &-label > label {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+  }
+}
+
+// 自定义表单页全局样式
+.formPage {
+  :global {
+    .Card();
+  }
+}
+
+.Card() {
+  .ant-card-head-title {
+    position: relative;
+    padding: 10px 0;
+    padding-left: 16px;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      margin: auto;
+      background: #2153d3;
+      content: '';
+    }
+  }
+
+  .ant-card-small {
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .ant-card-head {
+      border-bottom: none;
+    }
+
+    .ant-card-head-title {
+      padding-left: 10px !important;
+
+      &::before {
+        width: 4px;
+        height: 16px;
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-import type { ButtonProps } from 'antd';
+import type { ButtonProps, PopconfirmProps } from 'antd';
 import { Button, Popconfirm } from 'antd';
 import { useState } from 'react';
 
@@ -8,6 +8,7 @@ interface AsyncButtonProps {
   content: React.ReactNode;
   /** 弹窗内容 */
   popContent: React.ReactNode;
+  placement?: PopconfirmProps['placement'];
   /** 弹窗内是否有自定义表单 */
   hasForm?: boolean;
   /** 是否是按钮样式 */
@@ -31,6 +32,7 @@ export function AsyncButton(props: AsyncButtonProps) {
     popContent,
     hasForm = false,
     asyncService,
+    placement,
     isButton = false,
     buttonProps = {},
   } = props;
@@ -54,6 +56,7 @@ export function AsyncButton(props: AsyncButtonProps) {
       title={popContent}
       visible={visible}
       onConfirm={handleOk}
+      placement={placement}
       okButtonProps={{ loading: submitting }}
       onCancel={() => setVisible(false)}>
       {isButton ? (

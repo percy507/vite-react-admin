@@ -1,3 +1,6 @@
+import { Card } from 'antd';
+import { useNavigate } from 'react-router-dom';
+
 import { PageWrapper } from './index';
 
 export const DemoPageWrapper = () => ({
@@ -7,6 +10,7 @@ export const DemoPageWrapper = () => ({
 });
 
 function Demo() {
+  const nav = useNavigate();
   const breadcrumbList = [
     { path: '', breadcrumbName: '嘻嘻嘻' },
     { path: '/l1/system/user', breadcrumbName: '用户管理' },
@@ -21,6 +25,15 @@ function Demo() {
           breadcrumb: { routes: breadcrumbList },
         }}>
         content1
+      </PageWrapper>
+
+      <PageWrapper
+        pageType="detail"
+        header={{
+          title: '查看详情',
+          onBack: () => nav('../'),
+        }}>
+        <Card title="基本信息">xxx</Card>
       </PageWrapper>
     </div>
   );
