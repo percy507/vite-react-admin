@@ -1,16 +1,25 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, message, Select, Space, Switch } from 'antd';
+import {
+  Button,
+  Cascader,
+  DatePicker,
+  Input,
+  message,
+  Select,
+  Space,
+  Switch,
+} from 'antd';
 import moment from 'moment';
-// import { resolve } from 'path';
 import React, { useRef } from 'react';
-import { PhotoView } from 'react-photo-view';
 import { useNavigate } from 'react-router-dom';
 
 import { AsyncButton } from '@/components/AsyncButton';
 import { Authorized, useHasPermission } from '@/components/Authorized';
 import { PageWrapper } from '@/components/PageWrapper';
+import { PreviewImage } from '@/components/PreviewImage';
+import type { ColumnsType, SearchFormProps } from '@/components/SuperTable';
 import { SuperTable } from '@/components/SuperTable';
-import { requestDelete, requestList, requestPublish } from '@/services/page1';
+import { requestDelete, requestList, requestPublish } from '@/services/demo';
 import {
   enumTag,
   PROCESS_STATUS,
@@ -20,7 +29,44 @@ import {
 
 import styles from './style.module.less';
 
-export default function ActivityManage() {
+const { RangePicker } = DatePicker;
+
+const cities = [
+  {
+    value: 'zhejiang',
+    label: 'Zhejiang',
+    children: [
+      {
+        value: 'hangzhou',
+        label: 'Hangzhou',
+        children: [
+          {
+            value: 'xihu',
+            label: 'West Lake',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    value: 'jiangsu',
+    label: 'Jiangsu',
+    children: [
+      {
+        value: 'nanjing',
+        label: 'Nanjing',
+        children: [
+          {
+            value: 'zhonghuamen',
+            label: 'Zhong Hua Men',
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export default function ListPage() {
   const hasPermission = useHasPermission();
   const nav = useNavigate();
   const tableRef = useRef<React.ElementRef<typeof SuperTable>>(null);
@@ -30,10 +76,9 @@ export default function ActivityManage() {
       message.success('操作成功');
       tableRef.current?.request();
     });
-    console.log(val, record, 'val');
   };
 
-  const searchFormConfig = {
+  const searchFormConfig: SearchFormProps = {
     actionBar: (
       <Button type="primary" icon={<PlusOutlined />} onClick={() => nav('./add')}>
         添加
@@ -41,67 +86,83 @@ export default function ActivityManage() {
     ),
     buttonFloatRight: true,
     items: [
-      { label: '活动标题', name: 'title', children: <Input placeholder="请输入" /> },
+      { label: '输入框', name: 'key1', children: <Input placeholder="请输入" /> },
       {
-        label: '流程状态',
-        name: 'status',
+        label: '选择框',
+        name: 'key2',
         children: (
-          <Select placeholder="请选择" allowClear>
+          <Select
+            placeholder="请选择"
+            allowClear
+            showSearch
+            filterOption={(input, option) =>
+              (option!.children as unknown as string)
+                .toLowerCase()
+                .includes(input.toLowerCase())
+            }>
             {selectOptions(PROCESS_STATUS)}
           </Select>
         ),
       },
+      {
+        label: '时间区间',
+        name: 'key3',
+        converter: (v) => ({ startTime: v[0].valueOf(), endTime: v[1].valueOf() }),
+        children: (
+          <RangePicker
+            allowClear
+            disabledDate={(v) => v > moment().endOf('day')}
+            style={{ width: '100%' }}
+          />
+        ),
+      },
+      {
+        label: '级联选择',
+        name: 'key4',
+        children: (
+          <Cascader
+            allowClear
+            changeOnSelect
+            expandTrigger="hover"
+            options={cities}
+            placeholder="请选择"
+          />
+        ),
+      },
+      undefined,
     ],
   };
 
-  const columns = [
-    {
-      title: '序号',
-      width: 70,
-      dataIndex: 'id',
-    },
-    {
-      title: '活动标题',
-      dataIndex: 'title',
-      width: 170,
-    },
+  const columns: ColumnsType<any> = [
+    { title: '序号', width: 70, dataIndex: 'id', fixed: 'left' },
+    { title: '标题', width: 200, dataIndex: 'title', fixed: 'left' },
     {
       title: '封面',
-      dataIndex: 'coverFiles',
-      width: 170,
-      render: (v) =>
-        v ? (
-          <PhotoView src={(v[0] || {}).id}>
-            <img src={(v[0] || {}).id} width="100" alt="" />
-          </PhotoView>
-        ) : (
-          '-'
-        ),
+      dataIndex: 'cover',
+      width: 120,
+      render: (v) => (v ? <PreviewImage imgs={v} thumbWidth="100" /> : '-'),
     },
     {
-      title: '活动时间',
-      width: 290,
-      // dataIndex: 'timeRange',
-      render: (_, data) =>
-        moment(data.startTime).format('YYYY-MM-DD') +
-        ' ~ ' +
-        moment(data.endTime).format('YYYY-MM-DD'),
+      title: '发布日期',
+      width: 200,
+      dataIndex: 'publicTime',
+      render: (v) => moment(v).format('YYYY-MM-DD HH:mm:ss'),
     },
+    { title: '字段1', dataIndex: 'key' },
+    { title: '字段2', dataIndex: 'key' },
+    { title: '字段3', dataIndex: 'key' },
+    { title: '字段4', dataIndex: 'key' },
+    { title: '字段5', dataIndex: 'key' },
     {
       title: '状态',
-      width: 100,
+      width: 110,
       dataIndex: 'status',
       render: (v) => enumTag(v, PROCESS_STATUS, PROCESS_STATUS_COLOR, '-'),
     },
     {
-      title: '人数',
-      dataIndex: 'participateNum',
-      width: 100,
-    },
-    {
       title: '是否展示',
-      dataIndex: 'display',
-      width: 120,
+      dataIndex: 'pub',
+      width: 100,
       render: (v, record) =>
         hasPermission() ? (
           <Switch
@@ -115,25 +176,16 @@ export default function ActivityManage() {
     },
     {
       title: '操作',
-      width: 300,
+      width: 200,
+      fixed: 'right',
       render: (_, record) => (
         <Space size="middle">
           <Authorized>
-            <a
-              onClick={() => {
-                nav('./detail/' + record.id);
-              }}>
-              查看详情
-            </a>
+            <a onClick={() => nav('./detail/' + record.id)}>查看详情</a>
           </Authorized>
           <Authorized>
-            {record.status !== 3 && (
-              <a
-                onClick={() => {
-                  nav('./edit/' + record.id);
-                }}>
-                编辑
-              </a>
+            {record.status !== PROCESS_STATUS.审核中 && (
+              <a onClick={() => nav('./edit/' + record.id)}>编辑</a>
             )}
           </Authorized>
           <Authorized>
@@ -144,9 +196,10 @@ export default function ActivityManage() {
               asyncService={() => {
                 return requestDelete(record.id).then(() => {
                   message.success('删除成功');
-                  tableRef.current?.request();
+                  tableRef.current?.freshRequest();
                 });
-              }}></AsyncButton>
+              }}
+            />
           </Authorized>
         </Space>
       ),
@@ -154,15 +207,12 @@ export default function ActivityManage() {
   ];
 
   return (
-    <PageWrapper className={styles.UserManage} header={{ title: '大标题' }}>
+    <PageWrapper className={styles.UserManage} header={{ title: '基础列表页' }}>
       <SuperTable
         ref={tableRef}
         service={requestList}
         searchForm={searchFormConfig}
-        tableProps={{
-          rowKey: 'id',
-          columns,
-        }}
+        tableProps={{ rowKey: 'id', columns, scroll: { x: 1600 } }}
       />
     </PageWrapper>
   );

@@ -1,3 +1,4 @@
+import { DownOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Layout, Menu, Spin } from 'antd';
 import { useAtom } from 'jotai';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
@@ -5,7 +6,7 @@ import { useNavigate, useRoutes } from 'react-router-dom';
 
 import logoImg from '@/assets/logo.svg';
 import { MenuList } from '@/components/MenuList';
-import { requestUserInfo } from '@/services/user';
+import { requestLogout, requestUserInfo } from '@/services/user';
 import { userInfoAtom } from '@/store/user';
 
 import { routeList } from './config';
@@ -20,8 +21,10 @@ export default function BasicLayout() {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);
   const logoutFunc = useCallback(() => {
-    localStorage.clear();
-    nav('/login');
+    requestLogout().then(() => {
+      localStorage.clear();
+      nav('/login');
+    });
   }, [nav]);
 
   const dropdownMenu = useMemo(() => {
@@ -76,6 +79,7 @@ export default function BasicLayout() {
                     style={{ background: 'rgb(62, 99, 221)' }}
                   />
                   <div className={styles.userName}>{userInfo.name}</div>
+                  <DownOutlined style={{ marginLeft: 16 }} />
                 </div>
               </Dropdown>
             </div>

@@ -11,7 +11,7 @@
   .title {
     position: absolute;
     top: 100px;
-    left: 100px;
+    left: 110px;
     z-index: 10;
     color: #fff;
     font-weight: bold;
@@ -21,23 +21,45 @@
 
   .container {
     position: absolute;
-    top: 0;
-    right: 80px;
-    bottom: 0;
+    top: 143px;
+    right: 184px;
     z-index: 100;
-    width: 400px;
-    height: fit-content;
-    margin: auto;
-    padding: 30px 50px 60px;
+    width: 412px;
+    height: 480px;
+    padding: 32px;
     background: #fff;
     border-radius: 4px;
-    box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 7px rgba(99, 111, 152, 0.2);
 
     .name {
-      margin-bottom: 24px;
+      margin-bottom: 50px;
       font-weight: bold;
       font-size: 20px;
       text-align: center;
     }
+  }
+}
+
+.bottomLine {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  left: 0;
+  z-index: 10;
+  width: calc(100% - 64px);
+  margin: auto;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+  & > div {
+    position: relative;
+    top: -12px;
+    display: inline-block;
+    padding: 0 20px;
+    color: rgba(0, 0, 0, 0.25);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1;
+    background-color: #fff;
   }
 }

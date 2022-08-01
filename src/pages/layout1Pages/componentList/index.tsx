@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { DemoAsyncButton } from '@/components/AsyncButton/demo';
 import { DemoAuthorized } from '@/components/Authorized/demo';
+import { DemoCountNumber } from '@/components/CountNumber/demo';
 import { DemoDragableModal } from '@/components/DragableModal/demo';
 import { DemoEnumManager } from '@/components/EnumManager/demo';
 import { DemoErrorBoundary } from '@/components/ErrorBoundary/demo';
 import { DemoException } from '@/components/Exception/demo';
+import { DemoFileHolder } from '@/components/FileHolder/demo';
 import { DemoFormItemList } from '@/components/FormItemList/demo';
 import { DemoNumberRange } from '@/components/NumberRange/demo';
 import { PageWrapper } from '@/components/PageWrapper';
@@ -45,6 +47,8 @@ export default function ComponentList() {
     DemoSuperTable(),
     DemoTextRadioGroup(),
     DemoTinyMCE(),
+    DemoFileHolder(),
+    DemoCountNumber(),
   ];
 
   return (

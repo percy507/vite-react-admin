@@ -15,9 +15,13 @@ export const menuList: MenuModel[] = [
     icon: 'icon-building-4-fill',
     children: [
       {
-        label: '常规列表页+增删改查',
+        label: '基础列表页',
         link: '/l1/demos/page1',
       },
+      // {
+      //   label: '弹窗列表页',
+      //   link: '/l1/demos/page',
+      // },
     ],
   },
   {

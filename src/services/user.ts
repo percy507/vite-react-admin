@@ -26,3 +26,12 @@ export function requestUserInfo() {
     }, 1000);
   });
 }
+
+export function requestSendSMS(params) {
+  console.log('requestSendSMS', params);
+  return Promise.resolve();
+}
+
+export function requestLogout() {
+  return Promise.resolve();
+}

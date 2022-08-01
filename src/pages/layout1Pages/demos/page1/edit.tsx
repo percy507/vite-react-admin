@@ -7,11 +7,11 @@ import { AsyncButton } from '@/components/AsyncButton';
 import { PageWrapper } from '@/components/PageWrapper';
 import { SuperUpload } from '@/components/SuperUpload';
 import { TinyMCE } from '@/components/TinyMCE';
-import { requestDetail, requestEdit } from '@/services/page1';
+import { requestDetail, requestEdit } from '@/services/demo';
 
 import styles from './style.module.less';
 
-export default function RoleManage() {
+export default function EditPage() {
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
 

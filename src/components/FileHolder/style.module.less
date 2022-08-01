@@ -1,0 +1,65 @@
+.fileHolder {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  margin: 5px 0;
+  padding: 8px 9px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+
+  &:hover {
+    border: 1px solid transparent;
+
+    .name {
+      color: rgba(0, 0, 0, 0.35);
+    }
+
+    .preview {
+      z-index: 11;
+      text-align: center;
+      opacity: 1;
+
+      & > span {
+        margin: 12px 20px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .icon {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+
+    & > img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .name {
+    flex-grow: 1;
+    overflow: hidden;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .preview {
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    height: 40px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+}

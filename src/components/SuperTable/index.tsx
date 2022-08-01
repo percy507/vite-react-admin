@@ -19,33 +19,42 @@ export type { ColumnsType } from 'antd/es/table';
 
 const { TabPane } = Tabs;
 
+// 与后端约定的字段名称
+const T_CURRENT = 'current'; // 分页参数：当前页
+const T_SIZE = 'size'; // 分页参数：每页的数量
+const T_TOTAL = 'total'; // 总数
+const T_TOTALS = 'totals'; // 用于统计每个tab页面列表数据的总数
+const T_RECORDS = 'records'; // 列表数据
+
 interface DataType {
-  total: number;
-  totals?: number[];
-  records: any[];
+  [T_TOTAL]: number;
+  [T_TOTALS]?: number[];
+  [T_RECORDS]: any[];
 }
 
 interface ParamsType {
-  current: number;
-  size: number;
+  [T_CURRENT]: number;
+  [T_SIZE]: number;
   [key: string]: any;
 }
 
 interface SuperTableRefProps {
-  /** 请求列表数据的函数 */
+  /** 请求列表数据，不会重置筛选项，也不会设置页码 */
   request: () => void;
+  /** 请求列表数据，但会重置筛选项，并设置页码到第一页 */
+  freshRequest: () => void;
   /** 当前列表接口中的参数 */
   params: ParamsType;
 }
 
 interface SuperTableProps {
   /** 用于 SearchForm 组件的 props */
-  searchForm?: Omit<SearchFormProps, 'onSearch'>;
+  searchForm?: Omit<SearchFormProps, 'onSearch' | 'ref'>;
   /** 用于配置 Table 组件上方展示的 Tabs 组件 */
   tabs?: {
     /**
      * 是否展示每个tab页面列表数据的总数，默认不展示。如果要展示每个tab的数据总数，
-     * 需要接口中增加 `totals` 字段（表示每个 tab 类型下的数据总数）
+     * 需要接口中增加 `[T_TOTALS]` 字段（表示每个 tab 类型下的数据总数）
      */
     showTotal?: boolean;
     /** 用于 Tabs 组件的 props */
@@ -66,8 +75,8 @@ interface SuperTableProps {
   afterService?: () => void;
   /** 用于列表接口的额外参数 */
   serviceParams?: Record<string, any>;
-  /** 分页参数，默认 `{ current: 1, size: 10 }` */
-  paginationParams?: { current?: number; size?: number };
+  /** 分页参数，默认 `{ [T_CURRENT]: 1, [T_SIZE]: 10 }` */
+  paginationParams?: { [T_CURRENT]?: number; [T_SIZE]?: number };
 }
 
 export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
@@ -83,18 +92,21 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       paginationParams,
     } = props;
     const [data, setData] = useState<DataType>({
-      total: 0,
-      records: [],
+      [T_TOTAL]: 0,
+      [T_RECORDS]: [],
     });
 
     const [params, setParams] = useState<ParamsType>({
-      current: 1,
-      size: 10,
+      [T_CURRENT]: 1,
+      [T_SIZE]: 10,
       ...paginationParams,
     });
 
-    const [loading, setLoading] = useState(false);
+    const formRef = useRef<React.ElementRef<typeof SearchForm>>(null);
     const spRef = useRef(serviceParams);
+    spRef.current = serviceParams;
+
+    const [loading, setLoading] = useState(false);
     const request = useCallback(() => {
       setLoading(true);
       service({ ...params, ...spRef.current })
@@ -105,7 +117,18 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
         .finally(() => setLoading(false));
     }, [service, params, afterService]);
 
-    useImperativeHandle(ref, () => ({ request, params }), [request, params]);
+    useImperativeHandle(
+      ref,
+      () => ({
+        params,
+        request,
+        freshRequest: () => {
+          formRef.current?.form.resetFields();
+          setParams({ [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] });
+        },
+      }),
+      [request, params],
+    );
     useEffect(() => request(), [request]);
 
     const content = (
@@ -113,9 +136,11 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
         {searchForm && (
           <SearchForm
             {...searchForm}
+            ref={formRef}
             onSearch={(values) => {
-              if (!values) setParams((val) => ({ current: 1, size: val.pageSize }));
-              else setParams((val) => ({ ...val, current: 1, ...values }));
+              const obj = { [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] };
+              if (!values) setParams({ ...obj });
+              else setParams({ ...values, ...obj });
             }}
           />
         )}
@@ -124,14 +149,14 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
             {...tabs.root}
             onChange={(k) => {
               const filterParams = tabs.panes![Number.parseInt(k, 10)].filterParams;
-              setParams((val) => ({ ...val, current: 1, ...filterParams }));
+              setParams((val) => ({ ...val, [T_CURRENT]: 1, ...filterParams }));
               if (tabs.root!.onChange) tabs.root!.onChange(k);
             }}>
             {tabs.panes.map((el, index) => {
               let tab = el.tab;
-              let showTotal = tabs.showTotal && Array.isArray(data.totals);
+              let showTotal = tabs.showTotal && Array.isArray(data[T_TOTALS]);
               // prettier-ignore
-              if (showTotal) tab = <div>{el.tab}({data.totals![index]})</div>
+              if (showTotal) tab = <div>{el.tab}({data[T_TOTALS]![index]})</div>
               return <TabPane {...el} key={`${index}`} tab={tab} />;
             })}
           </Tabs>
@@ -143,15 +168,15 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
             if (el.ellipsis === undefined) el.ellipsis = true;
             return el;
           })}
-          dataSource={data.records || []}
+          dataSource={data[T_RECORDS] || []}
           loading={loading}
           pagination={{
-            current: params.current,
-            pageSize: params.size,
-            total: data.total || 0,
-            showTotal: (total) => `共${total}条`,
+            current: params[T_CURRENT],
+            pageSize: params[T_SIZE],
+            total: data[T_TOTAL] || 0,
+            showTotal: (v) => `共${v}条`,
             onChange: (page, pageSize) => {
-              setParams((val) => ({ ...val, current: page, size: pageSize }));
+              setParams((val) => ({ ...val, [T_CURRENT]: page, [T_SIZE]: pageSize }));
             },
           }}
         />
