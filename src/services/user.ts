@@ -12,7 +12,7 @@ export function requestUserInfo() {
     setTimeout(() => {
       resolve({
         name: '韩立',
-        avatar: 'https://s1.ax1x.com/2022/07/13/jRtMfU.jpg',
+        avatar: '/imgs/avatar.jpg',
         permissions: [
           'l1',
           'l2',

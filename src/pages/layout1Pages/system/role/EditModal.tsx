@@ -40,12 +40,7 @@ export default function EditModal(props: EditModalProps) {
             <Form.Item
               label="角色名"
               name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your name!',
-                },
-              ]}>
+              rules={[{ required: true, message: 'Please input your name!' }]}>
               <Input />
             </Form.Item>
             <Form.Item label="描述" name="desc">

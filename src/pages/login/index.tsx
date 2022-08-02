@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { CountNumber } from '@/components/CountNumber';
 import { VerifyCode } from '@/components/VerifyCode';
 import { requestLogin, requestSendSMS } from '@/services/user';
-import { phoneNumberRule } from '@/utils/formRules';
+import { Rule } from '@/utils/formRules';
 import { setAuthToken } from '@/utils/storage';
 
 import styles from './style.module.less';
@@ -39,7 +39,10 @@ export default function LoginPage() {
     <div
       className={styles.loginPage}
       style={{ backgroundImage: 'url(/imgs/login-bg.jpg)' }}>
-      <div className={styles.title}>落云宗内部管理系统</div>
+      <div className={styles.title}>
+        <div>落云宗内部管理系统</div>
+        <img src="/imgs/avatar.jpg" style={{ marginTop: 24 }} alt="" />
+      </div>
       <div className={styles.container}>
         <Tabs>
           <Tabs.TabPane tab="账号密码登录" key="1">
@@ -47,9 +50,7 @@ export default function LoginPage() {
               <>
                 <div className={styles.name}>修改密码</div>
                 <Form name="basic" initialValues={{}} onFinish={onChangePassword}>
-                  <Form.Item
-                    name="username"
-                    rules={[{ required: true, message: '请输入账号' }]}>
+                  <Form.Item name="username" rules={[Rule.inputRequired('请输入账号😂')]}>
                     <Input placeholder="请输入账号(随便填)" />
                   </Form.Item>
 
@@ -103,9 +104,7 @@ export default function LoginPage() {
               <>
                 <div className={styles.name}>登录</div>
                 <Form name="basic" initialValues={{}} onFinish={onSubmit}>
-                  <Form.Item
-                    name="username"
-                    rules={[{ required: true, message: '请输入账号' }]}>
+                  <Form.Item name="username" rules={[Rule.inputRequired('请输入账号😂')]}>
                     <Input placeholder="请输入账号(随便填)" />
                   </Form.Item>
 
@@ -149,7 +148,7 @@ export default function LoginPage() {
           <Tabs.TabPane tab="手机验证码登录" key="2">
             <div className={styles.name}>登录</div>
             <Form name="basic" form={form} onFinish={onSubmit}>
-              <Form.Item name="mobile" rules={[phoneNumberRule]}>
+              <Form.Item name="mobile" rules={[Rule.inputRequired(), Rule.phoneNumber()]}>
                 <Input
                   size="large"
                   maxLength={11}

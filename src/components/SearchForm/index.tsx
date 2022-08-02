@@ -48,8 +48,10 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
             let params = { ...values };
             items.forEach((el) => {
               if (el && el.converter && params[el.name] != null) {
-                params = { ...params, ...el.converter(params[el.name]) };
-                delete params[el.name];
+                let realParams = el.converter(params[el.name]);
+                params = { ...params, ...realParams };
+                if (Object.prototype.hasOwnProperty.call(realParams, el.name)) return;
+                else delete params[el.name];
               }
             });
             if (onSearch) onSearch(params);

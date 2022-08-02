@@ -20,6 +20,6 @@ export function requestVerifyCodeUrl(cert: string) {
   console.log(cert);
   message.info('验证码接口需要后端支持');
   return Promise.resolve({
-    data: 'https://raw.githubusercontent.com/produck/svg-captcha/1.x/media/example.png',
+    data: '/imgs/verify-code.png',
   });
 }
