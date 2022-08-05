@@ -10,6 +10,7 @@ import { PageWrapper } from '@/components/PageWrapper';
 import { requestDetail } from '@/services/demo';
 import { detailCol } from '@/utils/antd';
 import { PROCESS_STATUS, PROCESS_STATUS_COLOR } from '@/utils/enum';
+import { headerCard } from '@/utils/style';
 
 import styles from './style.module.less';
 
@@ -37,7 +38,7 @@ export default function DetailPage() {
       header={{ onBack: () => nav('../'), title: '查看详情' }}>
       <Form form={form} labelWrap>
         <Card
-          className="u__headerCard"
+          className={headerCard()}
           style={{ marginBottom: 16 }}
           title={
             <div>

@@ -50,7 +50,7 @@ export function CountNumber(props: CountNumberProps) {
   const InnerCountNumber = useMemo(() => {
     return styled('div', {
       display: 'inline-block',
-      fontSize: 15,
+      fontSize: '0.9em',
       color: 'rgba(0, 0, 0,0.65)',
       cursor: 'pointer',
       userSelect: 'none',

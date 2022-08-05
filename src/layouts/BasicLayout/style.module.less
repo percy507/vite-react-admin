@@ -57,6 +57,7 @@
       .userInfo {
         display: flex;
         align-items: center;
+        margin-left: 24px;
       }
 
       .userName {
@@ -72,5 +73,63 @@
     width: 100%;
     height: calc(100% - @headerHeight);
     overflow: hidden;
+  }
+}
+
+.noticeIcon {
+  svg {
+    color: #484848;
+    font-size: 18px;
+  }
+
+  :global {
+    .ant-badge-count {
+      transform: scale(0.85) translate(50%, -50%);
+    }
+  }
+}
+
+.noticePopover {
+  :global {
+    .ant-popover-inner-content {
+      padding: 0;
+    }
+  }
+}
+
+.noticeList {
+  width: 350px;
+  padding-top: 12px;
+
+  .noticeItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 16px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+
+    & > div:first-child {
+      width: 175px;
+    }
+
+    & > div:last-child {
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 12px;
+    }
+  }
+
+  .noticeMore {
+    display: block;
+    margin-top: 12px;
+    padding: 6px 0;
+    color: #2153d3;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    background: #fafafa;
   }
 }

@@ -29,6 +29,10 @@ export const menuList: MenuModel[] = [
     icon: 'icon-truck-fill',
     children: [
       {
+        label: '状态管理(组件通信)',
+        link: '/l1/research/state',
+      },
+      {
         label: '试用 maptalks',
         link: '/l1/research/maptalks',
       },
@@ -92,6 +96,10 @@ export const routeList: (RouteObject & { auth?: string })[] = [
   {
     path: 'research',
     children: [
+      {
+        path: 'state',
+        element: loadDC(import('@/pages/layout1Pages/research/state')),
+      },
       {
         path: 'maptalks',
         element: loadDC(import('@/pages/layout1Pages/research/maptalks')),

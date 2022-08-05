@@ -4,6 +4,13 @@ import * as qs from 'qss';
 import config from './config';
 import { getAuthToken } from './storage';
 
+export function redirectToLogin() {
+  localStorage.clear();
+  window.location.href = `/login?${qs.encode({
+    from_page: encodeURIComponent(location.href),
+  })}`;
+}
+
 // 标准后端响应数据格式
 export interface STD_RESPONSE_FORMAT {
   code: BUSINESS_CODE;
@@ -44,11 +51,6 @@ class Request {
       .catch((error) => {
         return Promise.reject(error);
       });
-  };
-
-  toLogin = () => {
-    localStorage.clear();
-    window.location.href = `/login?from_page=${encodeURIComponent(location.href)}`;
   };
 
   checkHttpStatus = (response: Response) => {
@@ -94,7 +96,7 @@ class Request {
         case BUSINESS_CODE.TOKEN_INVALID:
         case BUSINESS_CODE.TOKEN_FORMAT_ERROR:
         case BUSINESS_CODE.TOKEN_CRYPT_ERROR:
-          this.toLogin();
+          setTimeout(() => redirectToLogin(), 1200);
           break;
         case BUSINESS_CODE.PEOJECT_ACCESS_ERROR:
         default:
@@ -112,23 +114,23 @@ class Request {
     return this.fetch(url, { method: 'GET' });
   };
 
-  post = (url: string, data: Record<string, any>) => {
+  post = (url: string, data?: Record<string, any>) => {
     return this.fetch(url, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
       method: 'POST',
-      body: qs.encode(data),
+      body: data ? qs.encode(data) : undefined,
     });
   };
 
-  postJson = (url: string, data: any) => {
+  postJson = (url: string, data?: any) => {
     return this.fetch(url, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
-      body: JSON.stringify(data),
+      body: data ? JSON.stringify(data) : undefined,
     });
   };
 
@@ -146,13 +148,13 @@ class Request {
     });
   };
 
-  putJson = (url: string, data: any) => {
+  putJson = (url: string, data?: any) => {
     return this.fetch(url, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       method: 'PUT',
-      body: JSON.stringify(data),
+      body: data ? JSON.stringify(data) : undefined,
     });
   };
 
