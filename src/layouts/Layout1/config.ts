@@ -1,6 +1,5 @@
 import type { RouteObject } from 'react-router-dom';
 
-import type { useHasPermission } from '@/components/Authorized';
 import type { MenuModel } from '@/components/MenuList';
 import { loadDC, navigateTo } from '@/utils/dom';
 
@@ -58,7 +57,7 @@ export const menuList: MenuModel[] = [
   },
 ];
 
-export const routeList: (RouteObject & { auth?: string })[] = [
+export const routeList: RouteObject[] = [
   {
     index: true,
     element: navigateTo('cplist'),
@@ -129,7 +128,3 @@ export const routeList: (RouteObject & { auth?: string })[] = [
   },
   { path: '*', element: navigateTo('/l1/404') },
 ];
-
-export const getRouteList = (hasPermission: ReturnType<typeof useHasPermission>) => {
-  return routeList.filter((route) => hasPermission(route.auth));
-};

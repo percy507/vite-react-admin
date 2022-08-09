@@ -15,6 +15,8 @@ export function useHasPermission() {
   };
 }
 
+export type HasPermission = ReturnType<typeof useHasPermission>;
+
 interface AuthorizedProps {
   auth?: string | string[];
   /** 该字段表示没有权限时展示的内容，默认为 null */

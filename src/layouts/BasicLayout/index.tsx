@@ -5,20 +5,23 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useRoutes } from 'react-router-dom';
 
 import logoImg from '@/assets/logo.svg';
+import { useHasPermission } from '@/components/Authorized';
 import { MenuList } from '@/components/MenuList';
 import { requestLogout, requestUserInfo } from '@/services/user';
 import { userInfoAtom } from '@/store/user';
+import { filterRoutes } from '@/utils/dom';
 import { redirectToLogin } from '@/utils/request';
 import { ellipsisLine1 } from '@/utils/style';
 
-import { routeList } from './config';
-import { menuList } from './config';
+import { menuList, routeList } from './config';
 import styles from './style.module.less';
 
 const { Header } = Layout;
 
 export default function BasicLayout() {
-  const Routes = useRoutes(routeList);
+  const hasPermission = useHasPermission();
+  const Routes = useRoutes(filterRoutes(routeList, hasPermission));
+
   const nav = useNavigate();
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);

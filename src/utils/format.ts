@@ -3,11 +3,12 @@ export function formatNumber(
   val: number | string,
   /** 有效数字的位数，默认2位 */
   decimal = 2,
+  autoPadZero = true,
 ): string {
   let num = Number.parseFloat(`${val}`);
   if (Number.isNaN(num)) return '-';
   let str = num.toLocaleString('en-US');
-  str = str.includes('.') ? str : `${str}.000`;
+  if (autoPadZero) str = str.includes('.') ? str : `${str}.000`;
   return decimal === 0
     ? str.replace(/\.\d*$/, '')
     : str.replace(/\.\d*$/, (v) => v.slice(0, decimal + 1));

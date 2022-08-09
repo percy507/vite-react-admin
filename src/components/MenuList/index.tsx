@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
+import { clsx } from 'clsx';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -23,13 +24,13 @@ export interface MenuModel {
   children?: MenuModel[];
 }
 
-type MenuListProps = {
+interface MenuListProps extends MenuProps {
   menuPosition: 'top' | 'side';
   list: MenuModel[];
-} & MenuProps;
+}
 
 export function MenuList(props: MenuListProps) {
-  const { list, menuPosition, ...restProps } = props;
+  const { className, list, menuPosition, ...restProps } = props;
 
   const location = useLocation();
   const hasPermission = useHasPermission();
@@ -115,7 +116,7 @@ export function MenuList(props: MenuListProps) {
   return (
     <Menu
       {...restProps}
-      className={styles.menuList}
+      className={clsx(styles.menuList, className)}
       openKeys={innerOpenKeys}
       selectedKeys={innerSelectedKeys}
       onOpenChange={(keys) => setInnerOpenKeys(keys)}
