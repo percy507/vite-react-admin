@@ -1,13 +1,11 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import { createElement, useState } from 'react';
-import { useRoutes } from 'react-router-dom';
 
-import { useHasPermission } from '@/components/Authorized';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { MenuList } from '@/components/MenuList';
+import { RouteTree } from '@/components/RouteUtils';
 import { Page500 } from '@/pages/exception';
-import { filterRoutes } from '@/utils/dom';
 
 import { menuList, routeList } from './config';
 import styles from './style.module.less';
@@ -15,9 +13,6 @@ import styles from './style.module.less';
 const { Content, Sider } = Layout;
 
 export default function Layout1() {
-  const hasPermission = useHasPermission();
-  const Routes = useRoutes(filterRoutes(routeList, hasPermission));
-
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -43,7 +38,9 @@ export default function Layout1() {
         </div>
       </Sider>
       <ErrorBoundary fallback={<Page500 />}>
-        <Content>{Routes}</Content>
+        <Content>
+          <RouteTree data={routeList} />
+        </Content>
       </ErrorBoundary>
     </Layout>
   );

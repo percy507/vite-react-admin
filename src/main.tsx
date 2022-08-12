@@ -11,8 +11,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-
-import App from './App';
+import AppLayout from '@/layouts/AppLayout';
 
 moment.locale('zh-cn');
 
@@ -22,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <ErrorBoundary>
         <Provider>
           <BrowserRouter>
-            <App />
+            <AppLayout />
           </BrowserRouter>
         </Provider>
       </ErrorBoundary>

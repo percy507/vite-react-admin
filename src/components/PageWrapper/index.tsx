@@ -16,6 +16,8 @@ interface PageWrapProps {
   header?: PageHeaderProps;
   children?: React.ReactNode;
   footer?: React.ReactNode;
+  /** 内容区域是否撑满整个可用的视口 */
+  fullHeight?: boolean;
 }
 
 export function PageWrapper(props: PageWrapProps) {
@@ -27,6 +29,7 @@ export function PageWrapper(props: PageWrapProps) {
     header = null,
     children = null,
     footer = null,
+    fullHeight = false,
   } = props;
 
   const itemRender = (route: { path?: string; breadcrumbName: string }) => {
@@ -56,7 +59,8 @@ export function PageWrapper(props: PageWrapProps) {
             styles.pageContent,
             header ? styles.hasHeader : false,
             footer ? styles.hasFooter : false,
-          ])}>
+          ])}
+          style={fullHeight ? { height: '100%', overflow: 'auto' } : {}}>
           {children}
         </div>
         {footer && <div className={styles.stickyFooter}>{footer}</div>}

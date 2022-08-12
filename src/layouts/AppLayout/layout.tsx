@@ -2,27 +2,21 @@ import { BellOutlined, DownOutlined } from '@ant-design/icons';
 import { Avatar, Badge, Dropdown, Empty, Layout, Menu, Popover, Spin } from 'antd';
 import { useAtom } from 'jotai';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useRoutes } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 import logoImg from '@/assets/logo.svg';
-import { useHasPermission } from '@/components/Authorized';
 import { MenuList } from '@/components/MenuList';
 import { requestLogout, requestUserInfo } from '@/services/user';
 import { userInfoAtom } from '@/store/user';
-import { filterRoutes } from '@/utils/dom';
 import { redirectToLogin } from '@/utils/request';
-import { ellipsisLine1 } from '@/utils/style';
+import { css_ellipsis_line1 } from '@/utils/style';
 
-import { menuList, routeList } from './config';
+import { menuList } from './config';
 import styles from './style.module.less';
 
 const { Header } = Layout;
 
-export default function BasicLayout() {
-  const hasPermission = useHasPermission();
-  const Routes = useRoutes(filterRoutes(routeList, hasPermission));
-
-  const nav = useNavigate();
+export default function AppMainLayout() {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);
 
@@ -39,17 +33,13 @@ export default function BasicLayout() {
   }, [logoutFunc]);
 
   useEffect(() => {
-    const getUserInfo = () => {
-      requestUserInfo()
-        .then((data) => {
-          setUserInfo(data);
-        })
-        .finally(() => {
-          setIsFirstRender(false);
-        });
-    };
-
-    getUserInfo();
+    requestUserInfo()
+      .then((data) => {
+        setUserInfo(data);
+      })
+      .finally(() => {
+        setIsFirstRender(false);
+      });
   }, [setUserInfo]);
 
   return (
@@ -62,9 +52,9 @@ export default function BasicLayout() {
             <div className={styles.headerLeft}>
               <div className={styles.logo}>
                 <img src={logoImg} alt="logo" />
-                <div style={{ cursor: 'pointer' }} onClick={() => nav('/')}>
+                <Link to="/" style={{ cursor: 'pointer' }}>
                   落云宗内部管理系统
-                </div>
+                </Link>
               </div>
               <MenuList
                 style={{ width: 600 }}
@@ -88,7 +78,9 @@ export default function BasicLayout() {
               </Dropdown>
             </div>
           </Header>
-          <Layout className={styles.content}>{Routes}</Layout>
+          <Layout className={styles.content}>
+            <Outlet />
+          </Layout>
         </Fragment>
       )}
     </Layout>
@@ -96,7 +88,6 @@ export default function BasicLayout() {
 }
 
 function NoticeCenter() {
-  const nav = useNavigate();
   const [noticeVisible, setNoticeVisible] = useState(false);
   const [data, setData] = useState<{ total: number; list: any[] }>({
     total: 0,
@@ -117,9 +108,9 @@ function NoticeCenter() {
       content={
         <div className={styles.noticeList} onClick={() => setNoticeVisible(false)}>
           {data.list?.length ? (
-            data.list.map((el) => (
-              <Link key={el.id} to="/xxx" className={styles.noticeItem}>
-                <div className={ellipsisLine1()}>我是标题😊</div>
+            data.list.map((_el, index) => (
+              <Link key={index} to="/xxx" className={styles.noticeItem}>
+                <div style={css_ellipsis_line1}>我是标题😊</div>
                 <div>2022-08-02 10:20:20</div>
               </Link>
             ))
@@ -134,12 +125,9 @@ function NoticeCenter() {
         </div>
       }>
       <Badge count={data.total} size="small" className={styles.noticeIcon}>
-        <BellOutlined
-          onClick={() => {
-            setNoticeVisible(true);
-            nav('/xxx');
-          }}
-        />
+        <Link to="/xxx" onClick={() => setNoticeVisible(true)}>
+          <BellOutlined />
+        </Link>
       </Badge>
     </Popover>
   );

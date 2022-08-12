@@ -1,8 +1,9 @@
+import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 import type { MenuModel } from '@/components/MenuList';
+import { lr, navigateTo } from '@/components/RouteUtils';
 import { Page404 } from '@/pages/exception';
-import { loadDC, navigateTo } from '@/utils/dom';
 
 export const menuList: MenuModel[] = [
   {
@@ -65,7 +66,7 @@ export const routeList: RouteObject[] = [
   },
   {
     path: 'cplist',
-    element: loadDC(import('@/pages/layout1Pages/componentList')),
+    element: lr(lazy(() => import('@/pages/layout1Pages/componentList'))),
   },
   {
     path: 'demos',
@@ -75,19 +76,19 @@ export const routeList: RouteObject[] = [
         children: [
           {
             index: true,
-            element: loadDC(import('@/pages/layout1Pages/demos/page1')),
+            element: lr(lazy(() => import('@/pages/layout1Pages/demos/page1'))),
           },
           {
             path: 'add',
-            element: loadDC(import('@/pages/layout1Pages/demos/page1/edit')),
+            element: lr(lazy(() => import('@/pages/layout1Pages/demos/page1/edit'))),
           },
           {
             path: 'edit/:id',
-            element: loadDC(import('@/pages/layout1Pages/demos/page1/edit')),
+            element: lr(lazy(() => import('@/pages/layout1Pages/demos/page1/edit'))),
           },
           {
             path: 'detail/:id',
-            element: loadDC(import('@/pages/layout1Pages/demos/page1/detail')),
+            element: lr(lazy(() => import('@/pages/layout1Pages/demos/page1/detail'))),
           },
         ],
       },
@@ -98,15 +99,15 @@ export const routeList: RouteObject[] = [
     children: [
       {
         path: 'state',
-        element: loadDC(import('@/pages/layout1Pages/research/state')),
+        element: lr(lazy(() => import('@/pages/layout1Pages/research/state'))),
       },
       {
         path: 'maptalks',
-        element: loadDC(import('@/pages/layout1Pages/research/maptalks')),
+        element: lr(lazy(() => import('@/pages/layout1Pages/research/maptalks'))),
       },
       {
         path: 'request',
-        element: loadDC(import('@/pages/layout1Pages/research/request')),
+        element: lr(lazy(() => import('@/pages/layout1Pages/research/request'))),
       },
     ],
   },
@@ -115,11 +116,11 @@ export const routeList: RouteObject[] = [
     children: [
       {
         path: 'user',
-        element: loadDC(import('@/pages/layout1Pages/system/user')),
+        element: lr(lazy(() => import('@/pages/layout1Pages/system/user'))),
       },
       {
         path: 'role',
-        element: loadDC(import('@/pages/layout1Pages/system/role')),
+        element: lr(lazy(() => import('@/pages/layout1Pages/system/role'))),
       },
     ],
   },
