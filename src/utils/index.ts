@@ -1,20 +1,26 @@
-export function copyText(str) {
-  if (!document.queryCommandSupported('copy')) {
-    throw new Error('document.execCommand method not support copy command');
+import { createNanoEvents } from 'nanoevents';
+
+export const eventbus = createNanoEvents();
+
+export function copyText(str: string) {
+  let success = false;
+  let textarea = document.createElement('textarea');
+  textarea.style.cssText = `position:fixed; opacity:0;`;
+  document.body.appendChild(textarea);
+  textarea.value = str;
+  textarea.focus();
+  // ios not support textarea.select() method
+  if (/(iPad|iPhone|iPod)/i.test(navigator.userAgent)) {
+    textarea.setSelectionRange(0, str.length);
+  } else textarea.select();
+  try {
+    success = document.execCommand('copy');
+  } catch (err) {
+    console.error('[copyText]:', err);
   }
-  let input = document.createElement('input');
-  input.style.cssText = `display: block;
-                         position: fixed;
-                         left: -10000px;
-                         z-index: -1;
-                         width: 10px;
-                         height: 10px;
-                         opacity: 0;`;
-  document.body.appendChild(input);
-  input.value = str;
-  input.select();
-  document.execCommand('copy');
-  document.body.removeChild(input);
+  console.log(`[copyText]: ${success ? 'success' : 'failed'}`);
+  document.body.removeChild(textarea);
+  return success;
 }
 
 export function debounce<T extends unknown[], U>(

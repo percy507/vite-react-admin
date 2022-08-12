@@ -2,7 +2,7 @@ import { Button, Card } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { PageWrapper } from '@/components/PageWrapper';
-import { eventbus } from '@/utils/eventbus';
+import { eventbus } from '@/utils';
 
 const link = (title, href) => (
   <a href={href} target="_blank" rel="noreferrer">

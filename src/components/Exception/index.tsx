@@ -20,7 +20,7 @@ const typeMap = {
   500: {
     img: img500,
     title: '500',
-    desc: '抱歉，服务器出错了',
+    desc: '抱歉，页面渲染错误',
   },
 };
 

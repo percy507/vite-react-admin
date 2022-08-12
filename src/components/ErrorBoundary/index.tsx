@@ -5,6 +5,7 @@ import styles from './style.module.less';
 
 interface EBProps {
   children: JSX.Element;
+  fallback?: React.ReactNode;
 }
 
 interface EBState {
@@ -32,8 +33,12 @@ export class ErrorBoundary extends Component<EBProps, EBState> {
   }
 
   render() {
-    if (!this.state.hasError) return this.props.children;
-    return (
+    const { children, fallback } = this.props;
+    const { hasError } = this.state;
+    if (!hasError) return children;
+    return fallback ? (
+      fallback
+    ) : (
       <div className={styles.errorBoundary}>
         <WarningOutlined className={styles.errorIcon} />
         <div>加载出错,请刷新页面</div>

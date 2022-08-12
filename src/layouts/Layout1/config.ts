@@ -1,6 +1,7 @@
 import type { RouteObject } from 'react-router-dom';
 
 import type { MenuModel } from '@/components/MenuList';
+import { Page404 } from '@/pages/exception';
 import { loadDC, navigateTo } from '@/utils/dom';
 
 export const menuList: MenuModel[] = [
@@ -124,7 +125,7 @@ export const routeList: RouteObject[] = [
   },
   {
     path: '404',
-    element: loadDC(import('@/pages/404')),
+    element: Page404(),
   },
   { path: '*', element: navigateTo('/l1/404') },
 ];

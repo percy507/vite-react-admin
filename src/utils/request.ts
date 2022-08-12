@@ -110,8 +110,8 @@ class Request {
     return response;
   };
 
-  get = (url: string) => {
-    return this.fetch(url, { method: 'GET' });
+  get = (url: string, data?: Record<string, any>) => {
+    return this.fetch(data ? `${url}?${qs.encode(data)}` : url, { method: 'GET' });
   };
 
   post = (url: string, data?: Record<string, any>) => {
@@ -124,7 +124,7 @@ class Request {
     });
   };
 
-  postJson = (url: string, data?: any) => {
+  postJson = (url: string, data?: Record<string, any>) => {
     return this.fetch(url, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
@@ -135,20 +135,17 @@ class Request {
   };
 
   // post large binary data, eg: file
-  postFormData = (url: string, data: Record<string, any>) => {
+  postFormData = (url: string, data?: Record<string, any>) => {
     const formData = new FormData();
-
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key]);
-    });
-
-    return this.fetch(url, {
-      method: 'POST',
-      body: formData,
-    });
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+    }
+    return this.fetch(url, { method: 'POST', body: formData });
   };
 
-  putJson = (url: string, data?: any) => {
+  putJson = (url: string, data?: Record<string, any>) => {
     return this.fetch(url, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
@@ -158,8 +155,8 @@ class Request {
     });
   };
 
-  delete = (url: string) => {
-    return this.fetch(url, { method: 'DELETE' });
+  delete = (url: string, data?: Record<string, any>) => {
+    return this.fetch(data ? `${url}?${qs.encode(data)}` : url, { method: 'DELETE' });
   };
 }
 

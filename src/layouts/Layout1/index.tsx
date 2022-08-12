@@ -4,7 +4,9 @@ import { createElement, useState } from 'react';
 import { useRoutes } from 'react-router-dom';
 
 import { useHasPermission } from '@/components/Authorized';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { MenuList } from '@/components/MenuList';
+import { Page500 } from '@/pages/exception';
 import { filterRoutes } from '@/utils/dom';
 
 import { menuList, routeList } from './config';
@@ -40,7 +42,9 @@ export default function Layout1() {
           })}
         </div>
       </Sider>
-      <Content>{Routes}</Content>
+      <ErrorBoundary fallback={<Page500 />}>
+        <Content>{Routes}</Content>
+      </ErrorBoundary>
     </Layout>
   );
 }
