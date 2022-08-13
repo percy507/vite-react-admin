@@ -1,6 +1,7 @@
 import { Card, Tag, Tooltip } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
+import { DemoAnimateHeight } from '@/components/AnimateHeight/demo';
 import { DemoAsyncButton } from '@/components/AsyncButton/demo';
 import { DemoAuthorized } from '@/components/Authorized/demo';
 import { DemoCountNumber } from '@/components/CountNumber/demo';
@@ -33,6 +34,7 @@ export default function ComponentList() {
 
   const componentList: Itemmm[] = [
     DemoAuthorized(),
+    DemoAnimateHeight(),
     DemoAsyncButton(),
     DemoDragableModal(),
     DemoErrorBoundary(),
