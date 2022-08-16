@@ -43,7 +43,7 @@ export default function AppMainLayout() {
   }, [setUserInfo]);
 
   return (
-    <Layout className={styles.basicLayout}>
+    <Layout className={styles.appMainLayout}>
       {isFirstRender ? (
         <Spin className={styles.loading} spinning size="large" tip="加载中..." />
       ) : (
@@ -57,7 +57,7 @@ export default function AppMainLayout() {
                 </Link>
               </div>
               <MenuList
-                style={{ width: 600 }}
+                className={styles.menus}
                 mode="horizontal"
                 list={menuList}
                 menuPosition="top"

@@ -20,6 +20,7 @@ import { DemoSuperTable } from '@/components/SuperTable/demo';
 import { DemoSuperUpload } from '@/components/SuperUpload/demo';
 import { DemoTextRadioGroup } from '@/components/TextRadioGroup/demo';
 import { DemoTinyMCE } from '@/components/TinyMCE/demo';
+import { DemoTinyMCEPreview } from '@/components/TinyMCEPreview/demo';
 
 import styles from './style.module.less';
 
@@ -49,6 +50,7 @@ export default function ComponentList() {
     DemoSuperTable(),
     DemoTextRadioGroup(),
     DemoTinyMCE(),
+    DemoTinyMCEPreview(),
     DemoFileHolder(),
     DemoCountNumber(),
   ];

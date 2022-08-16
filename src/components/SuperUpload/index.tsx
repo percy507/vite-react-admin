@@ -116,13 +116,15 @@ export function SuperUpload(props: SuperUploadProps) {
 
   useEffect(() => {
     if (JSON.stringify(value) === JSON.stringify(prevValueRef.current)) return;
+    // FIX: 在上传A文件的过程中，同时上传B文件，结果最后只显示最先完成上传的文件
+    if (innerFileList.find((el) => el.status === 'uploading')) return;
     setInnerFileList(
       value.map((el, index) => ({
         ...{ uid: `${index}`, status: 'done', name: el[VALUE_NAME], url: el[VALUE_URL] },
       })),
     );
     prevValueRef.current = value;
-  }, [value]);
+  }, [value, innerFileList]);
 
   const initCropper = useCallback(() => {
     if (imageRef.current === null) return;
