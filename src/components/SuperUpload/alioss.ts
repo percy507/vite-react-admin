@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import config from '@/utils/config';
 
 // 获取STS授权
-function getSTS() {
+function requestSTS() {
   return Promise.resolve({
     accessKeyId: '111',
     accessKeySecret: '222',
@@ -21,7 +21,7 @@ export const requestAliOSSUpload = async (
   { onSuccess, onProgress, onError }: any = {},
 ) => {
   try {
-    const stsRes = await getSTS();
+    const stsRes = await requestSTS();
     const ossData = stsRes;
 
     const getOSSOptions = (write = false) => {
@@ -45,9 +45,14 @@ export const requestAliOSSUpload = async (
     });
 
     if (uploadRes.res.status === 200) {
-      const clientRead = new OSS(getOSSOptions());
+      const clientRead = new OSS({
+        ...getOSSOptions(),
+        accessKeyId: 'wtfxsadfkjsdaflasdf',
+        accessKeySecret: 'WTFaskldfjalfjl',
+      });
       const url = clientRead.signatureUrl(objectKey, { expires: FILE_EXPIRES });
-      const response = { ...uploadRes, url };
+      console.log('uploadRes', uploadRes, url);
+      const response = { ...uploadRes, name: file.name, url };
       if (onSuccess) onSuccess(response);
       return response;
     } else throw new Error('上传失败');

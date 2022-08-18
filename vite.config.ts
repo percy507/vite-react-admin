@@ -1,9 +1,20 @@
 import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react';
 import autoprefixer from 'autoprefixer';
+import fs from 'fs';
 import path from 'path';
 import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
+
+// 打包时，生成一些基础的构建信息到 build.json
+if (process.env.VITE_BUILD_MODE != null) {
+  fs.writeFileSync(
+    path.join(__dirname, './public/build.json'),
+    JSON.stringify({
+      version: `${Date.now()}`,
+    }),
+  );
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({

@@ -102,7 +102,7 @@ export function SuperUpload(props: SuperUploadProps) {
         file.url = val[VALUE_URL];
       }
     });
-    if (value.length > 0 || list.length > 0) onChange(list);
+    if (value?.length > 0 || list.length > 0) onChange(list);
 
     setInnerFileList(
       fileList.map((el) => {

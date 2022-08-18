@@ -8,3 +8,5 @@ logs
 node_modules
 dist
 dist-ssr
+
+public/build.json

@@ -1,8 +1,9 @@
-import { lazy, useEffect } from 'react';
+import { Modal } from 'antd';
+import { lazy, useCallback, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { lr, navigateTo } from '@/components/RouteUtils';
-import { getAuthToken } from '@/utils/storage';
+import { lr, navigateTo, RouteListener } from '@/components/RouteUtils';
+import { getAuthToken, ls } from '@/utils/storage';
 
 import { routeList } from './config';
 
@@ -16,17 +17,45 @@ export default function AppLayout() {
     reportFrontendErr();
   }, []);
 
+  // 用于部署代码后，如果用户未刷新页面，那么在用户切换路由时，js等资源会404找不到
+  // 所以需要弹窗引导用户刷新页面
+  const onRouteChange = useCallback(() => {
+    fetch(`/build.json?t=${Date.now()}`)
+      .then((res) => res.json())
+      .then((res) => {
+        try {
+          let data = res || {},
+            lastVersion = ls.get('build_version');
+          if (lastVersion == null) return ls.set('build_version', data.version);
+          if (data.version === lastVersion) return;
+          ls.set('build_version', data.version);
+          Modal.confirm({
+            title: '系统已升级，请刷新页面后继续访问！',
+            okText: '刷新页面',
+            onOk: () => location.reload(),
+            cancelButtonProps: { style: { display: 'none' } },
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      });
+  }, []);
+
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={isLogin ? lr(lazy(() => import('./layout'))) : navigateTo('/login')}>
-        {routeList.map((el, index) => {
-          // @ts-ignore
-          return <Route key={index} {...el} />;
-        })}
-      </Route>
-      <Route path="/login" element={lr(lazy(() => import('@/pages/login')))} />
-    </Routes>
+    <>
+      <RouteListener onChange={onRouteChange} />
+
+      <Routes>
+        <Route
+          path="/"
+          element={isLogin ? lr(lazy(() => import('./layout'))) : navigateTo('/login')}>
+          {routeList.map((el, index) => {
+            // @ts-ignore
+            return <Route key={index} {...el} />;
+          })}
+        </Route>
+        <Route path="/login" element={lr(lazy(() => import('@/pages/login')))} />
+      </Routes>
+    </>
   );
 }

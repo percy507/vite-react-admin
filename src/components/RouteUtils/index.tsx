@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
-import { Suspense } from 'react';
+import { Suspense, useLayoutEffect } from 'react';
 import type { RouteObject } from 'react-router-dom';
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useLocation, useRoutes } from 'react-router-dom';
 
 import { Authorized } from '@/components/Authorized';
 import { Page403 } from '@/pages/exception';
@@ -12,6 +12,15 @@ import { Page403 } from '@/pages/exception';
  */
 export function RouteTree({ data }: { data: RouteObject[] }) {
   return useRoutes(data);
+}
+
+/** 空组件，用来监听路由变动并执行相关逻辑 */
+export function RouteListener({ onChange }: { onChange?: () => void } = {}) {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    if (onChange) onChange();
+  }, [location, onChange]);
+  return <></>;
 }
 
 interface LazyRouteProps {
