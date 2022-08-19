@@ -6,10 +6,10 @@
   "scripts": {
     "prepare": "husky install .husky",
     "preinstall": "npx only-allow pnpm",
-    "dev": "vite",
-    "build:dev": "tsc && cross-env VITE_BUILD_MODE=dev vite build",
-    "build:test": "tsc && cross-env VITE_BUILD_MODE=test vite build",
-    "build:prod": "tsc && cross-env VITE_BUILD_MODE=prod vite build",
+    "dev": "cross-env VITE_MODE=local vite",
+    "build:dev": "tsc && cross-env VITE_MODE=dev vite build",
+    "build:test": "tsc && cross-env VITE_MODE=test vite build",
+    "build:prod": "tsc && cross-env VITE_MODE=prod vite build",
     "preview": "pnpm build:prod && vite preview",
     "lint": "pnpm lint:jsFix && pnpm lint:styleFix && pnpm lint:format",
     "lint:jsFix": "eslint --ext .jsx,.js,.ts,.tsx --fix ./src",
@@ -31,6 +31,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@juggle/resize-observer": "^3.3.1",
+    "@percy507/lokijs": "^1.6.1",
     "@stitches/react": "^1.2.8",
     "ali-oss": "^6.17.1",
     "antd": "^4.21.5",

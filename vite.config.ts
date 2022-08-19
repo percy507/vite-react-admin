@@ -7,7 +7,7 @@ import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
 
 // 打包时，生成一些基础的构建信息到 build.json
-if (process.env.VITE_BUILD_MODE != null) {
+if (process.env.VITE_MODE !== 'local') {
   fs.writeFileSync(
     path.join(__dirname, './public/build.json'),
     JSON.stringify({
@@ -23,7 +23,7 @@ export default defineConfig({
     port: 4014,
   },
   define: {
-    VITE_BUILD_MODE: `"${process.env.VITE_BUILD_MODE || 'dev'}"`,
+    VITE_MODE: `"${process.env.VITE_MODE}"`,
   },
   plugins: [
     legacy({

@@ -20,6 +20,7 @@ export default function AppLayout() {
   // 用于部署代码后，如果用户未刷新页面，那么在用户切换路由时，js等资源会404找不到
   // 所以需要弹窗引导用户刷新页面
   const onRouteChange = useCallback(() => {
+    if (VITE_MODE === 'local') return;
     fetch(`/build.json?t=${Date.now()}`)
       .then((res) => res.json())
       .then((res) => {
@@ -44,7 +45,6 @@ export default function AppLayout() {
   return (
     <>
       <RouteListener onChange={onRouteChange} />
-
       <Routes>
         <Route
           path="/"

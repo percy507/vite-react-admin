@@ -23,7 +23,7 @@ interface DetailModal {
   data: any;
 }
 
-export default function LandHome() {
+export default function TryMaptalks() {
   const [map, setMap] = useState<maptalks.Map>();
   const [detailModal, setDetailModal] = useState<DetailModal>({
     visible: false,

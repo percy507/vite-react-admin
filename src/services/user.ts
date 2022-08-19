@@ -29,7 +29,11 @@ export function requestUserInfo() {
 
 export function requestSendSMS(params) {
   console.log('requestSendSMS', params);
-  return Promise.resolve();
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 1500);
+  });
 }
 
 export function requestLogout() {

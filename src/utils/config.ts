@@ -1,4 +1,8 @@
 export default {
+  local: {
+    BASE_API: 'http://127.0.0.1:3000/v1',
+    alioss_bucket: 'xxx-dev-env',
+  },
   dev: {
     BASE_API: 'http://127.0.0.1:3000/v1',
     alioss_bucket: 'xxx-dev-env',
@@ -11,4 +15,4 @@ export default {
     BASE_API: 'http://127.0.0.1:3000/v1',
     alioss_bucket: 'xxx-prod-env',
   },
-}[VITE_BUILD_MODE];
+}[VITE_MODE];

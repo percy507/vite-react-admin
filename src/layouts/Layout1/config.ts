@@ -15,10 +15,7 @@ export const menuList: MenuModel[] = [
     label: 'Demo合集',
     icon: 'icon-building-4-fill',
     children: [
-      {
-        label: '基础列表页',
-        link: '/l1/demos/page1',
-      },
+      { label: '基础列表页', link: '/l1/demos/page1' },
       // {
       //   label: '弹窗列表页',
       //   link: '/l1/demos/page',
@@ -29,32 +26,18 @@ export const menuList: MenuModel[] = [
     label: '技术调研集合',
     icon: 'icon-truck-fill',
     children: [
-      {
-        label: '状态管理(组件通信)',
-        link: '/l1/research/state',
-      },
-      {
-        label: '试用 maptalks',
-        link: '/l1/research/maptalks',
-      },
-      {
-        label: '测试 useRequest',
-        link: '/l1/research/request',
-      },
+      { label: '状态管理(组件通信)', link: '/l1/research/state' },
+      { label: '试用 maptalks', link: '/l1/research/maptalks' },
+      { label: '测试 useRequest', link: '/l1/research/request' },
+      { label: '试用 lokijs', link: '/l1/research/lokijs' },
     ],
   },
   {
     label: '系统管理',
     icon: 'icon-settings-5-fill',
     children: [
-      {
-        label: '用户管理',
-        link: '/l1/system/user',
-      },
-      {
-        label: '角色管理',
-        link: '/l1/system/role',
-      },
+      { label: '用户管理', link: '/l1/system/user' },
+      { label: '角色管理', link: '/l1/system/role' },
     ],
   },
 ];
@@ -108,6 +91,10 @@ export const routeList: RouteObject[] = [
       {
         path: 'request',
         element: lr(lazy(() => import('@/pages/layout1Pages/research/request'))),
+      },
+      {
+        path: 'lokijs',
+        element: lr(lazy(() => import('@/pages/layout1Pages/research/lokijs'))),
       },
     ],
   },

@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { styled } from '@stitches/react';
 import { useMemo, useRef, useState } from 'react';
 
@@ -28,23 +29,33 @@ export function CountNumber(props: CountNumberProps) {
     onEndCount,
   } = props;
 
+  const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(-1);
   const ref = useRef(count);
   ref.current = count;
 
   const handleClick = async () => {
     if (from === to) throw new Error('`from` should not equal `to`');
-    if (shouldStart && !(await shouldStart())) return;
-    if (onStartCount) onStartCount();
-    let isIncrease = to > from;
-    setCount(from);
-    let timer = setInterval(() => {
-      if (ref.current === (isIncrease ? to - 1 : to + 1)) {
-        clearInterval(timer);
-        setCount(-1);
-        if (onEndCount) onEndCount();
-      } else setCount((v) => (isIncrease ? v + 1 : v - 1));
-    }, 1000);
+
+    const fn = () => {
+      if (onStartCount) onStartCount();
+      let isIncrease = to > from;
+      setCount(from);
+      let timer = setInterval(() => {
+        if (ref.current === (isIncrease ? to - 1 : to + 1)) {
+          clearInterval(timer);
+          setCount(-1);
+          if (onEndCount) onEndCount();
+        } else setCount((v) => (isIncrease ? v + 1 : v - 1));
+      }, 1000);
+    };
+
+    if (shouldStart) {
+      setLoading(true);
+      shouldStart()
+        .then((allow) => allow && fn())
+        .finally(() => setLoading(false));
+    } else fn();
   };
 
   const InnerCountNumber = useMemo(() => {
@@ -71,7 +82,7 @@ export function CountNumber(props: CountNumberProps) {
       className={className}
       onClick={() => handleClick()}
       style={{ ...style, ...(count === -1 ? {} : disableStyle) }}>
-      {count === -1 ? title : `${count} 秒`}
+      {loading ? <LoadingOutlined /> : count === -1 ? title : `${count} 秒`}
     </InnerCountNumber>
   );
 }

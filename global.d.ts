@@ -11,5 +11,5 @@ declare module '*.less';
 
 interface Window {}
 
-/** vite 打包环境变量 */
-declare const VITE_BUILD_MODE: 'dev' | 'test' | 'prod';
+/** vite 环境变量 */
+declare const VITE_MODE: 'local' | 'dev' | 'test' | 'prod';
