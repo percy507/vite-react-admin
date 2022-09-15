@@ -13,10 +13,18 @@ interface PreviewImageProps {
   thumbHeight?: React.CSSProperties['height'];
   hideHint?: boolean;
   style?: React.CSSProperties;
+  children?: React.ReactElement;
 }
 
 export function PreviewImage(props: PreviewImageProps) {
-  const { imgs, thumbWidth = 100, thumbHeight, hideHint = false, style } = props;
+  const {
+    imgs,
+    thumbWidth = 100,
+    thumbHeight,
+    hideHint = false,
+    style,
+    children,
+  } = props;
   const [visible, setVisible] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -24,9 +32,13 @@ export function PreviewImage(props: PreviewImageProps) {
     <div className={styles.previewImage} style={style}>
       {typeof imgs === 'string' ? (
         <PhotoProvider>
-          <PhotoView src={imgs.replace('-thumbnail.', '.')}>
-            {/* eslint-disable-next-line */}
-            <img src={imgs} width={thumbWidth} height={thumbHeight} alt="" />
+          <PhotoView src={imgs}>
+            {children ? (
+              children
+            ) : (
+              // eslint-disable-next-line
+              <img src={imgs} width={thumbWidth} height={thumbHeight} alt="" />
+            )}
           </PhotoView>
         </PhotoProvider>
       ) : (
@@ -42,7 +54,7 @@ export function PreviewImage(props: PreviewImageProps) {
           </div>
           <PhotoSlider
             images={imgs.map((item) => ({
-              src: item.replace('-thumbnail.', '.'),
+              src: item,
               key: item,
             }))}
             visible={visible}

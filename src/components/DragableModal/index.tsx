@@ -1,12 +1,10 @@
 import type { ModalProps } from 'antd';
 import { Modal } from 'antd';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { DraggableBounds, DraggableData, DraggableEvent } from 'react-draggable';
 import Draggable from 'react-draggable';
 
-type DragableModalProps = {
-  children: React.ReactNode;
-} & ModalProps;
+interface DragableModalProps extends ModalProps {}
 
 export function DragableModal(props: DragableModalProps) {
   const { children, ...restProps } = props;

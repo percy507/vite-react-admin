@@ -8,9 +8,17 @@ export const DemoCountNumber = () => ({
 
 function Demo() {
   return (
-    <div>
-      <CountNumber title="标题(倒着数)" from={20} to={0} style={{ marginRight: 50 }} />
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <CountNumber title="标题(倒着数)" from={20} to={0} />
       <CountNumber title="标题(正着数)" from={0} to={20} style={{ color: 'red' }} />
+      <CountNumber
+        title="测试禁用"
+        from={0}
+        to={20}
+        disabled
+        disabledText="🚫"
+        style={{ border: '1px solid red', padding: '4px 10px' }}
+      />
     </div>
   );
 }

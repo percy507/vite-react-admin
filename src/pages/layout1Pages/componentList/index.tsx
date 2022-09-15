@@ -21,6 +21,7 @@ import { DemoSuperUpload } from '@/components/SuperUpload/demo';
 import { DemoTextRadioGroup } from '@/components/TextRadioGroup/demo';
 import { DemoTinyMCE } from '@/components/TinyMCE/demo';
 import { DemoTinyMCEPreview } from '@/components/TinyMCEPreview/demo';
+import { DemoZoomContainer } from '@/components/ZoomContainer/demo';
 
 import styles from './style.module.less';
 
@@ -53,6 +54,7 @@ export default function ComponentList() {
     DemoTinyMCEPreview(),
     DemoFileHolder(),
     DemoCountNumber(),
+    DemoZoomContainer(),
   ];
 
   return (

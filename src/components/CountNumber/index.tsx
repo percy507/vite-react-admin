@@ -14,6 +14,8 @@ interface CountNumberProps {
   shouldStart?: () => Promise<boolean>;
   onStartCount?: () => void;
   onEndCount?: () => void;
+  disabled?: boolean;
+  disabledText?: string;
 }
 
 /** 倒计时组件(支持倒着数，也可以正着数) */
@@ -27,6 +29,8 @@ export function CountNumber(props: CountNumberProps) {
     shouldStart,
     onStartCount,
     onEndCount,
+    disabled,
+    disabledText,
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -81,8 +85,16 @@ export function CountNumber(props: CountNumberProps) {
     <InnerCountNumber
       className={className}
       onClick={() => handleClick()}
-      style={{ ...style, ...(count === -1 ? {} : disableStyle) }}>
-      {loading ? <LoadingOutlined /> : count === -1 ? title : `${count} 秒`}
+      style={{ ...style, ...(disabled || count === -1 ? {} : disableStyle) }}>
+      {disabled ? (
+        disabledText
+      ) : loading ? (
+        <LoadingOutlined />
+      ) : count === -1 ? (
+        title
+      ) : (
+        `${count} 秒`
+      )}
     </InnerCountNumber>
   );
 }
