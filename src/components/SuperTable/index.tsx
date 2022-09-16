@@ -11,6 +11,7 @@ import {
 
 import type { SearchFormProps } from '@/components/SearchForm';
 import { SearchForm } from '@/components/SearchForm';
+import { useIsFirstRender } from '@/hooks';
 
 import styles from './style.module.less';
 
@@ -66,7 +67,7 @@ interface SuperTableProps {
     })[];
   };
   /** 用于 Table 组件的 props */
-  tableProps: TableProps<any>;
+  tableProps: TableProps<any> | ((params: ParamsType) => TableProps<any>);
   /** 是否禁止在最外层包裹一个 Card 组件，默认不禁止 */
   noCard?: boolean;
   /** 请求列表数据的api服务 */
@@ -129,7 +130,20 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       }),
       [request, params],
     );
-    useEffect(() => request(), [request]);
+
+    const isFirstRender = useIsFirstRender();
+    useEffect(() => {
+      if (isFirstRender) {
+        let searchParams = formRef.current?.form.getFieldsValue() || {};
+        if (JSON.stringify(searchParams) !== '{}') {
+          return setParams((val) => ({ ...searchParams, ...val }));
+        }
+      }
+      request();
+    }, [request, isFirstRender]);
+
+    const __tableProps =
+      typeof tableProps === 'function' ? tableProps(params) : tableProps;
 
     const content = (
       <div className={styles.superTable}>
@@ -139,7 +153,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
             ref={formRef}
             onSearch={(values) => {
               const obj = { [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] };
-              if (!values) setParams({ ...obj });
+              if (JSON.stringify(values) === '{}') setParams({ ...obj });
               else setParams({ ...values, ...obj });
             }}
           />
@@ -162,8 +176,8 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
           </Tabs>
         ) : null}
         <Table
-          {...tableProps}
-          columns={(tableProps.columns || []).map((el) => {
+          {...__tableProps}
+          columns={(__tableProps.columns || []).map((el) => {
             if (!el.render) el.render = (v) => v ?? '-';
             if (el.ellipsis === undefined) el.ellipsis = true;
             return el;

@@ -17,6 +17,8 @@ export interface SearchFormProps {
         converter?: (value: NonNullable<any>) => Record<string, any>;
         /** 用于展示的字段名称 */
         label: string;
+        /** 初始默认值 */
+        initialValue?: any;
         children: JSX.Element;
       }
     | undefined
@@ -36,6 +38,19 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
 
     useImperativeHandle(ref, () => ({ form }), [form]);
 
+    const convertValues = (values: any) => {
+      let params = { ...values };
+      items.forEach((el) => {
+        if (el && el.converter && params[el.name] != null) {
+          let realParams = el.converter(params[el.name]);
+          params = { ...params, ...realParams };
+          if (Object.prototype.hasOwnProperty.call(realParams, el.name)) return;
+          else delete params[el.name];
+        }
+      });
+      return params;
+    };
+
     return (
       <div className={styles.root}>
         <Form
@@ -45,16 +60,7 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           onFinish={(values) => {
-            let params = { ...values };
-            items.forEach((el) => {
-              if (el && el.converter && params[el.name] != null) {
-                let realParams = el.converter(params[el.name]);
-                params = { ...params, ...realParams };
-                if (Object.prototype.hasOwnProperty.call(realParams, el.name)) return;
-                else delete params[el.name];
-              }
-            });
-            if (onSearch) onSearch(params);
+            if (onSearch) onSearch(convertValues(values));
           }}>
           <Row style={{ width: '100%' }}>
             {items.map((el, index) => (
@@ -62,7 +68,10 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
                 {!el ? (
                   '\u0020'
                 ) : (
-                  <Form.Item name={el.name} label={el.label}>
+                  <Form.Item
+                    name={el.name}
+                    label={el.label}
+                    initialValue={el.initialValue}>
                     {el.children}
                   </Form.Item>
                 )}
@@ -78,7 +87,7 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
                     htmlType="button"
                     onClick={() => {
                       form.resetFields();
-                      if (onSearch) onSearch();
+                      if (onSearch) onSearch(convertValues(form.getFieldsValue()));
                     }}>
                     重置
                   </Button>
