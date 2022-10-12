@@ -16,6 +16,7 @@ import { PageWrapper } from '@/components/PageWrapper';
 import { DemoPageWrapper } from '@/components/PageWrapper/demo';
 import { DemoPreviewImage } from '@/components/PreviewImage/demo';
 import { DemoSearchForm } from '@/components/SearchForm/demo';
+import { DemoStrengthPassword } from '@/components/StrengthPassword/demo';
 import { DemoSuperTable } from '@/components/SuperTable/demo';
 import { DemoSuperUpload } from '@/components/SuperUpload/demo';
 import { DemoTextRadioGroup } from '@/components/TextRadioGroup/demo';
@@ -47,6 +48,7 @@ export default function ComponentList() {
     DemoFormItemList(),
     DemoNumberRange(),
     DemoSuperUpload(),
+    DemoStrengthPassword(),
     DemoSearchForm(),
     DemoSuperTable(),
     DemoTextRadioGroup(),
