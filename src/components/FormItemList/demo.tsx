@@ -63,12 +63,20 @@ function Demo() {
             name="address"
             required
             columnNum={2}
-            addButton={{ text: '新增地址', width: 300 }}
+            addButton={{ text: '新增地址', width: '100%' }}
+            itemProps={{
+              getExtra: (index) => <strong>extra: {index}</strong>,
+            }}
             formItems={[
               {
                 rules: [{ required: true, whitespace: true, message: '请输入' }],
-                children: (
-                  <Input maxLength={50} style={{ width: 300 }} placeholder="请输入" />
+                getChildren: (index) => (
+                  <Input
+                    addonBefore={`item${index}`}
+                    maxLength={50}
+                    style={{ width: '100%' }}
+                    placeholder="请输入"
+                  />
                 ),
               },
             ]}

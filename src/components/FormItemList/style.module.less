@@ -2,6 +2,15 @@
   margin-bottom: 0;
 
   .formItem {
+    display: flex;
+    align-items: center;
+
+    & > div:first-child {
+      display: flex;
+      justify-content: space-between;
+      width: calc(100% - 30px);
+    }
+
     :global {
       .ant-form-item-explain > .ant-form-item-explain-error {
         display: none;

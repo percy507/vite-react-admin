@@ -14,6 +14,9 @@ import AppLayout from '@/layouts/AppLayout';
 
 moment.locale('zh-cn');
 
+// rewrite the transition data
+zhCN.DatePicker!.lang.rangePlaceholder = ['开始时间', '结束时间'];
+
 createRoot(document.getElementById('root') as HTMLElement).render(
   <ConfigProvider locale={zhCN}>
     <ErrorBoundary>

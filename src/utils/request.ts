@@ -139,7 +139,7 @@ class Request {
     const formData = new FormData();
     if (data) {
       Object.keys(data).forEach((key) => {
-        formData.append(key, data[key]);
+        if (data[key] != null) formData.append(key, data[key]);
       });
     }
     return this.fetch(url, { method: 'POST', body: formData });

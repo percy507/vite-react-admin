@@ -1,3 +1,5 @@
+import type { FormInstance } from 'antd';
+
 /** 用千位分隔符格式化数字，不会格式化小数位，且仅支持三位小数 */
 export function formatNumber(
   val: number | string,
@@ -12,4 +14,16 @@ export function formatNumber(
   return decimal === 0
     ? str.replace(/\.\d*$/, '')
     : str.replace(/\.\d*$/, (v) => v.slice(0, decimal + 1));
+}
+
+/** 基于 onInput 事件, 去掉 Input 组件值两边的空格 */
+export function trimInputValue(
+  form: FormInstance,
+  name: string,
+  e: React.FormEvent | string,
+) {
+  // @ts-ignore
+  let val = typeof e === 'string' ? e : e.target?.value;
+  console.log(val);
+  setTimeout(() => form.setFieldsValue({ [name]: val.trim() }));
 }
