@@ -1,5 +1,6 @@
 import type { FormInstance } from 'antd';
 import { Button, Col, Divider, Form, Row, Space } from 'antd';
+import moment from 'moment';
 import { forwardRef, useImperativeHandle } from 'react';
 
 import styles from './style.module.less';
@@ -42,6 +43,16 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
       let params = { ...values };
       items.forEach((el) => {
         if (el && el.converter && params[el.name] != null) {
+          // 如果是日期范围类型的表单，开始时间取选中日期的00:00:00，结束时间取选中日期的23:59:59
+          if (
+            Array.isArray(params[el.name]) &&
+            params[el.name].length === 2 &&
+            params[el.name].every((el) => moment.isMoment(el))
+          ) {
+            params[el.name][0] = params[el.name][0].startOf('day');
+            params[el.name][1] = params[el.name][1].endOf('day');
+          }
+
           let realParams = el.converter(params[el.name]);
           params = { ...params, ...realParams };
           if (Object.prototype.hasOwnProperty.call(realParams, el.name)) return;

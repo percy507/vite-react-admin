@@ -8,6 +8,8 @@ import styles from './style.module.less';
 
 interface PreviewImageProps {
   imgs: string | string[];
+  /** 是否默认显示最后一个图片 */
+  showLast?: boolean;
   /** @default 100 */
   thumbWidth?: React.CSSProperties['width'];
   thumbHeight?: React.CSSProperties['height'];
@@ -19,6 +21,7 @@ interface PreviewImageProps {
 export function PreviewImage(props: PreviewImageProps) {
   const {
     imgs,
+    showLast = false,
     thumbWidth = 100,
     thumbHeight,
     hideHint = false,
@@ -49,7 +52,7 @@ export function PreviewImage(props: PreviewImageProps) {
             style={{ width: thumbWidth, height: thumbHeight }}
             onClick={() => setVisible(true)}>
             {/* eslint-disable-next-line */}
-            <img src={imgs[0]} alt="" />
+            <img src={imgs[showLast ? imgs.length - 1 : 0]} alt="" />
             {hideHint ? null : <div className={styles.hint}>{imgs.length}</div>}
           </div>
           <PhotoSlider
@@ -57,6 +60,7 @@ export function PreviewImage(props: PreviewImageProps) {
               src: item,
               key: item,
             }))}
+            loop
             visible={visible}
             onClose={() => setVisible(false)}
             index={index}

@@ -47,6 +47,7 @@ export interface SuperUploadProps extends Omit<UploadProps, 'value' | 'onChange'
    * - number, 宽度/高度的结果，eg: 1.515
    */
   imageRatio?: number | string;
+  extra?: React.ReactNode;
 }
 
 /**
@@ -72,6 +73,7 @@ export function SuperUpload(props: SuperUploadProps) {
     accept,
     className,
     disabled,
+    extra,
     ...restProps
   } = props;
 
@@ -233,6 +235,7 @@ export function SuperUpload(props: SuperUploadProps) {
       })}>
       <Upload {...uploadProps}>{children}</Upload>
       <UploadTips />
+      {extra != null && extra}
 
       {allowCrop ? (
         <Modal
