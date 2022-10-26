@@ -8,3 +8,10 @@ export function useIsFirstRender(): boolean {
   }
   return false;
 }
+
+export function useIsFirstRenderRef() {
+  const isFirst = useIsFirstRender();
+  const ref = useRef(isFirst);
+  ref.current = isFirst;
+  return ref;
+}

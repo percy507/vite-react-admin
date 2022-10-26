@@ -11,7 +11,7 @@ import {
 
 import type { SearchFormProps } from '@/components/SearchForm';
 import { SearchForm } from '@/components/SearchForm';
-import { useIsFirstRender } from '@/hooks';
+import { useIsFirstRenderRef } from '@/hooks';
 
 import styles from './style.module.less';
 
@@ -131,16 +131,16 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       [request, params],
     );
 
-    const isFirstRender = useIsFirstRender();
+    const isFirstRenderRef = useIsFirstRenderRef();
     useEffect(() => {
-      if (isFirstRender) {
+      if (isFirstRenderRef.current) {
         let searchParams = formRef.current?.form.getFieldsValue() || {};
         if (JSON.stringify(searchParams) !== '{}') {
           return setParams((val) => ({ ...searchParams, ...val }));
         }
       }
       request();
-    }, [request, isFirstRender]);
+    }, [request, isFirstRenderRef]);
 
     const __tableProps =
       typeof tableProps === 'function' ? tableProps(params) : tableProps;
