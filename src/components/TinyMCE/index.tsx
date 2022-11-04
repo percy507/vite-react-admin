@@ -1,14 +1,11 @@
 import { clsx } from 'clsx';
-import { customAlphabet } from 'nanoid';
 import { useCallback, useEffect, useState } from 'react';
 
 import { requestUpload } from '@/services/common';
+import { alphaUUID } from '@/utils';
 
 import type { Editor, TinyMCE as TinyMCEType } from '../../../public/tinymce/tinymce';
 import styles from './style.module.less';
-
-const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
-const nanoid = customAlphabet(alphabet, 8);
 
 declare global {
   interface Window {
@@ -27,7 +24,7 @@ interface TinyMCEProps {
 
 export function TinyMCE(props: TinyMCEProps) {
   const { className, style, value, onChange, readOnly, onInput } = props;
-  const [id] = useState(nanoid());
+  const [id] = useState(alphaUUID());
   const [editor, setEditor] = useState<Editor | undefined>();
 
   const containerRef = useCallback(() => {

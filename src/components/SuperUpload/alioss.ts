@@ -18,6 +18,8 @@ const FILE_EXPIRES = 50 * 365 * 24 * 3600;
 
 export const requestAliOSSUpload = async (
   file: File,
+  // @ts-ignore
+  // eslint-disable-next-line
   { onSuccess, onProgress, onError }: any = {},
 ) => {
   try {
@@ -38,10 +40,14 @@ export const requestAliOSSUpload = async (
 
     const clientWrite = new OSS(getOSSOptions(true));
     const objectKey = file.name.replace(/(\.[^.]+)$/, `${Date.now()}$1`);
-    const uploadRes = await clientWrite.multipartUpload(objectKey, file, {
-      progress: (p) => {
-        if (onProgress) onProgress({ percent: p * 100 });
-      },
+    // client.append 使用追加上传，因为追加上传使用的post请求，符合等保要求。但是需要保证objectKey唯一，否则上传会报错
+    // client.put 简单上传的默认请求是put请求，虽然可以设置为post，但是会报跨域错误，不知如何解决
+    // client.multipartUpload 分片上传只支持put请求
+    const uploadRes = await clientWrite.append(objectKey, file, {
+      // 只有分片上传支持
+      // progress: (p) => {
+      //   if (onProgress) onProgress({ percent: p * 100 });
+      // },
     });
 
     if (uploadRes.res.status === 200) {

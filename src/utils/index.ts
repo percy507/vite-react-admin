@@ -1,4 +1,12 @@
 import { createNanoEvents } from 'nanoevents';
+import { customAlphabet } from 'nanoid';
+
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(alphabet, 8);
+
+export function alphaUUID(size?: number) {
+  return nanoid(size);
+}
 
 export const eventbus = createNanoEvents();
 
