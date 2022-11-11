@@ -1,0 +1,75 @@
+.TanStackComponents {
+}
+
+.table {
+  .container {
+    max-width: 900px !important;
+    height: 500px;
+    overflow: auto;
+    border: 1px solid lightgray;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  thead {
+    position: sticky;
+    top: 0;
+    margin: 0;
+    background: #f7f7f7;
+  }
+
+  th {
+    position: relative;
+    padding: 2px 4px;
+    text-align: left;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+  }
+
+  td {
+    padding: 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+
+  .canSort {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .resizer.isResizing {
+    background: blue;
+    opacity: 1;
+  }
+
+  @media (hover: hover) {
+    .resizer {
+      opacity: 0;
+    }
+
+    *:hover > .resizer {
+      opacity: 1;
+    }
+  }
+}

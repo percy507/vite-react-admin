@@ -31,6 +31,7 @@ export const menuList: MenuModel[] = [
       { label: '试用 maptalks', link: '/l1/research/maptalks' },
       { label: '测试 useRequest', link: '/l1/research/request' },
       { label: '试用 lokijs', link: '/l1/research/lokijs' },
+      { label: '试用 tanstack 组件集', link: '/l1/research/tanstack' },
     ],
   },
   {
@@ -100,6 +101,10 @@ export const routeList: RouteObject[] = [
       {
         path: 'lokijs',
         element: lr(lazy(() => import('@/pages/layout1Pages/research/lokijs'))),
+      },
+      {
+        path: 'tanstack',
+        element: lr(lazy(() => import('@/pages/layout1Pages/research/tanstack'))),
       },
     ],
   },
