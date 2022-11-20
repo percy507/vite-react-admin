@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { DemoAnimateHeight } from '@/components/AnimateHeight/demo';
 import { DemoAsyncButton } from '@/components/AsyncButton/demo';
 import { DemoAuthorized } from '@/components/Authorized/demo';
+import { DemoAutosizeInput } from '@/components/AutosizeInput/demo';
 import { DemoCountNumber } from '@/components/CountNumber/demo';
 import { DemoDragableModal } from '@/components/DragableModal/demo';
 import { DemoEnumManager } from '@/components/EnumManager/demo';
@@ -39,6 +40,7 @@ export default function ComponentList() {
     DemoAuthorized(),
     DemoAnimateHeight(),
     DemoAsyncButton(),
+    DemoAutosizeInput(),
     DemoDragableModal(),
     DemoErrorBoundary(),
     DemoException(),
