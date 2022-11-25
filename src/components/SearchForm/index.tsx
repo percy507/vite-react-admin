@@ -5,6 +5,11 @@ import { forwardRef, useImperativeHandle } from 'react';
 
 import styles from './style.module.less';
 
+export const deconverterDateRange = (start?: string, end?: string) => {
+  if (!start || !end) return;
+  return [moment(start), moment(end)];
+};
+
 export interface SearchFormProps {
   /**
    * 定义筛选条件的表单列表，默认一行展示三项。如果想要某一项只占空间但不展示，
@@ -16,6 +21,8 @@ export interface SearchFormProps {
         name: string;
         /** 用于转换表单值为接口字段 */
         converter?: (value: NonNullable<any>) => Record<string, any>;
+        /** 用于转换接口字段为表单值 */
+        deconverter?: (value: Record<string, any>) => NonNullable<any>;
         /** 用于展示的字段名称 */
         label: string;
         /** 初始默认值 */
@@ -24,6 +31,8 @@ export interface SearchFormProps {
       }
     | undefined
   )[];
+  /** 定义查询按钮前的额外按钮的内容 */
+  extraButton?: React.ReactNode;
   /** 定义 SearchForm 组件下方的内容（一般为操作按钮） */
   actionBar?: JSX.Element;
   /** 点击查询按钮的回调函数 */
@@ -34,7 +43,7 @@ export interface SearchFormProps {
 
 export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
   function InnerSearchForm(props, ref) {
-    const { onSearch, items, actionBar, buttonFloatRight = false } = props;
+    const { onSearch, items, extraButton, actionBar, buttonFloatRight = false } = props;
     const [form] = Form.useForm();
 
     useImperativeHandle(ref, () => ({ form }), [form]);
@@ -91,6 +100,7 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
             <Col span={8} style={{ marginBottom: 16 }}>
               <Form.Item wrapperCol={{ offset: 8 }}>
                 <Space style={buttonFloatRight ? { float: 'right' } : undefined}>
+                  {extraButton}
                   <Button type="primary" htmlType="submit">
                     查询
                   </Button>

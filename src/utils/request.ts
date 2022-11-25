@@ -4,6 +4,12 @@ import * as qs from 'qss';
 import config from './config';
 import { getAuthToken } from './storage';
 
+declare global {
+  interface Blob {
+    fileName?: string;
+  }
+}
+
 export function redirectToLogin() {
   localStorage.clear();
   window.location.href = `/login?${qs.encode({
@@ -70,13 +76,17 @@ class Request {
     return Promise.reject(JSON.stringify({ message, url }));
   };
 
-  parseResponseResult = (response: Response) => {
+  parseResponseResult = async (response: Response) => {
     const contentType = response.headers.get('Content-Type');
 
     if (contentType && contentType.indexOf('json') > -1) {
       return response.json();
     } else if (contentType && contentType.indexOf('octet-stream') > -1) {
-      return response.blob();
+      const blob = await response.blob();
+      // 需要后端配合设置自定义响应头 X-Filename, 并设置 Access-Control-Expose-Headers:  X-Filename
+      const fileName = response.headers.get('X-Filename');
+      blob.fileName = fileName ? decodeURI(fileName) : undefined;
+      return blob;
     } else if (contentType && contentType.indexOf('image') > -1) {
       return response.blob();
     }

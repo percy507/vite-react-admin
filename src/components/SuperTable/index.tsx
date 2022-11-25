@@ -1,5 +1,6 @@
 import type { TableProps, TabPaneProps, TabsProps } from 'antd';
 import { Card, Table, Tabs } from 'antd';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import {
   forwardRef,
   useCallback,
@@ -16,7 +17,18 @@ import { useIsFirstRenderRef } from '@/hooks';
 import styles from './style.module.less';
 
 export type { SearchFormProps } from '@/components/SearchForm';
+export { deconverterDateRange } from '@/components/SearchForm';
 export type { ColumnsType } from 'antd/es/table';
+
+/** 基于路由缓存列表页的筛选、分页状态 */
+export const atomListPageState = atom<Record<string, string | undefined>>({});
+
+export function useSaveListPageState() {
+  const set = useSetAtom(atomListPageState);
+  return (params: Record<string, any> = {}) => {
+    set((old) => ({ ...old, [location.pathname]: JSON.stringify(params) }));
+  };
+}
 
 const { TabPane } = Tabs;
 
@@ -31,6 +43,7 @@ interface DataType {
   [T_TOTAL]: number;
   [T_TOTALS]?: number[];
   [T_RECORDS]: any[];
+  [key: string]: any;
 }
 
 interface ParamsType {
@@ -48,9 +61,11 @@ interface SuperTableRefProps {
   params: ParamsType;
 }
 
-interface SuperTableProps {
+export interface SuperTableProps {
   /** 用于 SearchForm 组件的 props */
-  searchForm?: Omit<SearchFormProps, 'onSearch' | 'ref'>;
+  searchForm?:
+    | Omit<SearchFormProps, 'onSearch' | 'ref'>
+    | ((data: DataType) => Omit<SearchFormProps, 'onSearch' | 'ref'>);
   /** 用于配置 Table 组件上方展示的 Tabs 组件 */
   tabs?: {
     /**
@@ -131,25 +146,59 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       [request, params],
     );
 
+    const __tableProps =
+      typeof tableProps === 'function' ? tableProps(params) : tableProps;
+    const __searchFormProps =
+      typeof searchForm === 'function' ? searchForm(data) : searchForm;
+
+    const deconvertFormValues = (values: Record<string, any>) => {
+      if (!__searchFormProps) return;
+      const items = __searchFormProps.items;
+      const result: Record<string, any> = {};
+      items.forEach((item) => {
+        if (!item) return;
+        if (item.converter) {
+          if (item.deconverter) result[item.name] = item.deconverter(values);
+          else
+            console.warn(
+              `[warn] deconverter should be provided or you will not restore the last form value of this field: ${item.name}`,
+            );
+        } else result[item.name] = values[item.name];
+      });
+      return result;
+    };
+    const deconvertFormValuesRef = useRef(deconvertFormValues);
+    deconvertFormValuesRef.current = deconvertFormValues;
+
     const isFirstRenderRef = useIsFirstRenderRef();
+    const listPageState = useAtomValue(atomListPageState);
+    const lastParamsRef = useRef<Record<string, any> | null>(null);
+    lastParamsRef.current = JSON.parse(listPageState[location.pathname] || 'null');
+
     useEffect(() => {
       if (isFirstRenderRef.current) {
-        let searchParams = formRef.current?.form.getFieldsValue() || {};
+        let form = formRef.current?.form;
+        let searchParams = lastParamsRef.current || form?.getFieldsValue() || {};
+        if (lastParamsRef.current) {
+          form?.setFieldsValue(deconvertFormValuesRef.current(lastParamsRef.current));
+        }
         if (JSON.stringify(searchParams) !== '{}') {
-          return setParams((val) => ({ ...searchParams, ...val }));
+          return setParams((val) => ({
+            ...searchParams,
+            ...val,
+            ...(searchParams.pageNo != null ? { pageNo: searchParams.pageNo } : {}),
+            ...(searchParams.pageSize != null ? { pageSize: searchParams.pageSize } : {}),
+          }));
         }
       }
       request();
     }, [request, isFirstRenderRef]);
 
-    const __tableProps =
-      typeof tableProps === 'function' ? tableProps(params) : tableProps;
-
     const content = (
       <div className={styles.superTable}>
-        {searchForm && (
+        {__searchFormProps && (
           <SearchForm
-            {...searchForm}
+            {...__searchFormProps}
             ref={formRef}
             onSearch={(values) => {
               const obj = { [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] };

@@ -18,7 +18,11 @@ import { Authorized, useHasPermission } from '@/components/Authorized';
 import { PageWrapper } from '@/components/PageWrapper';
 import { PreviewImage } from '@/components/PreviewImage';
 import type { ColumnsType, SearchFormProps } from '@/components/SuperTable';
-import { SuperTable } from '@/components/SuperTable';
+import {
+  deconverterDateRange,
+  SuperTable,
+  useSaveListPageState,
+} from '@/components/SuperTable';
 import { requestDelete, requestList, requestPublish } from '@/services/demo';
 import {
   enumTag,
@@ -67,6 +71,7 @@ const cities = [
 ];
 
 export default function ListPage() {
+  const saveListPageState = useSaveListPageState();
   const hasPermission = useHasPermission();
   const nav = useNavigate();
   const tableRef = useRef<React.ElementRef<typeof SuperTable>>(null);
@@ -108,6 +113,7 @@ export default function ListPage() {
         label: '时间区间',
         name: 'key3',
         converter: (v) => ({ startTime: v[0].valueOf(), endTime: v[1].valueOf() }),
+        deconverter: (val) => deconverterDateRange(val['startTime'], val['endTime']),
         children: (
           <RangePicker
             allowClear
@@ -181,7 +187,13 @@ export default function ListPage() {
       render: (_, record) => (
         <Space size="middle">
           <Authorized>
-            <a onClick={() => nav('./detail/' + record.id)}>查看详情</a>
+            <a
+              onClick={() => {
+                saveListPageState(tableRef.current?.params);
+                nav('./detail/' + record.id);
+              }}>
+              查看详情
+            </a>
           </Authorized>
           <Authorized>
             {record.status !== PROCESS_STATUS.审核中 && (
