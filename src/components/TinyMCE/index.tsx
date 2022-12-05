@@ -57,7 +57,8 @@ export function TinyMCE(props: TinyMCEProps) {
       toolbar:
         'undo redo | formatpainter casechange blocks | bold italic forecolor backcolor | ' +
         'alignleft aligncenter alignright alignjustify | ' +
-        'bullist numlist checklist outdent indent | image | removeformat | code table help',
+        'bullist numlist checklist outdent indent | image media | removeformat | code table help',
+      media_live_embeds: true,
       file_picker_types: 'file image media',
     });
     editor.render();

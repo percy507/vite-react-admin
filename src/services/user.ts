@@ -8,7 +8,7 @@ export function requestLogin(params) {
 }
 
 export function requestUserInfo() {
-  return new Promise((resolve) => {
+  return new Promise<any>((resolve) => {
     setTimeout(() => {
       resolve({
         name: '韩立',

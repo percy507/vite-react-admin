@@ -33,6 +33,8 @@ export interface SuperUploadProps extends Omit<UploadProps, 'value' | 'onChange'
   onChange?: (value: ValueType[]) => void;
   /** 是否显示上传文件的限制条件，默认false */
   showTips?: boolean;
+  /** 是否在右边显示限制条件的文案，默认 false */
+  showTipsOnRight?: boolean;
   /** 自定义的上传按钮 */
   children?: React.ReactNode;
   /** 是否仅允许上传图片，默认false */
@@ -65,6 +67,7 @@ export function SuperUpload(props: SuperUploadProps) {
     value = [],
     onChange = () => {},
     showTips,
+    showTipsOnRight,
     onlyImage,
     maxFileSize = 20 * 1024 * 1024,
     maxFileNum = 1,
@@ -175,17 +178,23 @@ export function SuperUpload(props: SuperUploadProps) {
     const tipMaxFileNum = `最多可以上传 ${maxFileNum} 份文件`;
     const tipAccept = `支持的格式: ${accept || '任意类型'}`;
     const tipMaxSize = `单个文件大小不能超过 ${maxFileSize / 1024 / 1024}MB`;
+    const conditions = [tipMaxFileNum, tipAccept, tipMaxSize].filter((el) => !!el);
 
     return showTips ? (
       <div className={styles.showTips}>
-        {[tipMaxFileNum, tipAccept, tipMaxSize]
-          .filter((el) => !!el)
-          .map((el) => {
-            return <div key={el}>{el}</div>;
-          })}
+        {conditions.map((el, index) => {
+          return showTipsOnRight ? (
+            <div key={el}>{el}</div>
+          ) : (
+            <span key={el}>
+              {el}
+              {index !== conditions.length - 1 ? '，' : ''}
+            </span>
+          );
+        })}
       </div>
     ) : null;
-  }, [showTips, accept, maxFileSize, maxFileNum]);
+  }, [showTips, showTipsOnRight, accept, maxFileSize, maxFileNum]);
 
   const uploadProps: UploadProps = {
     listType,
@@ -232,6 +241,7 @@ export function SuperUpload(props: SuperUploadProps) {
       className={clsx(styles.superUpload, className, {
         [styles.hideUploadBtn]: innerFileList.length >= maxFileNum,
         [styles.disabled]: disabled,
+        [styles.tipsOnRight]: showTipsOnRight,
       })}>
       <Upload {...uploadProps}>{children}</Upload>
       <UploadTips />

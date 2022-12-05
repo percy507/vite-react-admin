@@ -23,10 +23,12 @@ export type { ColumnsType } from 'antd/es/table';
 /** 基于路由缓存列表页的筛选、分页状态 */
 export const atomListPageState = atom<Record<string, string | undefined>>({});
 
+const pathKey = () => location.pathname.replace(/\/+$/, '');
+
 export function useSaveListPageState() {
   const set = useSetAtom(atomListPageState);
   return (params: Record<string, any> = {}) => {
-    set((old) => ({ ...old, [location.pathname]: JSON.stringify(params) }));
+    set((old) => ({ ...old, [pathKey()]: JSON.stringify(params) }));
   };
 }
 
@@ -173,7 +175,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
     const isFirstRenderRef = useIsFirstRenderRef();
     const listPageState = useAtomValue(atomListPageState);
     const lastParamsRef = useRef<Record<string, any> | null>(null);
-    lastParamsRef.current = JSON.parse(listPageState[location.pathname] || 'null');
+    lastParamsRef.current = JSON.parse(listPageState[pathKey()] || 'null');
 
     useEffect(() => {
       if (isFirstRenderRef.current) {
