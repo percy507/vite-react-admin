@@ -7,7 +7,7 @@ import { Link, Outlet } from 'react-router-dom';
 import logoImg from '@/assets/logo.svg';
 import { MenuList } from '@/components/MenuList';
 import { requestLogout, requestUserInfo } from '@/services/user';
-import { userInfoAtom } from '@/store/user';
+import { atomUserInfo } from '@/store/app';
 import { redirectToLogin } from '@/utils/request';
 import { css_ellipsis_line1 } from '@/utils/style';
 
@@ -18,7 +18,7 @@ const { Header } = Layout;
 
 export default function AppMainLayout() {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-  const [userInfo, setUserInfo] = useAtom(userInfoAtom);
+  const [userInfo, setUserInfo] = useAtom(atomUserInfo);
 
   const logoutFunc = useCallback(() => {
     requestLogout().then(() => redirectToLogin());

@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 
-import { userPermissionAtom } from '@/store/user';
+import { atomUserPermission } from '@/store/app';
 
 // 是否关闭所有权限
 const cancelAuth = false;
@@ -10,7 +10,7 @@ const cancelAuth = false;
  * 拥有指定权限集合中的某个权限
  */
 export function useHasPermission() {
-  const permissions = useAtomValue(userPermissionAtom);
+  const permissions = useAtomValue(atomUserPermission);
   return (auth?: string | string[]) => {
     if (cancelAuth) return true;
     if (!auth) return true;
