@@ -13,7 +13,7 @@ export function requestUserInfo() {
       resolve({
         name: '韩立',
         avatar: '/imgs/avatar.jpg',
-        permissions: [
+        permission: [
           'l1',
           'l2',
           'l1_testMenu1',

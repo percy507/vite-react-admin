@@ -10,7 +10,10 @@ export function formatNumber(
   let num = Number.parseFloat(`${val}`);
   if (Number.isNaN(num)) return '-';
   let str = num.toLocaleString('en-US');
-  if (autoPadZero) str = str.includes('.') ? str : `${str}.000`;
+  if (autoPadZero) {
+    let [a, b = ''] = str.split('.');
+    if (b.length < decimal) str = `${a}.${b}${'0'.repeat(decimal - b.length)}`;
+  }
   return decimal === 0
     ? str.replace(/\.\d*$/, '')
     : str.replace(/\.\d*$/, (v) => v.slice(0, decimal + 1));
