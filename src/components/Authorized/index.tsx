@@ -15,7 +15,9 @@ export function useHasPermission() {
     if (cancelAuth) return true;
     if (!auth) return true;
     if (typeof auth === 'string') return permissions.includes(auth);
-    return !!auth.find((el) => permissions.includes(el));
+    let arr = auth.filter((el) => !!el);
+    if (arr.length === 0) return true;
+    return !!arr.find((el) => permissions.includes(el));
   };
 }
 
