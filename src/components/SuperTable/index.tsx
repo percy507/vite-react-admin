@@ -25,6 +25,15 @@ export const atomListPageState = atom<Record<string, string | undefined>>({});
 
 const pathKey = () => location.pathname.replace(/\/+$/, '');
 
+/**
+ * @example
+ * ```ts
+ * const saveListPageState = useSaveListPageState();
+ * onClick={() => {
+ *   saveListPageState(tableRef.current?.params);
+ * }}
+ * ```
+ */
 export function useSaveListPageState() {
   const set = useSetAtom(atomListPageState);
   return (params: Record<string, any> = {}) => {
