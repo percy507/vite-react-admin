@@ -43,6 +43,7 @@
     "framer-motion": "^7.1.0",
     "html2canvas": "^1.4.1",
     "jotai": "^1.6.4",
+    "mac-scrollbar": "^0.10.4",
     "maptalks": "^1.0.0-beta.7",
     "moment": "^2.29.1",
     "nanoevents": "^7.0.1",

@@ -1,6 +1,6 @@
 import 'normalize.css';
 import 'moment/dist/locale/zh-cn';
-import './style.global.less';
+import './styles/global.less';
 
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';

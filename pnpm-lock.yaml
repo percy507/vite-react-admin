@@ -37,6 +37,7 @@ specifiers:
   jotai: ^1.6.4
   less: ^4.1.2
   lint-staged: ^12.3.4
+  mac-scrollbar: ^0.10.4
   maptalks: ^1.0.0-beta.7
   moment: ^2.29.1
   nanoevents: ^7.0.1
@@ -78,6 +79,7 @@ dependencies:
   framer-motion: 7.1.0_biqbaboplfbrettd7655fr4n2y
   html2canvas: 1.4.1
   jotai: 1.7.4_2sb3a56iojvze2npkgcccbebf4
+  mac-scrollbar: 0.10.4
   maptalks: 1.0.0-rc.6
   moment: 2.29.4
   nanoevents: 7.0.1
@@ -4640,6 +4642,10 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /mac-scrollbar/0.10.4:
+    resolution: {integrity: sha512-ZlAFUyo0gGDPLZDv790fNR34t8Fc2XbNOZblIHeoZVWvQ08LtXR541LdHbRKQRaV1LLLyeui4ScYgejo1jGIBg==}
+    dev: false
 
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}

@@ -16,6 +16,7 @@ import { DemoNumberRange } from '@/components/NumberRange/demo';
 import { PageWrapper } from '@/components/PageWrapper';
 import { DemoPageWrapper } from '@/components/PageWrapper/demo';
 import { DemoPreviewImage } from '@/components/PreviewImage/demo';
+import { DemoScrollView } from '@/components/ScrollView/demo';
 import { DemoSearchForm } from '@/components/SearchForm/demo';
 import { DemoStrengthPassword } from '@/components/StrengthPassword/demo';
 import { DemoSuperTable } from '@/components/SuperTable/demo';
@@ -59,6 +60,7 @@ export default function ComponentList() {
     DemoFileHolder(),
     DemoCountNumber(),
     DemoZoomContainer(),
+    DemoScrollView(),
   ];
 
   return (
