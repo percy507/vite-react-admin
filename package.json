@@ -18,11 +18,11 @@
     "type-check": "tsc"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx},!public/**/*.js": [
+    "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{css,less},!public/**/*.css": [
+    "*.{css,less}": [
       "stylelint --fix",
       "prettier --write"
     ],
