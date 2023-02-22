@@ -33,45 +33,45 @@ export enum BUSINESS_CODE {
   PEOJECT_ACCESS_ERROR = 9040, // 用户没有该项目的权限
 }
 
+type CancelablePromise = Promise<any> & {
+  cancel: () => void;
+};
+
 class Request {
   serverUrl = config.BASE_API;
+  timeout = 60000; // 60 * 1000ms
 
   fetch = (url: string, options: RequestInit = {}) => {
     let realUrl = url.match(/^(http)|(\/\/)/) ? url : `${this.serverUrl}${url}`;
     let headers = { ...(options.headers ? options.headers : {}) };
     if (getAuthToken()) headers['Authorization'] = getAuthToken();
 
-    const promiseList = [
-      window.fetch(realUrl, { ...options, headers }),
-      // fetch 请求60秒超时判断
-      new Promise((_resolve, reject) => {
-        setTimeout(() => reject(new Error('请求超时')), 60000);
+    const controller = new AbortController();
+    const result = Promise.race([
+      window.fetch(realUrl, { ...options, headers, signal: controller.signal }),
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          controller.abort();
+          reject(new Error('请求超时'));
+        }, this.timeout);
       }),
-    ];
-
-    return Promise.race(promiseList)
+    ])
       .then((response) => response as Response)
       .then(this.checkHttpStatus)
       .then(this.parseResponseResult)
       .then(this.checkBusinessCode)
-      .catch((error) => {
-        return Promise.reject(error);
-      });
+      .catch((error) => Promise.reject(error)) as CancelablePromise;
+
+    result.cancel = () => controller.abort();
+    return result;
   };
 
   checkHttpStatus = (response: Response) => {
     const { status: statusCode, statusText, url } = response;
-
-    if (statusCode >= 200 && statusCode < 300) {
-      return response;
-    }
+    if (statusCode >= 200 && statusCode < 300) return response;
 
     const message = `请求错误: ${statusCode}[${statusText}]`;
-
-    notification.error({
-      message,
-      description: url,
-    });
+    notification.error({ message, description: url });
 
     return Promise.reject(JSON.stringify({ message, url }));
   };

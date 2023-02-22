@@ -76,19 +76,19 @@ export function ReactTable() {
       {
         header: () => (
           <SearchHeader
-            label="名称"
+            label="标题"
             onSearch={(val) => setSubdata(data.filter((el) => el.name.includes(val)))}
           />
         ),
         accessorKey: 'name',
       },
       {
-        header: '种类',
+        header: '分类',
         accessorKey: 'category',
         cell: (info) => info.getValue(),
       },
       {
-        header: '大小',
+        header: '数据大小',
         accessorKey: 'file_size',
         size: 60,
         cell: (info) => prettyBytes(info.getValue()),

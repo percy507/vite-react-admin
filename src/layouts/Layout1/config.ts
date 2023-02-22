@@ -29,7 +29,6 @@ export const menuList: MenuModel[] = [
       { label: '杂乱的集合', link: '/l1/research/mess' },
       { label: '状态管理(组件通信)', link: '/l1/research/state' },
       { label: '试用 maptalks', link: '/l1/research/maptalks' },
-      { label: '测试 useRequest', link: '/l1/research/request' },
       { label: '试用 lokijs', link: '/l1/research/lokijs' },
       { label: '试用 tanstack 组件集', link: '/l1/research/tanstack' },
     ],
@@ -93,10 +92,6 @@ export const routeList: RouteObject[] = [
       {
         path: 'maptalks',
         element: lr(lazy(() => import('@/pages/layout1Pages/research/maptalks'))),
-      },
-      {
-        path: 'request',
-        element: lr(lazy(() => import('@/pages/layout1Pages/research/request'))),
       },
       {
         path: 'lokijs',
