@@ -27,6 +27,5 @@ export function trimInputValue(
 ) {
   // @ts-ignore
   let val = typeof e === 'string' ? e : e.target?.value;
-  console.log(val);
-  setTimeout(() => form.setFieldsValue({ [name]: val.trim() }));
+  form.setFieldsValue({ [name]: val.trim() });
 }
