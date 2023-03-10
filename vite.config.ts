@@ -3,10 +3,12 @@ import react from '@vitejs/plugin-react';
 import autoprefixer from 'autoprefixer';
 import fs from 'fs';
 import path from 'path';
+import px2rem from 'postcss-pxtorem';
 import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
 
 import { dependencies } from './package.json';
+import uiConfig from './src/mobile/ui.config.json';
 
 // 打包时，生成一些基础的构建信息到 build.json
 if (process.env.VITE_MODE !== 'local') {
@@ -55,7 +57,20 @@ export default defineConfig({
   ],
   css: {
     postcss: {
-      plugins: [autoprefixer()],
+      plugins: [
+        autoprefixer(),
+        px2rem({
+          rootValue: uiConfig.width / uiConfig.base_num,
+          unitPrecision: 5,
+          propList: ['*'],
+          selectorBlackList: [],
+          replace: true,
+          mediaQuery: false,
+          minPixelValue: 1,
+          // 仅为 src/mobile 文件夹中的 px 转化为 rem
+          exclude: (file) => file.indexOf('src/mobile') === -1,
+        }),
+      ],
     },
     modules: {
       scopeBehaviour: 'local',

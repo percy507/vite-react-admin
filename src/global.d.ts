@@ -9,7 +9,9 @@ declare module '*.json';
 declare module '*.css';
 declare module '*.less';
 
-interface Window {}
+interface Window {
+  __adaptorWidth: number;
+}
 
 /** vite 环境变量 */
 declare const VITE_MODE: 'local' | 'dev' | 'test' | 'prod';

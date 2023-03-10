@@ -54,6 +54,7 @@ export default function AppLayout() {
             return <Route key={index} {...el} />;
           })}
         </Route>
+        <Route path="/mobile/*" element={lr(lazy(() => import('@/mobile')))} />
         <Route path="/login" element={lr(lazy(() => import('@/pages/login')))} />
       </Routes>
     </>

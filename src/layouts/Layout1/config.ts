@@ -20,6 +20,7 @@ export const menuList: MenuModel[] = [
       //   label: '弹窗列表页',
       //   link: '/l1/demos/page',
       // },
+      { label: '前往内置移动端页', link: '/mobile/list' },
     ],
   },
   {
