@@ -99,7 +99,7 @@ export interface SuperTableProps {
   /** 请求列表数据的api服务 */
   service: (params?: any) => Promise<any>;
   /** 调用列表接口结束后的钩子函数 */
-  afterService?: () => void;
+  afterService?: (params: ParamsType, data: DataType) => void;
   /** 用于列表接口的额外参数 */
   serviceParams?: Record<string, any>;
   /** 分页参数，默认 `{ [T_CURRENT]: 1, [T_SIZE]: 10 }` */
@@ -136,10 +136,11 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
     const [loading, setLoading] = useState(false);
     const request = useCallback(() => {
       setLoading(true);
-      service({ ...params, ...spRef.current })
+      let val = { ...params, ...spRef.current };
+      service(val)
         .then(({ data }) => {
           setData(data);
-          if (afterService) afterService();
+          if (afterService) afterService(val, data);
         })
         .finally(() => setLoading(false));
     }, [service, params, afterService]);
