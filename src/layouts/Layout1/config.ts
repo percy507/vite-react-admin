@@ -32,6 +32,7 @@ export const menuList: MenuModel[] = [
       { label: '试用 maptalks', link: '/l1/research/maptalks' },
       { label: '试用 lokijs', link: '/l1/research/lokijs' },
       { label: '试用 tanstack 组件集', link: '/l1/research/tanstack' },
+      { label: '试用react-window', link: '/l1/research/reactWindow' },
     ],
   },
   {
@@ -101,6 +102,10 @@ export const routeList: RouteObject[] = [
       {
         path: 'tanstack',
         element: lr(lazy(() => import('@/pages/layout1Pages/research/tanstack'))),
+      },
+      {
+        path: 'reactWindow',
+        element: lr(lazy(() => import('@/pages/layout1Pages/research/reactWindow'))),
       },
     ],
   },

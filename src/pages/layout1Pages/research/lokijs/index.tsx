@@ -1,4 +1,6 @@
 import { Card, message } from 'antd';
+import { useAtom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 import { useEffect, useState } from 'react';
 
 import { PageWrapper } from '@/components/PageWrapper';
@@ -7,21 +9,39 @@ import { TinyMCE } from '@/components/TinyMCE';
 import { initDatabase } from './init-db';
 import styles from './style.module.less';
 
+const atomSelect1 = atomWithStorage<string | undefined>('lokijs_select1', undefined);
+const atomSelect2 = atomWithStorage<string | undefined>('lokijs_select2', undefined);
+
 export default function TryLokijs() {
+  const [loaded, setLoaded] = useState(false);
   const [list1, setList1] = useState<any[]>([]);
-  const [select1, setSelect1] = useState<string>();
+  const [select1, setSelect1] = useAtom(atomSelect1);
   const [list2, setList2] = useState<any[]>([]);
-  const [select2, setSelect2] = useState<string>();
+  const [select2, setSelect2] = useAtom(atomSelect2);
   const [detail, setDetail] = useState<PostModel>();
 
   useEffect(() => {
     initDatabase(() => {
       requestList1().then((data) => {
-        console.log(data);
         setList1(data);
       });
+      setLoaded(true);
     });
   }, []);
+
+  useEffect(() => {
+    if (!select1 || !loaded) return;
+    requestList2(select1).then((data) => {
+      setList2(data);
+    });
+  }, [select1, loaded]);
+
+  useEffect(() => {
+    if (!select2 || !loaded) return;
+    requestArticleDetail(select2).then((data) => {
+      setDetail(data);
+    });
+  }, [select2, loaded]);
 
   return (
     <PageWrapper className={styles.Page3}>
@@ -52,12 +72,7 @@ export default function TryLokijs() {
             {list1.map((el) => (
               <div
                 key={el.id}
-                onClick={() => {
-                  setSelect1(el.id);
-                  requestList2(el.id).then((data) => {
-                    setList2(data);
-                  });
-                }}
+                onClick={() => setSelect1(el.id)}
                 className={el.id === select1 ? styles.selected : ''}>
                 {el.title}
               </div>
@@ -68,12 +83,7 @@ export default function TryLokijs() {
             {list2.map((el) => (
               <div
                 key={el.id}
-                onClick={() => {
-                  setSelect2(el.id);
-                  requestArticleDetail(el.id).then((data) => {
-                    setDetail(data);
-                  });
-                }}
+                onClick={() => setSelect2(el.id)}
                 className={el.id === select2 ? styles.selected : ''}>
                 {el.title}
               </div>
@@ -107,22 +117,26 @@ interface PostModel {
 }
 
 async function requestList1() {
-  const coll = window.db.getCollection('articles')!;
+  const coll = window.db.getCollection('articles');
+  if (!coll) return [];
   return coll.find({ isFolder: true }) as Pick<PostModel, 'id' | 'title'>[];
 }
 
 async function requestList2(parent: string) {
-  const coll = window.db.getCollection('articles')!;
+  const coll = window.db.getCollection('articles');
+  if (!coll) return [];
   return coll.find({ parent }) as Pick<PostModel, 'id' | 'title'>[];
 }
 
 async function requestArticleDetail(id: string) {
-  const coll = window.db.getCollection('articles')!;
+  const coll = window.db.getCollection('articles');
+  if (!coll) return {} as any;
   return coll.findOne({ id }) as PostModel;
 }
 
 async function requestUpdateArticle(params: Pick<PostModel, 'id' | 'content'>) {
-  const coll = window.db.getCollection('articles')!;
+  const coll = window.db.getCollection('articles');
+  if (!coll) return;
   coll.findAndUpdate({ id: `${params.id}` }, (val) => {
     for (let key in params) val[key] = params[key];
   });
