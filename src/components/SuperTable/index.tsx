@@ -238,6 +238,11 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
         ) : null}
         <Table
           {...__tableProps}
+          // {
+          //   title: '序号',
+          //   width: 100,
+          //   render: (_a, _b, index) => index + 1 + (pageNum - 1) * pageSize,
+          // },
           columns={(__tableProps.columns || []).map((el) => {
             if (!el.render) el.render = (v) => v ?? '-';
             if (el.ellipsis === undefined) el.ellipsis = true;

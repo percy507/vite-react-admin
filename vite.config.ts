@@ -67,8 +67,11 @@ export default defineConfig({
           replace: true,
           mediaQuery: false,
           minPixelValue: 1,
-          // 仅为 src/mobile 文件夹中的 px 转化为 rem
-          exclude: (file) => file.indexOf('src/mobile') === -1,
+          // 仅为src/mobile及移动端相关组件中的 px 转化为 rem
+          exclude: (file) => {
+            let patterns = ['/antd-mobile/', '/src/mobile/'];
+            return patterns.find((el) => file.includes(el)) == null;
+          },
         }),
       ],
     },

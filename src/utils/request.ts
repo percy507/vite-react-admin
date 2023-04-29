@@ -113,7 +113,7 @@ class Request {
           break;
       }
 
-      message.error(msg);
+      if (msg != null) message.error(msg);
       return Promise.reject(response);
     }
 
