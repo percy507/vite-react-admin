@@ -24,11 +24,10 @@ export const atomObj = atom<ObjType, Partial<ObjType>>(
 
 export const atomCount = atom(
   (get) => get(atomObj).count,
-  (get, set, newValue) => {
-    const nextValue =
-      typeof newValue === 'function' ? newValue(get(atomCount)) : newValue;
-    const val = { ...get(atomInnerObj), count: nextValue };
-    set(atomInnerObj, val);
+  (get, set, update) => {
+    set(atomObj, {
+      count: typeof update === 'function' ? update(get(atomCount)) : update,
+    });
   },
 );
 

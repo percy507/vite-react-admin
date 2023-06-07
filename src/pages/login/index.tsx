@@ -194,9 +194,6 @@ export default function LoginPage() {
                 </Button>
               </Form.Item>
             </Form>
-            <div className={styles.bottomLine}>
-              <div>海曙区房票管理系统</div>
-            </div>
           </Tabs.TabPane>
         </Tabs>
       </div>

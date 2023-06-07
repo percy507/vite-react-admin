@@ -1,9 +1,11 @@
 import { Card } from 'antd';
-import { useMeasure } from 'react-use';
-import { FixedSizeList } from 'react-window';
+import clsx from 'clsx';
+import moment from 'moment';
+import { useMemo } from 'react';
 
 import { PageWrapper } from '@/components/PageWrapper';
 
+import { CommonList } from './CommonList';
 import styles from './style.module.less';
 
 export default function TryReactWindow() {
@@ -11,45 +13,54 @@ export default function TryReactWindow() {
     <PageWrapper>
       <Card title={<a href="https://github.com/bvaughn/react-window">react-window</a>}>
         <div className={styles.root}>
-          <CommonList />
+          <CommonList renderRow={RenderRow} itemSize={50} itemCount={1000} />
         </div>
       </Card>
     </PageWrapper>
   );
 }
 
-function CommonList() {
-  const [listRootRef, listRootBounds] = useMeasure<HTMLDivElement>();
-
-  return (
-    <div className={styles.listRoot} ref={listRootRef}>
-      <FixedSizeList
-        className={styles.listScrollView}
-        width={listRootBounds.width}
-        height={listRootBounds.height}
-        itemCount={1000}
-        itemSize={35}
-        overscanCount={10}
-        // onScroll={(props) => {
-        //   console.log('onScroll', props);
-        // }}
-        // onItemsRendered={(props) => {
-        //   console.log('onItemsRendered', props);
-        // }}
-        ref={(ref) => {
-          console.log('ref', ref);
-        }}>
-        {renderRow}
-      </FixedSizeList>
-    </div>
+function RenderRow({ index, style }) {
+  const time = useMemo(
+    () => moment(Date.now() - ~~(Math.random() * 1000000 + 10000)),
+    [],
   );
-}
 
-function renderRow({ index, style }) {
-  console.log(index, style);
+  const tags = ['tag1111t11', 'tag2', 'tag3', 'tag44', 'tag55555'].filter(
+    (_, i) => index % (i + 1) === 0,
+  );
+
   return (
-    <div className={index % 2 ? styles.listItemOdd : styles.listItemEven} style={style}>
-      Row {index}
+    <div
+      className={index % 2 ? styles.listItemOdd : styles.listItemEven}
+      style={style}
+      tabIndex={-1}
+      onClick={(e) => {
+        console.log(e.currentTarget);
+      }}>
+      <div>我是一个标题({index + 1})</div>
+      <div className={styles.itemMeta}>
+        <div className={clsx(styles.tags, styles.o1)} title={tags.join(', ')}>
+          {tags.map((el, i) => {
+            return (
+              <span key={i}>
+                <span
+                  className={styles.tag}
+                  title={el}
+                  onClick={() => {
+                    console.log('click tag', el);
+                  }}>
+                  {el}
+                </span>
+                {i !== tags.length - 1 && <span>, </span>}
+              </span>
+            );
+          })}
+        </div>
+        <div className={styles.time} title={time.format()}>
+          {time.fromNow()}
+        </div>
+      </div>
     </div>
   );
 }

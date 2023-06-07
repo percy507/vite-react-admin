@@ -1,24 +1,47 @@
 .root {
-  width: 100%;
+  width: 250px;
   height: 320px;
-}
-
-.listRoot {
-  width: 100%;
-  height: 100%;
-}
-
-.listScrollView {
-  border: 1px solid #d9dddd;
 }
 
 .listItemEven,
 .listItemOdd {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 5px 12px;
 }
 
 .listItemEven {
-  background-color: #f8f8f0;
+  background-color: #f7f7f7;
+}
+
+.itemMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  line-height: 1.5;
+
+  .tags {
+  }
+
+  .tag {
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .time {
+    flex-shrink: 0;
+    padding-left: 6px;
+  }
+}
+
+.o1 {
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-all;
 }
