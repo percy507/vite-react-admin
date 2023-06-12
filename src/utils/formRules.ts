@@ -27,4 +27,9 @@ export class Rule {
   static contactNumber(msg?: string): RuleType {
     return { pattern: /^[\d-]{7,20}$/, message: msg || '联系方式格式不正确' };
   }
+
+  /** 粗略验证银行账号格式 */
+  static bankNumber(msg?: string): RuleType {
+    return { pattern: /\d{1,19}$/, message: msg || '银行账号格式不正确' };
+  }
 }

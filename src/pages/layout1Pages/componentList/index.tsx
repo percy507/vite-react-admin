@@ -11,6 +11,7 @@ import { DemoEnumManager } from '@/components/EnumManager/demo';
 import { DemoErrorBoundary } from '@/components/ErrorBoundary/demo';
 import { DemoException } from '@/components/Exception/demo';
 import { DemoFileHolder } from '@/components/FileHolder/demo';
+import { DemoFormattedInput } from '@/components/FormattedInput/demo';
 import { DemoFormItemList } from '@/components/FormItemList/demo';
 import { DemoNumberRange } from '@/components/NumberRange/demo';
 import { PageWrapper } from '@/components/PageWrapper';
@@ -48,6 +49,7 @@ export default function ComponentList() {
     DemoPreviewImage(),
     DemoPageWrapper(),
     DemoEnumManager(),
+    DemoFormattedInput(),
     DemoFormItemList(),
     DemoNumberRange(),
     DemoSuperUpload(),
