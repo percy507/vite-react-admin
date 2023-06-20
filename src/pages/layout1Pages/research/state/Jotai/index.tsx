@@ -7,7 +7,7 @@ import { TrackUpdate } from '../helper';
 import styles from '../style.module.less';
 import { atomCount, atomObj, atomVal1, atomVal2 } from './store';
 
-export function Jotai() {
+export function TestJotai() {
   return (
     <Card
       title={

@@ -3,25 +3,23 @@ import { useEffect, useState } from 'react';
 
 import { eventbus } from '@/utils';
 
-import { TrackUpdate } from './helper';
-import styles from './style.module.less';
+import { TrackUpdate } from '../helper';
+import styles from '../style.module.less';
 
-export function Eventbus() {
+export function TestNanoevents() {
   useEffect(() => {
     let unbindEvent = eventbus.on('event111', (args) => {
       console.log('当前组件 [event111] payload', args);
     });
 
-    return () => {
-      unbindEvent();
-    };
+    return () => unbindEvent();
   }, []);
 
   return (
     <Card
       title={
         <a href="https://github.com/ai/nanoevents" target="_blank" rel="noreferrer">
-          nanoevents(事件总线)
+          nanoevents (Simple and tiny (153 bytes) event emitter library for JavaScript)
         </a>
       }
       style={{ marginBottom: 16 }}>
@@ -46,9 +44,7 @@ function Child1() {
       console.log('子组件 [event111] payload', args);
     });
 
-    return () => {
-      unbind();
-    };
+    return () => unbind();
   }, []);
 
   return (

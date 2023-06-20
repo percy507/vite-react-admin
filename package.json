@@ -62,7 +62,8 @@
     "react-router-dom": "^6.3.0",
     "react-use": "^17.4.0",
     "react-use-measure": "^2.1.1",
-    "react-window": "^1.8.8"
+    "react-window": "^1.8.8",
+    "valtio": "^1.10.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",

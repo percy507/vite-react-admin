@@ -1,13 +1,15 @@
 import { PageWrapper } from '@/components/PageWrapper';
 
-import { Eventbus } from './Eventbus';
-import { Jotai } from './Jotai';
+import { TestJotai } from './jotai';
+import { TestNanoevents } from './nanoevents';
+import { TestValtio } from './valtio';
 
 export default function Page1() {
   return (
     <PageWrapper>
-      <Eventbus />
-      <Jotai />
+      <TestNanoevents />
+      <TestValtio />
+      <TestJotai />
     </PageWrapper>
   );
 }
