@@ -35,7 +35,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-unused-vars': ['error'],
-    '@typescript-eslint/consistent-type-imports': ['error'],
+    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/consistent-type-imports': 'error',
+    '@typescript-eslint/no-duplicate-imports': 'error',
   },
 };

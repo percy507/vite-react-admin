@@ -61,7 +61,7 @@ export function DOM2Img() {
           </ul>
           <div style={{ position: 'relative', top: -30, left: -30 }}>
             <QRCodeSVG
-              value="https://wwww.google.com"
+              value="https://www.google.com"
               size={70}
               includeMargin
               fgColor="#964D38"
