@@ -1,13 +1,15 @@
 import { Select, Tag } from 'antd';
 
-export function selectOptions(obj: object) {
+export function selectOptions(obj: object, excludes: any[] = []) {
   let temp = {};
   for (let k in obj) if (Number.isNaN(+k)) temp[k] = obj[k];
-  const arr = Object.entries(temp).map((el) => (
-    <Select.Option key={el[0]} value={el[1]}>
-      {el[0]}
-    </Select.Option>
-  ));
+  const arr = Object.entries(temp)
+    .filter((el) => !excludes.includes(el[1]))
+    .map((el) => (
+      <Select.Option key={el[0]} value={el[1]}>
+        {el[0]}
+      </Select.Option>
+    ));
   return arr;
 }
 

@@ -26,13 +26,24 @@ export function DOM2Img() {
   };
 
   return (
-    <Card title="DOM2Img" className={styles.dom2img} style={{ marginBottom: 16 }}>
+    <Card
+      size="small"
+      title={
+        <div>
+          <a href="https://github.com/niklasvh/html2canvas">html2canvas</a>
+          <span style={{ marginLeft: 10 }}>(将DOM转为图片)</span>
+        </div>
+      }>
+      <div className="g_warnningCard">
+        <h3>注意事项</h3>
+        <ul>
+          <li>其中图片如果是外链，可能会存在跨域问题</li>
+        </ul>
+      </div>
+
       <Button type="primary" onClick={generateImg} loading={generating}>
         生成图片
       </Button>
-      <div style={{ padding: 24 }}>
-        使用 html2canvas 将 DOM 转为高清图。其中图片如果是外链，可能会存在跨域问题
-      </div>
       <div className={styles.domContainer} ref={posterRef}>
         <h3>DOM</h3>
         <p>

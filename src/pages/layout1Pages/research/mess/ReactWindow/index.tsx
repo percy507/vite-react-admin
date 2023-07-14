@@ -3,20 +3,23 @@ import clsx from 'clsx';
 import moment from 'moment';
 import { useMemo } from 'react';
 
-import { PageWrapper } from '@/components/PageWrapper';
-
 import { CommonList } from './CommonList';
 import styles from './style.module.less';
 
-export default function TryReactWindow() {
+export function ReactWindow() {
   return (
-    <PageWrapper>
-      <Card title={<a href="https://github.com/bvaughn/react-window">react-window</a>}>
-        <div className={styles.root}>
-          <CommonList renderRow={RenderRow} itemSize={50} itemCount={1000} />
+    <Card
+      size="small"
+      title={
+        <div>
+          <a href="https://github.com/bvaughn/react-window">react-window</a>
+          <span style={{ marginLeft: 10 }}>(虚拟列表)</span>
         </div>
-      </Card>
-    </PageWrapper>
+      }>
+      <div className={styles.root}>
+        <CommonList renderRow={RenderRow} itemSize={50} itemCount={1000} />
+      </div>
+    </Card>
   );
 }
 

@@ -60,7 +60,12 @@ class Request {
       .then(this.checkHttpStatus)
       .then(this.parseResponseResult)
       .then(this.checkBusinessCode)
-      .catch((error) => Promise.reject(error)) as CancelablePromise;
+      .catch((error) => {
+        if (error?.message === '请求超时') {
+          notification.error({ message: '请求超时', description: realUrl });
+        }
+        return Promise.reject(error);
+      }) as CancelablePromise;
 
     result.cancel = () => controller.abort();
     return result;

@@ -11,6 +11,7 @@ interface PageWrapProps {
    */
   pageType?: 'list' | 'detail' | 'form';
   className?: string;
+  contentClassName?: string;
   style?: React.CSSProperties;
   loading?: boolean;
   header?: PageHeaderProps;
@@ -24,6 +25,7 @@ export function PageWrapper(props: PageWrapProps) {
   const {
     pageType,
     className,
+    contentClassName,
     style,
     loading = false,
     header = null,
@@ -59,6 +61,7 @@ export function PageWrapper(props: PageWrapProps) {
             styles.pageContent,
             header ? styles.hasHeader : false,
             footer ? styles.hasFooter : false,
+            contentClassName,
           ])}
           style={fullHeight ? { height: '100%', overflow: 'auto' } : {}}>
           {children}
