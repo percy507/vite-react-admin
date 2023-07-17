@@ -1,4 +1,4 @@
-import { message, notification } from 'antd';
+import { message, Modal, notification } from 'antd';
 import * as qs from 'qss';
 
 import config from './config';
@@ -37,6 +37,14 @@ type CancelablePromise = Promise<any> & {
   cancel: () => void;
 };
 
+let isMaintainModalOpen = false;
+
+enum RequestErrType {
+  TimeoutErr = 'timeoutErr',
+  HttpErr = 'httpErr',
+  BizErr = 'bizErr',
+}
+
 class Request {
   serverUrl = config.BASE_API;
   timeout = 60000; // 60 * 1000ms
@@ -52,7 +60,7 @@ class Request {
       new Promise((_, reject) => {
         setTimeout(() => {
           controller.abort();
-          reject(new Error('请求超时'));
+          reject({ __type: RequestErrType.TimeoutErr, message: '请求超时' });
         }, this.timeout);
       }),
     ])
@@ -60,11 +68,23 @@ class Request {
       .then(this.checkHttpStatus)
       .then(this.parseResponseResult)
       .then(this.checkBusinessCode)
-      .catch((error) => {
-        if (error?.message === '请求超时') {
+      .catch((err) => {
+        if (err?.__type === RequestErrType.TimeoutErr) {
           notification.error({ message: '请求超时', description: realUrl });
+        } else if (err?.__type === RequestErrType.HttpErr) {
+          notification.error({ message: err.message, description: err.url });
+        } else if (err?.__type === RequestErrType.BizErr && err.message) {
+          message.error(err.message);
+        } else if (!isMaintainModalOpen) {
+          isMaintainModalOpen = true;
+          // 调接口时，除过超时报错、业务code报错、http状态码非2xx错误，其他的比如cors报错、网络无法连接错误等都会弹窗。
+          Modal.warning({
+            title: '系统正在维护中，请稍后再试！',
+            onCancel: () => (isMaintainModalOpen = false),
+            onOk: () => (isMaintainModalOpen = false),
+          });
         }
-        return Promise.reject(error);
+        return Promise.reject(err);
       }) as CancelablePromise;
 
     result.cancel = () => controller.abort();
@@ -74,11 +94,8 @@ class Request {
   checkHttpStatus = (response: Response) => {
     const { status: statusCode, statusText, url } = response;
     if (statusCode >= 200 && statusCode < 300) return response;
-
     const message = `请求错误: ${statusCode}[${statusText}]`;
-    notification.error({ message, description: url });
-
-    return Promise.reject(JSON.stringify({ message, url }));
+    return Promise.reject({ __type: RequestErrType.HttpErr, message, url });
   };
 
   parseResponseResult = async (response: Response) => {
@@ -118,8 +135,7 @@ class Request {
           break;
       }
 
-      if (msg != null) message.error(msg);
-      return Promise.reject(response);
+      return Promise.reject({ __type: RequestErrType.BizErr, message: msg, response });
     }
 
     return response;
