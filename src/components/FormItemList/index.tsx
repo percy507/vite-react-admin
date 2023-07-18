@@ -66,17 +66,19 @@ export function FormItemList(props: FormItemListProps) {
           <Form.Item
             label={label}
             required={required}
-            className={clsx(styles.formItemList, className)}>
+            className={clsx(styles.formItemList, className)}
+            data-flist>
             <Row gutter={gutter}>
               {fields.map((field, i1) => (
                 <Col key={field.key} span={24 / columnNum}>
                   <Form.Item
                     required={false}
                     extra={itemProps.getExtra ? itemProps.getExtra(i1) : itemProps.extra}>
-                    <div className={styles.formItem}>
+                    <div className={styles.formItem} data-flist-item>
                       <div>
                         {formItems.map((item, i2) => (
                           <Form.Item
+                            noStyle
                             {...item}
                             {...field}
                             name={
@@ -89,13 +91,13 @@ export function FormItemList(props: FormItemListProps) {
                                   ]
                                 : [field.name]
                             }
-                            noStyle
                             key={i2}>
                             {item.getChildren ? item.getChildren(i1) : item.children}
                           </Form.Item>
                         ))}
                       </div>
                       <DeleteOutlined
+                        data-flist-delete-btn
                         className={styles.deleteBtn}
                         onClick={() => remove(field.name)}
                       />
@@ -112,6 +114,7 @@ export function FormItemList(props: FormItemListProps) {
                     errors?.length ? styles.hasError : false,
                   )}>
                   <Button
+                    data-flist-add-btn
                     type="dashed"
                     disabled={fields.length >= maxItemCount}
                     onClick={() => add()}

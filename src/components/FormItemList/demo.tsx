@@ -7,7 +7,16 @@ import { FormItemList } from './index';
 
 export const DemoFormItemList = () => ({
   title: 'FormItemList',
-  desc: '(表单组件)为表单的字段提供数组化管理',
+  desc: (
+    <div>
+      <div style={{ marginBottom: 10 }}>(表单组件)为表单的字段提供数组化管理</div>
+      <div>
+        <div style={{ color: 'red' }}>
+          如果需要自定义布局的表单数组，需要编写css覆盖默认的布局
+        </div>
+      </div>
+    </div>
+  ),
   children: <Demo />,
 });
 
