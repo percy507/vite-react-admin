@@ -69,7 +69,9 @@ class Request {
       .then(this.parseResponseResult)
       .then(this.checkBusinessCode)
       .catch((err) => {
-        if (err?.__type === RequestErrType.TimeoutErr) {
+        if (err?.name === 'AbortError') {
+          // do nothing
+        } else if (err?.__type === RequestErrType.TimeoutErr) {
           notification.error({ message: '请求超时', description: realUrl });
         } else if (err?.__type === RequestErrType.HttpErr) {
           notification.error({ message: err.message, description: err.url });
