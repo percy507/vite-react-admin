@@ -6,7 +6,7 @@ import { lr, navigateTo } from '@/components/RouteUtils';
 
 export const menuList: MenuModel[] = [
   { label: '灵溪宗', link: '/l1', auth: 'l1' },
-  { label: '血溪宗', link: '/l2', auth: 'l2' },
+  { label: '血溪宗(配色)', link: '/l2', auth: 'l2' },
 ];
 
 export const routeList: RouteObject[] = [
