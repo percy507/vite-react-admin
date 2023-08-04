@@ -19,8 +19,9 @@ function Demo() {
       .then((values) => {
         console.log(values);
       })
-      .catch((errorInfo) => {
-        console.error(errorInfo);
+      .catch((err) => {
+        console.error(err);
+        form.scrollToField(err?.errorFields?.[0]?.name?.[0]);
       });
   };
 

@@ -22,6 +22,7 @@ specifiers:
   '@vitejs/plugin-legacy': ^1.5.1
   '@vitejs/plugin-react': ^1.0.7
   '@yaireo/tagify': ^4.17.8
+  ahooks: ^3.7.8
   ali-oss: ^6.17.1
   antd: ^4.21.5
   antd-mobile: ^v5.24.0
@@ -82,6 +83,7 @@ dependencies:
   '@tanstack/react-table': 8.5.22_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-virtual': 3.0.0-beta.22_react@18.2.0
   '@yaireo/tagify': 4.17.8_prop-types@15.8.1
+  ahooks: 3.7.8_react@18.2.0
   ali-oss: 6.17.1
   antd: 4.21.6_biqbaboplfbrettd7655fr4n2y
   antd-mobile: 5.28.1_biqbaboplfbrettd7655fr4n2y
@@ -404,6 +406,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.9
+
+  /@babel/runtime/7.22.6:
+    resolution: {integrity: sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
+    dev: false
 
   /@babel/standalone/7.18.8:
     resolution: {integrity: sha512-cDayR7x6IAp7k1947fYeo7OxD7QwT9/UZ+BT05Zq2pfsOzkhOJZdY19X0NvL6fYaszwnzO0zVHgp04OspPh3SA==}
@@ -1463,12 +1472,13 @@ packages:
     resolution: {integrity: sha512-V7uUvAwnimu6eh/PED4mCDjE7tokeZQLKlxg9lCTMPhN+NjsSbtdacByVlR1oluXQzD3MOw55wylDmQo4+S9ZQ==}
     dev: false
 
-  /ahooks/3.7.5_react@18.2.0:
-    resolution: {integrity: sha512-RWkJYK5xj9ZXROj9jABRDqdpTBimkY1tlyeJQ8Ci7MAl1sC5xzSzwO20ydk6BjtdbWt56DPCYZhq4lGu3O2Zwg==}
+  /ahooks/3.7.8_react@18.2.0:
+    resolution: {integrity: sha512-e/NMlQWoCjaUtncNFIZk3FG1ImSkV/JhScQSkTqnftakRwdfZWSw6zzoWSG9OMYqPNs2MguDYBUFFC6THelWXA==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      '@babel/runtime': 7.22.6
       '@types/js-cookie': 2.2.7
       ahooks-v3-count: 1.0.0
       dayjs: 1.11.7
@@ -1588,7 +1598,7 @@ packages:
       '@rc-component/mini-decimal': 1.0.1
       '@react-spring/web': 9.6.1_biqbaboplfbrettd7655fr4n2y
       '@use-gesture/react': 10.2.20_react@18.2.0
-      ahooks: 3.7.5_react@18.2.0
+      ahooks: 3.7.8_react@18.2.0
       antd-mobile-icons: 0.3.0
       antd-mobile-v5-count: 1.0.1
       classnames: 2.3.2
@@ -6787,6 +6797,10 @@ packages:
       indent-string: 4.0.0
       strip-indent: 3.0.0
     dev: true
+
+  /regenerator-runtime/0.13.11:
+    resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
+    dev: false
 
   /regenerator-runtime/0.13.9:
     resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}

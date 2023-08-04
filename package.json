@@ -36,6 +36,7 @@
     "@tanstack/react-table": "^8.5.22",
     "@tanstack/react-virtual": "3.0.0-beta.22",
     "@yaireo/tagify": "^4.17.8",
+    "ahooks": "^3.7.8",
     "ali-oss": "^6.17.1",
     "antd": "^4.21.5",
     "antd-mobile": "^v5.24.0",

@@ -78,3 +78,12 @@ export function throttle<T extends unknown[], U>(
     });
   };
 }
+
+export function isJsonString(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}

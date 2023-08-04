@@ -79,8 +79,9 @@ export default function EditPage() {
               resolve(null);
             });
         })
-        .catch((errorInfo) => {
-          console.log(errorInfo);
+        .catch((err) => {
+          console.log(err);
+          form.scrollToField(err?.errorFields?.[0]?.name?.[0]);
           reject();
         });
     });

@@ -1,4 +1,7 @@
+import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons';
+import { useFullscreen } from 'ahooks';
 import { Card, Tag, Tooltip } from 'antd';
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { DemoAnimateHeight } from '@/components/AnimateHeight/demo';
@@ -13,6 +16,7 @@ import { DemoException } from '@/components/Exception/demo';
 import { DemoFileHolder } from '@/components/FileHolder/demo';
 import { DemoFormattedInput } from '@/components/FormattedInput/demo';
 import { DemoFormItemList } from '@/components/FormItemList/demo';
+import { DemoJSONTable } from '@/components/JSONTable/demo';
 import { DemoNumberRange } from '@/components/NumberRange/demo';
 import { PageWrapper } from '@/components/PageWrapper';
 import { DemoPageWrapper } from '@/components/PageWrapper/demo';
@@ -63,6 +67,7 @@ export default function ComponentList() {
     DemoCountNumber(),
     DemoZoomContainer(),
     DemoScrollView(),
+    DemoJSONTable(),
   ];
 
   return (
@@ -82,22 +87,37 @@ export default function ComponentList() {
         ))}
       </Card>
       <div className={styles.list}>
-        {componentList.map((el) => {
-          return (
-            <Card
-              key={el.title}
-              title={<div id={el.title}>{el.title}</div>}
-              size="small"
-              style={{ marginBottom: 24 }}>
-              <div className={styles.desc}>
-                <div>描述:</div>
-                <div>{el.desc}</div>
-              </div>
-              <div className={styles.demoWrapper}>{el.children}</div>
-            </Card>
-          );
+        {componentList.map((el, index) => {
+          return <Item key={index} el={el} />;
         })}
       </div>
     </PageWrapper>
+  );
+}
+
+function Item({ el }: { el: Itemmm }) {
+  const ref = useRef(null);
+  const [isFullscreen, { enterFullscreen, exitFullscreen }] = useFullscreen(ref);
+
+  return (
+    <Card
+      ref={ref}
+      key={el.title}
+      title={<div id={el.title}>{el.title}</div>}
+      size="small"
+      style={{ marginBottom: 24 }}
+      extra={
+        isFullscreen ? (
+          <FullscreenExitOutlined onClick={exitFullscreen} />
+        ) : (
+          <FullscreenOutlined onClick={enterFullscreen} />
+        )
+      }>
+      <div className={styles.desc}>
+        <div>描述:</div>
+        <div>{el.desc}</div>
+      </div>
+      <div className={styles.demoWrapper}>{el.children}</div>
+    </Card>
   );
 }

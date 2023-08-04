@@ -1,0 +1,29 @@
+.jsonTable {
+  width: 100%;
+  overflow: auto;
+
+  table {
+    display: inline-flex;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  td {
+    padding: 6px;
+    // white-space: pre-wrap;
+    white-space: pre;
+    word-break: break-all;
+    border: 1px solid lightgray;
+
+    &[data-no-gap] {
+      margin: 0;
+      padding: 0;
+
+      & > table {
+        width: calc(100% + 2px);
+        margin: -1px;
+      }
+    }
+  }
+}

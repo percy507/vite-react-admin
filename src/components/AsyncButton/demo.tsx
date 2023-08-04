@@ -57,8 +57,9 @@ function Demo() {
                   console.log(values);
                   setTimeout(() => resolve(null), 1200);
                 })
-                .catch((errorInfo) => {
-                  console.log(errorInfo);
+                .catch((err) => {
+                  console.log(err);
+                  form.scrollToField(err?.errorFields?.[0]?.name?.[0]);
                 });
             });
           }}

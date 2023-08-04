@@ -19,8 +19,9 @@ export default function EditModal(props: EditModalProps) {
       .then((values) => {
         console.log(values);
       })
-      .catch((errorInfo) => {
-        console.log(errorInfo);
+      .catch((err) => {
+        console.log(err);
+        form.scrollToField(err?.errorFields?.[0]?.name?.[0]);
       });
   };
 
