@@ -76,7 +76,7 @@ function renderBlock(title, arr) {
               className={styles.colorBlock}
               key={key}
               style={{
-                color: isBrightColor(color) ? '#000' : '#fff',
+                color: isBrightColor(color) ? '#333' : '#fff',
                 background: color,
               }}
               onClick={() => {
