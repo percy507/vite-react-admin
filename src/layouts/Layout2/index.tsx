@@ -82,7 +82,9 @@ function renderBlock(title, arr) {
               onClick={() => {
                 copyText(color);
                 message.success('复制颜色代码成功');
-              }}>
+              }}
+              data-name={key}
+              data-rgb={`rgb(${hexToRgb(color.trim().replace('#', ''))})`}>
               <div>{color}</div>
               <div>{key}</div>
             </div>
