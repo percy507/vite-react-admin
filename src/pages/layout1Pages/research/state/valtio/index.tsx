@@ -1,5 +1,5 @@
-import { Button, Card, Space } from 'antd';
-import React, { Suspense } from 'react';
+import { Button, Card } from 'antd';
+import { Suspense } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { TrackUpdate } from '../helper';
@@ -26,26 +26,31 @@ function Child1() {
     <fieldset className={styles.testBlock}>
       <legend>组件1</legend>
       <TrackUpdate />
-
-      <Suspense fallback={<div>Loading...</div>}>
-        <PreviewValue />
-      </Suspense>
+      <PreviewValue />
       <Child11 />
       <Child12 />
       <Child13 />
+      <br />
+      <Child14 />
     </fieldset>
   );
 }
 
 function PreviewValue() {
   const snap = useSnapshot(proxyPerson);
-
+  const Value = (value) => {
+    return <>{JSON.stringify(value)}</>;
+  };
   return (
     <div style={{ marginTop: 24, padding: 12, background: '#f5f5f5' }}>
       <TrackUpdate />
       <div style={{ display: 'flex' }}>
         <b style={{ flexShrink: 0, marginRight: 12 }}>JSON值:</b>
-        <pre>{JSON.stringify(snap)}</pre>
+        <pre>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Value value={snap} />
+          </Suspense>
+        </pre>
       </div>
     </div>
   );
@@ -53,47 +58,63 @@ function PreviewValue() {
 
 function Child11() {
   return (
-    <fieldset className={styles.testBlock}>
+    <fieldset className={styles.testBlock} style={{ width: 400 }}>
       <legend>组件1-1</legend>
       <TrackUpdate />
-      <Space>
+      <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
         <Button onClick={() => (proxyPerson.name = Math.random().toString(16).slice(-6))}>
-          随机名字
+          修改name
         </Button>
-        <Button onClick={() => proxyPerson.age++}>年龄+1</Button>
+        <Button onClick={() => proxyPerson.age++}>修改age</Button>
         <Button
           onClick={() => proxyPerson.hobbies.push(Math.random().toString(16).slice(-4))}>
-          随机爱好
+          新增hobbies
         </Button>
-        <Button onClick={() => resetHobbies()}>清空爱好</Button>
-        <Button onClick={() => randomAsyncValue()}>修改异步值</Button>
-      </Space>
+        <Button onClick={() => resetHobbies()}>重置hobbies</Button>
+        <Button onClick={() => randomAsyncValue()}>修改asyncValue</Button>
+      </div>
     </fieldset>
   );
 }
 
-const Child12 = React.memo(function Child12() {
+const Child12 = function Child12() {
   const { name, age, birthYear } = useSnapshot(proxyPerson);
-
   return (
     <fieldset className={styles.testBlock}>
-      <legend>组件1-2 (use React.memo)</legend>
+      <legend>组件1-2</legend>
       <TrackUpdate />
       <div>名字: {name}</div>
       <div>年龄: {age}</div>
       <div>出生年份: {birthYear}</div>
     </fieldset>
   );
-});
+};
 
-const Child13 = React.memo(function Child13() {
-  const { hobbies } = useSnapshot(proxyPerson);
-
+const Child13 = function Child13() {
+  const person = useSnapshot(proxyPerson);
   return (
     <fieldset className={styles.testBlock}>
-      <legend>组件1-3 (use React.memo)</legend>
+      <legend>组件1-3</legend>
       <TrackUpdate />
-      <div>爱好: {JSON.stringify(hobbies)}</div>
+      <div>姓名: {person.name}</div>
+      <button onClick={() => (person.name = Math.random().toString(16).slice(-6))}>
+        点我改名字(会报错，因为useSnapshot获取的值只读)
+      </button>
     </fieldset>
   );
-});
+};
+
+const Child14 = function Child14() {
+  const { hobbies } = useSnapshot(proxyPerson);
+  return (
+    <fieldset className={styles.testBlock}>
+      <legend>组件1-4</legend>
+      <TrackUpdate />
+      <div>爱好: {JSON.stringify(hobbies)}</div>
+      <div>
+        valtio的useSnapshot内部做了优化，只会在代码中解构时指定的key更新时触发组件重新渲染。这里注意与jotai区分。
+        在本组件中，只有hobbies更新时，组件才会重新渲染。
+      </div>
+    </fieldset>
+  );
+};

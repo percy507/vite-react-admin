@@ -5,7 +5,7 @@ import React from 'react';
 
 import { TrackUpdate } from '../helper';
 import styles from '../style.module.less';
-import { atomCount, atomObj, atomVal1, atomVal2 } from './store';
+import { atomCount, atomObj, atomV1, atomVal1, atomVal2 } from './store';
 
 export function TestJotai() {
   return (
@@ -108,8 +108,11 @@ function Child3() {
       <legend>组件3</legend>
       <TrackUpdate />
       <Child31 />
-      <br />
       <Child32 />
+      <br />
+      <Child33 />
+      <br />
+      <Child34 />
     </fieldset>
   );
 }
@@ -136,13 +139,52 @@ function Child32() {
       <Button
         style={{ marginRight: 10 }}
         onClick={() => setObj({ v1: Math.random().toString(16).slice(2, 8) })}>
-        修改obj的v1
+        修改v1
+      </Button>
+      <Button
+        style={{ marginRight: 10 }}
+        onClick={() => setObj({ v2: Math.random().toString(16).slice(2, 8) })}>
+        修改v2
       </Button>
       <Button
         style={{ marginRight: 10 }}
         onClick={() => setObj({ count: ~~(Math.random() * 1000) })}>
-        修改obj的count
+        修改count
       </Button>
+    </fieldset>
+  );
+}
+
+function Child33() {
+  const [{ v1 }] = useAtom(atomObj);
+  const code = `const [{v1}] = useAtom(atomObj);`;
+  return (
+    <fieldset className={styles.testBlock}>
+      <legend>组件3-3</legend>
+      <TrackUpdate />
+      <div>
+        <div>v1: {v1}</div>
+        <div>获取解构出来的v1的值，只要atomObj的任意值发生变化，组件就会重新渲染</div>
+        <pre>{code}</pre>
+      </div>
+    </fieldset>
+  );
+}
+
+function Child34() {
+  const [v1] = useAtom(atomV1);
+  const code = `const atomV1 = atom((get) => get(atomObj).v1);\nconst [v1] = useAtom(atomV1);`;
+  return (
+    <fieldset className={styles.testBlock}>
+      <legend>组件3-3</legend>
+      <TrackUpdate />
+      <div>
+        <div>v1: {v1}</div>
+        <div>
+          通过拆分出子atom来获取v1的值，只有atomObj的v1值发生变化，组件才会重新渲染
+        </div>
+        <pre>{code}</pre>
+      </div>
     </fieldset>
   );
 }

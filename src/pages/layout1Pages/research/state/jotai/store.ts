@@ -22,6 +22,8 @@ export const atomObj = atom<ObjType, Partial<ObjType>>(
   },
 );
 
+export const atomV1 = atom((get) => get(atomObj).v1);
+
 export const atomCount = atom(
   (get) => get(atomObj).count,
   (get, set, update) => {
