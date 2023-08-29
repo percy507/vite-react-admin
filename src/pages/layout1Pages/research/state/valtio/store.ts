@@ -12,7 +12,7 @@ export const proxyPerson = proxy<Person>({
   name: 'CJ',
   age: 0,
   get birthYear() {
-    return new Date().getFullYear() - proxyPerson.age;
+    return new Date().getFullYear() - this.age;
   },
   hobbies: [],
   // Promises may be values in a proxied object. They will be resolved in calls to snapshot.

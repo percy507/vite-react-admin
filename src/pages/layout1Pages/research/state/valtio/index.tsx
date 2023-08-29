@@ -32,13 +32,14 @@ function Child1() {
       <Child13 />
       <br />
       <Child14 />
+      <Child15 />
     </fieldset>
   );
 }
 
 function PreviewValue() {
   const snap = useSnapshot(proxyPerson);
-  const Value = (value) => {
+  const Value = ({ value }) => {
     return <>{JSON.stringify(value)}</>;
   };
   return (
@@ -97,7 +98,11 @@ const Child13 = function Child13() {
       <legend>组件1-3</legend>
       <TrackUpdate />
       <div>姓名: {person.name}</div>
-      <button onClick={() => (person.name = Math.random().toString(16).slice(-6))}>
+      <button
+        onClick={() => {
+          // @ts-ignore
+          person.name = Math.random().toString(16).slice(-6);
+        }}>
         点我改名字(会报错，因为useSnapshot获取的值只读)
       </button>
     </fieldset>
@@ -105,16 +110,29 @@ const Child13 = function Child13() {
 };
 
 const Child14 = function Child14() {
-  const { hobbies } = useSnapshot(proxyPerson);
+  const person = useSnapshot(proxyPerson);
   return (
-    <fieldset className={styles.testBlock}>
+    <fieldset className={styles.testBlock} style={{ maxWidth: '50%' }}>
       <legend>组件1-4</legend>
       <TrackUpdate />
-      <div>爱好: {JSON.stringify(hobbies)}</div>
-      <div>
-        valtio的useSnapshot内部做了优化，只会在代码中解构时指定的key更新时触发组件重新渲染。这里注意与jotai区分。
-        在本组件中，只有hobbies更新时，组件才会重新渲染。
+      <div>爱好: {JSON.stringify(person.hobbies)}</div>
+      <div>年龄: {person.age}</div>
+      <div style={{ marginTop: 6 }}>
+        valtio的useSnapshot内部做了优化，它会收集组件中使用到的key，并且只有这些key的值更新时，才会触发组件重新渲染。这里注意与jotai区分。
       </div>
+      <div>在本组件中，只有hobbies或age更新时，组件才会重新渲染。</div>
+    </fieldset>
+  );
+};
+
+const Child15 = function Child15() {
+  const { birthYear } = useSnapshot(proxyPerson);
+  return (
+    <fieldset className={styles.testBlock} style={{ maxWidth: '50%' }}>
+      <legend>组件1-5</legend>
+      <TrackUpdate />
+      <div>出生年份: {birthYear}</div>
+      <div>birthYear是通过age计算出来的，修改age，birthYear也会更新</div>
     </fieldset>
   );
 };
