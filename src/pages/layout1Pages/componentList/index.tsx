@@ -24,6 +24,7 @@ import { DemoPreviewImage } from '@/components/PreviewImage/demo';
 import { DemoScrollView } from '@/components/ScrollView/demo';
 import { DemoSearchForm } from '@/components/SearchForm/demo';
 import { DemoStrengthPassword } from '@/components/StrengthPassword/demo';
+import { DemoSuperEChart } from '@/components/SuperEChart/demo';
 import { DemoSuperTable } from '@/components/SuperTable/demo';
 import { DemoSuperUpload } from '@/components/SuperUpload/demo';
 import { DemoTextRadioGroup } from '@/components/TextRadioGroup/demo';
@@ -68,6 +69,7 @@ export default function ComponentList() {
     DemoZoomContainer(),
     DemoScrollView(),
     DemoJSONTable(),
+    DemoSuperEChart(),
   ];
 
   return (
