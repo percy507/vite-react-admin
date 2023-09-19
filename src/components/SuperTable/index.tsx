@@ -87,10 +87,7 @@ export interface SuperTableProps {
     /** 用于 Tabs 组件的 props */
     root?: TabsProps;
     /** 用于 TabPane 组件的 props */
-    panes?: (TabPaneProps & {
-      /** 用于当前Tab中列表接口的筛选参数 */
-      filterParams: Record<string, any>;
-    })[];
+    panes?: TabPaneProps[];
   };
   /** 用于 Table 组件的 props */
   tableProps: TableProps<any> | ((params: ParamsType) => TableProps<any>);
@@ -223,8 +220,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
           <Tabs
             {...tabs.root}
             onChange={(k) => {
-              const filterParams = tabs.panes![Number.parseInt(k, 10)].filterParams;
-              setParams((val) => ({ ...val, [T_CURRENT]: 1, ...filterParams }));
+              setParams((val) => ({ ...val, [T_CURRENT]: 1 }));
               if (tabs.root!.onChange) tabs.root!.onChange(k);
             }}>
             {tabs.panes.map((el, index) => {

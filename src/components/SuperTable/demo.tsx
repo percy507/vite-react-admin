@@ -4,7 +4,6 @@ import moment from 'moment';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { SearchFormProps } from './index';
 import { SuperTable } from './index';
 
 const { RangePicker } = DatePicker;
@@ -80,7 +79,7 @@ function Demo() {
     },
   ];
 
-  const searchFormConfig: () => SearchFormProps = () => ({
+  const searchFormConfig = () => ({
     actionBar: (
       <Button type="primary" icon={<PlusOutlined />} onClick={() => nav('/')}>
         添加
@@ -114,6 +113,13 @@ function Demo() {
     ],
   });
 
+  const statusList = [
+    { label: '全部', value: undefined },
+    { label: '待审批', value: 0 },
+    { label: '已通过', value: 1 },
+    { label: '已驳回', value: 2 },
+  ];
+
   return (
     <div>
       <div style={{ marginBottom: 12 }}>当前Tab: {activeTab}</div>
@@ -123,18 +129,14 @@ function Demo() {
         searchForm={searchFormConfig()}
         tableProps={{ columns, rowKey: 'id' }}
         paginationParams={{ current: 1, size: 5 }}
+        serviceParams={{ status: statusList[activeTab]?.value }}
         tabs={{
           showTotal: true,
           root: {
             activeKey: activeTab,
             onChange: (k) => setActiveTab(k),
           },
-          panes: [
-            { tab: '全部', filterParams: { status: undefined } },
-            { tab: '待审批', filterParams: { status: 0 } },
-            { tab: '已通过', filterParams: { status: 1 } },
-            { tab: '已驳回', filterParams: { status: 2 } },
-          ],
+          panes: statusList.map((el) => ({ tab: el.label })),
         }}
       />
     </div>
