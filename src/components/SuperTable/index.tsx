@@ -67,7 +67,7 @@ interface SuperTableRefProps {
   /** 请求列表数据，不会重置筛选项，也不会设置页码 */
   request: () => void;
   /** 请求列表数据，但会重置筛选项，并设置页码到第一页 */
-  freshRequest: () => void;
+  freshRequest: (extraParams?: { [key: string]: any }) => void;
   /** 当前列表接口中的参数 */
   params: ParamsType;
 }
@@ -139,7 +139,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       let val = { ...params, ...spRef.current };
       service(val)
         .then(({ data }) => {
-          setData(data);
+          if (data != null) setData(data);
           if (afterService) afterService(val, data);
         })
         .finally(() => setLoading(false));
@@ -150,9 +150,9 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       () => ({
         params,
         request,
-        freshRequest: () => {
+        freshRequest: (extraParams = {}) => {
           formRef.current?.form.resetFields();
-          setParams({ [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] });
+          setParams({ ...extraParams, [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] });
         },
       }),
       [request, params],
