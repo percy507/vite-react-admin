@@ -76,7 +76,7 @@ class Request {
         } else if (err?.__type === RequestErrType.HttpErr) {
           notification.error({ message: err.message, description: err.url });
         } else if (err?.__type === RequestErrType.BizErr && err.message) {
-          message.error(err.message);
+          if (err.message) message.error(err.message);
         } else if (!isMaintainModalOpen) {
           isMaintainModalOpen = true;
           // 调接口时，除过超时报错、业务code报错、http状态码非2xx错误，其他的比如cors报错、网络无法连接错误等都会弹窗。

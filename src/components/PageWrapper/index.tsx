@@ -19,6 +19,7 @@ interface PageWrapProps {
   footer?: React.ReactNode;
   /** 内容区域是否撑满整个可用的视口 */
   fullHeight?: boolean;
+  contentRef?: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 export function PageWrapper(props: PageWrapProps) {
@@ -32,6 +33,7 @@ export function PageWrapper(props: PageWrapProps) {
     children = null,
     footer = null,
     fullHeight = false,
+    contentRef,
   } = props;
 
   const itemRender = (route: { path?: string; breadcrumbName: string }) => {
@@ -57,6 +59,7 @@ export function PageWrapper(props: PageWrapProps) {
       <Spin spinning={loading}>
         {header && <PageHeader {...{ ...header, ghost: false }} />}
         <div
+          ref={contentRef}
           className={clsx([
             styles.pageContent,
             header ? styles.hasHeader : false,
