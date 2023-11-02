@@ -57,6 +57,18 @@ function renderBlock(title, arr) {
     message.success('复制成功');
   };
 
+  const copyJSON = () => {
+    let hex = {},
+      rgb = {};
+    arr.forEach((el) => {
+      let key = el[0].replace(/-/g, '');
+      hex[key] = el[1];
+      rgb[key] = `rgb(${hexToRgb(el[1].trim().replace('#', ''))})`;
+    });
+    copyText(`${JSON.stringify(hex)}\n${JSON.stringify(rgb)}`);
+    message.success('复制成功');
+  };
+
   return (
     <div className={styles.block} key={title}>
       <div className={styles.blockTitle}>
@@ -66,6 +78,9 @@ function renderBlock(title, arr) {
         </Button>
         <Button size="small" style={{ marginLeft: 24 }} onClick={copyCssVariablesRgb}>
           复制为CSS variables(RGB)
+        </Button>
+        <Button size="small" style={{ marginLeft: 24 }} onClick={copyJSON}>
+          复制为 JSON (hex & RGB)
         </Button>
       </div>
       <div className={styles.colorBlocks}>
