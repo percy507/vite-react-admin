@@ -23,3 +23,13 @@ export const detailCol = (
     </Col>
   );
 };
+
+/** 用于 Input 的 onKeyDown 事件，从而让输入框只输入特定的字符 */
+export const OnKeyDown = {
+  /** 仅允许输入数字或横杠字符 */
+  onlyNumber: (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (/Arrow|Backspace|-|[0-9]/.test(event.key)) return;
+    if ((event.ctrlKey || event.metaKey) && /[axcv]/.test(event.key)) return;
+    event.preventDefault();
+  },
+};
