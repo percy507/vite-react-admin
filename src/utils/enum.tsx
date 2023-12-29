@@ -1,16 +1,18 @@
-import { Select, Tag } from 'antd';
+import { Tag } from 'antd';
 
-export function selectOptions(obj: object, excludes: any[] = []) {
-  let temp = {};
-  for (let k in obj) if (Number.isNaN(+k)) temp[k] = obj[k];
-  const arr = Object.entries(temp)
-    .filter((el) => !excludes.includes(el[1]))
-    .map((el) => (
-      <Select.Option key={el[0]} value={el[1]}>
-        {el[0]}
-      </Select.Option>
-    ));
-  return arr;
+/**
+ * 根据枚举与值获取label名称
+ * @example `getEnumLabel(MY_ENUM, data?.value)`
+ */
+export function getEnumLabel(enumVal, value) {
+  return Object.entries(enumVal).find((el) => el[1] === value)?.[0];
+}
+
+/** 将枚举转换为 options {label: string, value: string}[] */
+export function enumToOptions(enumVal, excludes: any[] = []) {
+  return Object.entries(enumVal)
+    .filter((el) => Number.isNaN(+el[0]) && !excludes.includes(el[1]))
+    .map((el) => ({ label: el[0], value: el[1] as string }));
 }
 
 /** 基于枚举的自定义颜色Tag */

@@ -26,9 +26,9 @@ import {
 import { requestDelete, requestList, requestPublish } from '@/services/demo';
 import {
   enumTag,
+  enumToOptions,
   PROCESS_STATUS,
   PROCESS_STATUS_COLOR,
-  selectOptions,
 } from '@/utils/enum';
 
 import styles from './style.module.less';
@@ -100,13 +100,13 @@ export default function ListPage() {
             placeholder="请选择"
             allowClear
             showSearch
+            options={enumToOptions(PROCESS_STATUS)}
             filterOption={(input, option) =>
-              (option!.children as unknown as string)
+              (option!.label as unknown as string)
                 .toLowerCase()
                 .includes(input.toLowerCase())
-            }>
-            {selectOptions(PROCESS_STATUS)}
-          </Select>
+            }
+          />
         ),
       },
       {
