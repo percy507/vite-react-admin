@@ -7,7 +7,6 @@ import px2rem from 'postcss-pxtorem';
 import { defineConfig } from 'vite';
 import styleImport from 'vite-plugin-style-import';
 
-import { dependencies } from './package.json';
 import uiConfig from './src/mobile/ui.config.json';
 
 // 打包时，生成一些基础的构建信息到 build.json
@@ -16,17 +15,6 @@ if (process.env.VITE_MODE !== 'local') {
     path.join(__dirname, './public/build.json'),
     JSON.stringify({ version: `${Date.now()}` }),
   );
-}
-
-const vendorList = ['react', 'react-router-dom', 'react-dom'];
-
-function renderChunks(deps: Record<string, string>) {
-  let chunks: Record<string, string[]> = {};
-  Object.keys(deps).forEach((key) => {
-    if (vendorList.includes(key)) return;
-    chunks[key] = [key];
-  });
-  return chunks;
 }
 
 // https://vitejs.dev/config/
@@ -96,7 +84,15 @@ export default defineConfig({
     target: 'es2015',
     sourcemap: false,
     rollupOptions: {
-      output: { manualChunks: { vendor: vendorList, ...renderChunks(dependencies) } },
+      output: {
+        manualChunks: (id) => {
+          if (/node_modules.+?(react|react-router-dom|react-dom|qss)/.test(id)) {
+            return 'vendor';
+          } else if (id.includes('src/utils/config.ts')) {
+            return 'a_config';
+          }
+        },
+      },
     },
   },
 });

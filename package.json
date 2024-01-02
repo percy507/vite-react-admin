@@ -82,7 +82,7 @@
     "@types/yaireo__tagify": "^4.17.0",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
-    "@vitejs/plugin-legacy": "^1.5.1",
+    "@vitejs/plugin-legacy": "^1.6.4",
     "@vitejs/plugin-react": "^1.0.7",
     "autoprefixer": "^10.4.2",
     "cross-env": "^7.0.3",
