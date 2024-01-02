@@ -33,15 +33,7 @@ function Demo() {
   };
 
   const columns = [
-    {
-      title: '序号',
-      width: 60,
-      dataIndex: 'id',
-    },
-    {
-      title: '标题',
-      dataIndex: 'title',
-    },
+    { title: '标题', dataIndex: 'title' },
     {
       title: '状态',
       width: 100,

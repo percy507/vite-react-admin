@@ -140,7 +140,6 @@ export default function ListPage() {
   };
 
   const columns: ColumnsType<any> = [
-    { title: '序号', width: 70, dataIndex: 'id', fixed: 'left' },
     { title: '标题', width: 200, dataIndex: 'title', fixed: 'left' },
     {
       title: '封面',
@@ -224,6 +223,7 @@ export default function ListPage() {
         ref={tableRef}
         service={requestList}
         searchForm={searchFormConfig}
+        enableIndex="fixedLeft"
         tableProps={{ rowKey: 'id', columns, scroll: { x: 1600 } }}
       />
     </PageWrapper>

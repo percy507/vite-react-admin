@@ -1,5 +1,6 @@
 import type { TableProps, TabPaneProps, TabsProps } from 'antd';
 import { Card, Table, Tabs } from 'antd';
+import type { ColumnType } from 'antd/es/table';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import {
   forwardRef,
@@ -91,6 +92,8 @@ export interface SuperTableProps {
   };
   /** 用于 Table 组件的 props */
   tableProps: TableProps<any> | ((params: ParamsType) => TableProps<any>);
+  /** 是否增加首行为序号行 @defaultValue `true`  */
+  enableIndex?: boolean | 'fixedLeft';
   /** 是否禁止在最外层包裹一个 Card 组件，默认不禁止 */
   noCard?: boolean;
   /** 请求列表数据的api服务 */
@@ -111,6 +114,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       tableProps,
       service,
       afterService,
+      enableIndex = true,
       noCard = false,
       serviceParams,
       paginationParams,
@@ -203,6 +207,19 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       request();
     }, [request, isFirstRenderRef]);
 
+    const _columns = __tableProps.columns || [];
+    const indexColumn: ColumnType<any> = {
+      title: '序号',
+      width: 60,
+      fixed: enableIndex === 'fixedLeft' ? 'left' : undefined,
+      render: (_v, _r, index) => (params[T_CURRENT] - 1) * params[T_SIZE] + index + 1,
+    };
+    const columns = (enableIndex ? [indexColumn, ..._columns] : _columns).map((el) => {
+      if (!el.render) el.render = (v) => v ?? '-';
+      if (el.ellipsis === undefined) el.ellipsis = true;
+      return el;
+    });
+
     const content = (
       <div className={styles.superTable}>
         {__searchFormProps && (
@@ -234,16 +251,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
         ) : null}
         <Table
           {...__tableProps}
-          // {
-          //   title: '序号',
-          //   width: 100,
-          //   render: (_a, _b, index) => index + 1 + (pageNum - 1) * pageSize,
-          // },
-          columns={(__tableProps.columns || []).map((el) => {
-            if (!el.render) el.render = (v) => v ?? '-';
-            if (el.ellipsis === undefined) el.ellipsis = true;
-            return el;
-          })}
+          columns={columns}
           dataSource={data[T_RECORDS] || []}
           loading={loading}
           pagination={{
