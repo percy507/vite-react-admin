@@ -98,6 +98,8 @@ export interface SuperTableProps {
   noCard?: boolean;
   /** 请求列表数据的api服务 */
   service: (params?: any) => Promise<any>;
+  /** 判断是否可以发起请求。返回 false 则不会发起请求 */
+  canService?: () => boolean;
   /** 调用列表接口结束后的钩子函数 */
   afterService?: (params: ParamsType, data: DataType) => void;
   /** 用于列表接口的额外参数 */
@@ -113,6 +115,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       tabs,
       tableProps,
       service,
+      canService = () => true,
       afterService,
       enableIndex = true,
       noCard = false,
@@ -134,8 +137,12 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
     const spRef = useRef(serviceParams);
     spRef.current = serviceParams;
 
+    const canServiceRef = useRef(canService);
+    canServiceRef.current = canService;
+
     const [loading, setLoading] = useState(false);
     const request = useCallback(() => {
+      if (!canServiceRef.current()) return;
       setLoading(true);
       let val = { ...params, ...spRef.current };
       service(val)
