@@ -35,6 +35,7 @@
     "@stitches/react": "^1.2.8",
     "@tanstack/react-table": "^8.5.22",
     "@tanstack/react-virtual": "3.0.0-beta.22",
+    "@vercel/analytics": "^1.1.1",
     "@yaireo/tagify": "^4.17.8",
     "ahooks": "^3.7.8",
     "ali-oss": "^6.17.1",
