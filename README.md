@@ -30,6 +30,14 @@ https://github.com/remix-run/react-router/issues/8493
 https://github.com/remix-run/react-router/issues/8653
 ```
 
+### 权限
+
+```bash
+权限名称与权限码的映射，以及权限层级关系，存储在数据库（菜单、路由前端自己控制）
+前端按模块定义权限枚举，再分发权限
+最终渲染: 进入页面，掉用户详情接口，获取到当前用户所有的权限码，再具体判断是否展示某个菜单、某个按钮，是否允许用户访问某个路由
+```
+
 ### TODO
 
 ```bash

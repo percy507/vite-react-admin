@@ -1,71 +1,99 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Row, Space, Table } from 'antd';
-import { useState } from 'react';
+import { Button, Input, message, Modal, Select, Space } from 'antd';
+import moment from 'moment';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { AsyncButton } from '@/components/AsyncButton';
+import { useHasPermission } from '@/components/Authorized';
 import { PageWrapper } from '@/components/PageWrapper';
-
-import EditModal from './EditModal';
-import styles from './style.module.less';
-
-const data = [
-  {
-    name: 'John Brown',
-  },
-  {
-    name: 'Jim Green',
-  },
-  {
-    name: 'Joe Black',
-  },
-];
+import type { ColumnsType, SearchFormProps } from '@/components/SuperTable';
+import { SuperTable } from '@/components/SuperTable';
+import { requestDeleteRole, requestRoleList } from '@/services/system';
+import { enumTag, enumToOptions, ROLE_STATUS, ROLE_STATUS_COLOR } from '@/utils/enum';
+import { SYSTEM_AUTH } from '@/utils/enum_auth';
 
 export default function RoleManage() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalData, setModalData] = useState<any>(null);
-  const showModal = (data = null) => (setModalData(data), setModalVisible(true));
-  const cancelModal = () => (setModalData(null), setModalVisible(false));
+  const nav = useNavigate();
+  const hasPermission = useHasPermission();
+  const tableRef = useRef<React.ElementRef<typeof SuperTable>>(null);
 
-  const columns = [
+  const searchFormConfig: () => SearchFormProps = () => ({
+    actionBar: hasPermission(SYSTEM_AUTH.角色_新增) ? (
+      <Button type="primary" onClick={() => nav(`/l1/system/role/add`)}>
+        新建角色
+      </Button>
+    ) : undefined,
+    buttonFloatRight: true,
+    items: [
+      { label: '角色名称', name: 'roleName', children: <Input placeholder="请输入" /> },
+      {
+        label: '状态',
+        name: 'status',
+        children: (
+          <Select placeholder="请选择" allowClear options={enumToOptions(ROLE_STATUS)} />
+        ),
+      },
+    ],
+  });
+
+  const columns: ColumnsType<any> = [
+    { title: '角色名称', dataIndex: 'roleName' },
     {
-      title: '角色',
-      dataIndex: 'name',
-      render: (text) => <a>{text}</a>,
+      title: '状态',
+      width: 100,
+      dataIndex: 'status',
+      render: (v) => enumTag(v, ROLE_STATUS, ROLE_STATUS_COLOR),
     },
+    { title: '备注', dataIndex: 'remark' },
     {
-      title: '操作',
-      width: 160,
-      render: (_, record) => (
-        <Space size="middle">
-          <a onClick={() => showModal(record)}>编辑权限</a>
-          <AsyncButton
-            content="删除"
-            popContent="确定删除?"
-            asyncService={() => {
-              return new Promise((resolve) => {
-                setTimeout(() => resolve(null), 1200);
-              });
-            }}
-          />
-        </Space>
-      ),
+      title: '创建时间',
+      dataIndex: 'createTime',
+      width: 200,
+      render: (v) => (v ? moment(v).format('YYYY-MM-DD HH:mm:ss') : '-'),
     },
   ];
 
-  return (
-    <PageWrapper className={styles.RoleManage} header={{ title: '角色管理' }}>
-      <EditModal visible={modalVisible} data={modalData} handleCancel={cancelModal} />
-      <Card>
-        <Row style={{ marginBottom: 16 }}>
-          <Col span={4}>
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => showModal()}>
-              添加角色
-            </Button>
-          </Col>
-        </Row>
+  if (hasPermission([SYSTEM_AUTH.角色_编辑, SYSTEM_AUTH.角色_删除])) {
+    columns.push({
+      title: '操作',
+      fixed: 'right',
+      width: 180,
+      render: (_, record) => {
+        return (
+          <Space size="middle">
+            {hasPermission(SYSTEM_AUTH.角色_编辑) ? (
+              <a onClick={() => nav(`/l1/system/role/edit/${record?.id}`)}>编辑</a>
+            ) : undefined}
+            {hasPermission(SYSTEM_AUTH.角色_删除) ? (
+              <a
+                style={{ color: 'red' }}
+                onClick={() => {
+                  Modal.confirm({
+                    title: '确认删除该角色吗？',
+                    onOk: () => {
+                      return requestDeleteRole(record.id).then(() => {
+                        message.success('删除成功');
+                        tableRef.current?.freshRequest();
+                      });
+                    },
+                  });
+                }}>
+                删除
+              </a>
+            ) : undefined}
+          </Space>
+        );
+      },
+    });
+  }
 
-        <Table rowKey="name" columns={columns} dataSource={data} />
-      </Card>
+  return (
+    <PageWrapper header={{ title: '角色管理' }}>
+      <SuperTable
+        ref={tableRef}
+        service={requestRoleList}
+        searchForm={searchFormConfig()}
+        tableProps={{ columns, rowKey: 'id' }}
+      />
     </PageWrapper>
   );
 }

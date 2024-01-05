@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { atomUserPermission } from '@/store/app';
 
 // 是否关闭所有权限
-const cancelAuth = false;
+const cancelAuth = true;
 
 /**
  * [react-hook] 返回一个函数，用于判断当前用户是否拥有指定的单个权限或

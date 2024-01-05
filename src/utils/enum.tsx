@@ -22,10 +22,13 @@ export function enumTag(
   enumObj: object,
   /** 关联当前枚举的颜色枚举 */
   enumColorObj: object,
+  /** 当值不存在时，则使用 fallback */
   fallback?: string,
 ) {
   if (v === null || v === undefined) return fallback;
-  return <Tag color={enumColorObj[enumObj[v]]}>{enumObj[v]}</Tag>;
+  let key = getEnumLabel(enumObj, v)!;
+  let color = enumColorObj[key] || undefined;
+  return <Tag color={color}>{key}</Tag>;
 }
 
 /** 流程状态 */
@@ -34,10 +37,18 @@ export enum PROCESS_STATUS {
   审批通过 = 1,
   审批拒绝 = 2,
 }
-
-/** 流程状态关联的Tag颜色 */
 export enum PROCESS_STATUS_COLOR {
-  审核中 = 'rgba(250, 140, 22, 1)',
-  审批通过 = 'rgba(82, 196, 26, 1)',
-  审批拒绝 = 'rgba(245, 34, 45, 1)',
+  审核中 = 'orange',
+  审批通过 = 'green',
+  审批拒绝 = 'red',
+}
+
+/** 角色状态 */
+export enum ROLE_STATUS {
+  正常 = 'NORMAL',
+  停用 = 'DISABLE',
+}
+export enum ROLE_STATUS_COLOR {
+  正常 = 'green',
+  停用 = 'gray',
 }
