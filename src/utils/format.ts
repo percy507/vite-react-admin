@@ -1,6 +1,6 @@
 import type { FormInstance } from 'antd';
 
-/** 用千位分隔符格式化数字，不会格式化小数位，且仅支持三位小数 */
+/** 用千位分隔符格式化数字，不会格式化小数位 */
 export function formatNumber(
   val: number | string,
   /** 有效数字的位数，默认2位 */
@@ -9,7 +9,10 @@ export function formatNumber(
 ): string {
   let num = Number.parseFloat(`${val}`);
   if (Number.isNaN(num)) return '-';
-  let str = num.toLocaleString('en-US');
+  let [, b] = `${num}`.split('.');
+  let str = Math.trunc(num).toLocaleString('en-US');
+  if (b != null) str = `${str}.${b}`;
+
   if (autoPadZero) {
     let [a, b = ''] = str.split('.');
     if (b.length < decimal) str = `${a}.${b}${'0'.repeat(decimal - b.length)}`;
