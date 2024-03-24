@@ -90,6 +90,7 @@ export default function ListPage() {
       </Button>
     ),
     buttonFloatRight: true,
+    enableFold: true,
     items: [
       { label: '输入框', name: 'key1', children: <Input placeholder="请输入" /> },
       {

@@ -1,7 +1,8 @@
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import type { FormInstance } from 'antd';
 import { Button, Col, Divider, Form, Row, Space } from 'antd';
 import moment from 'moment';
-import { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import styles from './style.module.less';
 
@@ -39,12 +40,22 @@ export interface SearchFormProps {
   onSearch?: (value?: any) => void;
   /** 查询和重置的按钮组是否向右浮动，默认不浮动 */
   buttonFloatRight?: boolean;
+  /** 是否启用筛选项的收起展开 */
+  enableFold?: boolean;
 }
 
 export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
   function InnerSearchForm(props, ref) {
-    const { onSearch, items, extraButton, actionBar, buttonFloatRight = false } = props;
+    const {
+      onSearch,
+      items,
+      extraButton,
+      actionBar,
+      buttonFloatRight = false,
+      enableFold = false,
+    } = props;
     const [form] = Form.useForm();
+    const [folded, setFolded] = useState(false);
 
     useImperativeHandle(ref, () => ({ form }), [form]);
 
@@ -83,20 +94,23 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
             if (onSearch) onSearch(convertValues(values));
           }}>
           <Row style={{ width: '100%' }}>
-            {items.map((el, index) => (
-              <Col span={8} key={index} style={{ marginBottom: 16 }}>
-                {!el ? (
-                  '\u0020'
-                ) : (
-                  <Form.Item
-                    name={el.name}
-                    label={el.label}
-                    initialValue={el.initialValue}>
-                    {el.children}
-                  </Form.Item>
-                )}
-              </Col>
-            ))}
+            {items.map((el, index) => {
+              if (enableFold && !folded && index >= 2) return null;
+              return (
+                <Col span={8} key={index} style={{ marginBottom: 16 }}>
+                  {!el ? (
+                    '\u0020'
+                  ) : (
+                    <Form.Item
+                      name={el.name}
+                      label={el.label}
+                      initialValue={el.initialValue}>
+                      {el.children}
+                    </Form.Item>
+                  )}
+                </Col>
+              );
+            })}
             <Col span={8} style={{ marginBottom: 16 }}>
               <Form.Item wrapperCol={{ offset: 8 }}>
                 <Space style={buttonFloatRight ? { float: 'right' } : undefined}>
@@ -112,6 +126,22 @@ export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
                     }}>
                     重置
                   </Button>
+                  {!folded && enableFold && (
+                    <Button
+                      type="link"
+                      icon={<DownOutlined />}
+                      onClick={() => setFolded(true)}>
+                      展开
+                    </Button>
+                  )}
+                  {folded && enableFold && (
+                    <Button
+                      type="link"
+                      icon={<UpOutlined />}
+                      onClick={() => setFolded(false)}>
+                      收起
+                    </Button>
+                  )}
                 </Space>
               </Form.Item>
             </Col>
