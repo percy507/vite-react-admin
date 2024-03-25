@@ -102,6 +102,8 @@ export interface SuperTableProps {
   canService?: () => boolean;
   /** 调用列表接口结束后的钩子函数 */
   afterService?: (params: ParamsType, data: DataType) => void;
+  /** 重新处理接口返回数据 */
+  mapData?: (data: DataType) => DataType;
   /** 用于列表接口的额外参数 */
   serviceParams?: Record<string, any>;
   /** 分页参数，默认 `{ [T_CURRENT]: 1, [T_SIZE]: 10 }` */
@@ -117,6 +119,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       service,
       canService = () => true,
       afterService,
+      mapData,
       enableIndex = true,
       noCard = false,
       serviceParams,
@@ -139,6 +142,8 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
 
     const canServiceRef = useRef(canService);
     canServiceRef.current = canService;
+    const mapDataRef = useRef(mapData);
+    mapDataRef.current = mapData;
 
     const [loading, setLoading] = useState(false);
     const request = useCallback(() => {
@@ -147,7 +152,9 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       let val = { ...params, ...spRef.current };
       service(val)
         .then(({ data }) => {
-          if (data != null) setData(data);
+          if (data != null) {
+            setData(mapDataRef.current ? mapDataRef.current(data) : data);
+          }
           if (afterService) afterService(val, data);
         })
         .finally(() => setLoading(false));
