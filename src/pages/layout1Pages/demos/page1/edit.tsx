@@ -7,6 +7,7 @@ import { AsyncButton } from '@/components/AsyncButton';
 import { PageWrapper } from '@/components/PageWrapper';
 import { SuperUpload } from '@/components/SuperUpload';
 import { TinyMCE } from '@/components/TinyMCE';
+import { useFormProtector } from '@/hooks/useFormProtector';
 import { requestDetail, requestEdit } from '@/services/demo';
 
 import styles from './style.module.less';
@@ -17,7 +18,10 @@ export default function EditPage() {
 
   const nav = useNavigate();
   const { id } = useParams();
+
   const [form] = Form.useForm();
+  useFormProtector(form);
+
   const isEdit = !!id;
   const [data, setData] = useState<any>({});
 
@@ -45,6 +49,7 @@ export default function EditPage() {
       });
     });
   }, [id, form, isEdit]);
+
   const handleOk = (pub: number) => {
     // 保存 0 发布 1
     return new Promise((resolve, reject) => {
