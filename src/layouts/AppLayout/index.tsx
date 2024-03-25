@@ -1,6 +1,12 @@
 import { Modal } from 'antd';
 import { lazy, useCallback, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Outlet,
+  Route,
+  RouterProvider,
+} from 'react-router-dom';
 
 import { lr, navigateTo, RouteListener } from '@/components/RouteUtils';
 import { getAuthToken, ls } from '@/utils/storage';
@@ -17,6 +23,27 @@ export default function AppLayout() {
     reportFrontendErr();
   }, []);
 
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<Wrapper />}>
+        <Route
+          path="/"
+          element={isLogin ? lr(lazy(() => import('./layout'))) : navigateTo('/login')}>
+          {routeList.map((el, index) => {
+            // @ts-ignore
+            return <Route key={index} {...el} />;
+          })}
+        </Route>
+        <Route path="/mobile/*" element={lr(lazy(() => import('@/mobile')))} />
+        <Route path="/login" element={lr(lazy(() => import('@/pages/login')))} />
+      </Route>,
+    ),
+  );
+
+  return <RouterProvider router={router} />;
+}
+
+function Wrapper() {
   // 用于部署代码后，如果用户未刷新页面，那么在用户切换路由时，js等资源会404找不到
   // 所以需要弹窗引导用户刷新页面
   const onRouteChange = useCallback(() => {
@@ -45,18 +72,7 @@ export default function AppLayout() {
   return (
     <>
       <RouteListener onChange={onRouteChange} />
-      <Routes>
-        <Route
-          path="/"
-          element={isLogin ? lr(lazy(() => import('./layout'))) : navigateTo('/login')}>
-          {routeList.map((el, index) => {
-            // @ts-ignore
-            return <Route key={index} {...el} />;
-          })}
-        </Route>
-        <Route path="/mobile/*" element={lr(lazy(() => import('@/mobile')))} />
-        <Route path="/login" element={lr(lazy(() => import('@/pages/login')))} />
-      </Routes>
+      <Outlet />
     </>
   );
 }

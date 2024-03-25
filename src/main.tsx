@@ -8,7 +8,6 @@ import zhCN from 'antd/es/locale/zh_CN';
 import { Provider } from 'jotai';
 import moment from 'moment';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
 
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import AppLayout from '@/layouts/AppLayout';
@@ -24,9 +23,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
   <ConfigProvider locale={zhCN}>
     <ErrorBoundary>
       <Provider>
-        <BrowserRouter>
-          <AppLayout />
-        </BrowserRouter>
+        <AppLayout />
       </Provider>
     </ErrorBoundary>
   </ConfigProvider>,
