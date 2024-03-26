@@ -20,7 +20,7 @@ export default function EditPage() {
   const { id } = useParams();
 
   const [form] = Form.useForm();
-  useFormProtector(form);
+  const { disableFormProtector } = useFormProtector(form);
 
   const isEdit = !!id;
   const [data, setData] = useState<any>({});
@@ -76,6 +76,7 @@ export default function EditPage() {
           })
             .then(() => {
               message.success(pub ? '发布成功' : '保存成功');
+              disableFormProtector();
               nav('../');
             })
             .finally(() => {

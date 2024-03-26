@@ -1,20 +1,27 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import type { FormInstance } from 'antd/es/form';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useBlocker } from 'react-router-dom';
 
 /**
  * 在表单页面，如果表单页有已填写的数据，那么在路由跳转或关闭浏览器tab时，进行二次确认操作，
  * 防止已填写的数据丢失
+ * ps: 纯前端路由跳转可以使用自定义弹窗，关闭浏览器tab或刷新时，只支持使用浏览器默认效果
+ * @note 提交表单后的路由跳转，需要手动调用 disableFormProtector 函数来关闭此功能，否则也会弹窗
  */
 export function useFormProtector(form: FormInstance) {
+  const enableRef = useRef(true);
   const hasFormData = useCallback(
     () => JSON.stringify(form.getFieldsValue() || {}) !== '{}',
     [form],
   );
   const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-    return hasFormData() && currentLocation.pathname !== nextLocation.pathname;
+    return (
+      enableRef.current &&
+      hasFormData() &&
+      currentLocation.pathname !== nextLocation.pathname
+    );
   });
 
   useEffect(() => {
@@ -37,4 +44,16 @@ export function useFormProtector(form: FormInstance) {
       onCancel: () => blocker.reset?.(),
     });
   }
+
+  return useMemo(
+    () => ({
+      enableFormProtector: () => {
+        enableRef.current = true;
+      },
+      disableFormProtector: () => {
+        enableRef.current = false;
+      },
+    }),
+    [],
+  );
 }
