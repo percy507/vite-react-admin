@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useHasPermission } from '@/components/Authorized';
 import { IconFont } from '@/components/IconFont';
+import { isElementOutViewport } from '@/utils/dom';
 
 import styles from './style.module.less';
 
@@ -68,6 +69,15 @@ export function MenuList(props: MenuListProps) {
     ) {
       setInnerOpenKeys(shouldOpenKeys);
       setInnerSelectedKeys(shouldSelectedKeys);
+
+      let key = shouldSelectedKeys[0];
+      if (key) {
+        setTimeout(() => {
+          // 如果默认选中的菜单不在视口，则滚动其到视口中
+          const dom = document.querySelector(`[data-menukey="${key}"]`);
+          if (dom && isElementOutViewport(dom)) dom.scrollIntoView();
+        }, 200);
+      }
     }
   }, [list, location.pathname, menuPosition]);
 
