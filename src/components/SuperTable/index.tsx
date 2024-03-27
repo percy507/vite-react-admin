@@ -65,12 +65,18 @@ interface ParamsType {
 }
 
 interface SuperTableRefProps {
+  /** 当前列表接口中的参数 */
+  params: ParamsType;
+  /** 表格数据 */
+  data: DataType;
   /** 请求列表数据，不会重置筛选项，也不会设置页码 */
   request: () => void;
   /** 请求列表数据，但会重置筛选项，并设置页码到第一页 */
   freshRequest: (extraParams?: { [key: string]: any }) => void;
-  /** 当前列表接口中的参数 */
-  params: ParamsType;
+  /** 手动触发筛选表单的查询操作 */
+  search: () => void;
+  /** 手动设置筛选表单的值 */
+  setFieldsValue: (params) => void;
 }
 
 export interface SuperTableProps {
@@ -160,19 +166,6 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
         .finally(() => setLoading(false));
     }, [service, params, afterService]);
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        params,
-        request,
-        freshRequest: (extraParams = {}) => {
-          formRef.current?.form.resetFields();
-          setParams({ ...extraParams, [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] });
-        },
-      }),
-      [request, params],
-    );
-
     const __tableProps =
       typeof tableProps === 'function' ? tableProps(params) : tableProps;
     const __searchFormProps =
@@ -234,18 +227,20 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       return el;
     });
 
+    const pageSize = params[T_SIZE];
+    const handleSearch = useCallback(
+      (values) => {
+        const obj = { [T_CURRENT]: 1, [T_SIZE]: pageSize };
+        if (JSON.stringify(values) === '{}') setParams({ ...obj });
+        else setParams({ ...values, ...obj });
+      },
+      [pageSize],
+    );
+
     const content = (
       <div className={styles.superTable}>
         {__searchFormProps && (
-          <SearchForm
-            {...__searchFormProps}
-            ref={formRef}
-            onSearch={(values) => {
-              const obj = { [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] };
-              if (JSON.stringify(values) === '{}') setParams({ ...obj });
-              else setParams({ ...values, ...obj });
-            }}
-          />
+          <SearchForm {...__searchFormProps} ref={formRef} onSearch={handleSearch} />
         )}
         {tabs && tabs.root && Array.isArray(tabs.panes) && tabs.panes.length > 0 ? (
           <Tabs
@@ -280,6 +275,27 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
         />
       </div>
     );
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        params,
+        data,
+        request,
+        freshRequest: (extraParams = {}) => {
+          formRef.current?.form.resetFields();
+          setParams({ ...extraParams, [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] });
+        },
+        search: () => {
+          handleSearch(formRef.current?.form?.getFieldsValue() || {});
+        },
+        setFieldsValue: (params) => {
+          formRef.current?.form?.setFieldsValue(params);
+        },
+      }),
+      [params, data, request, handleSearch],
+    );
+
     return noCard ? content : <Card>{content}</Card>;
   },
 );
