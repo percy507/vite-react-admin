@@ -1,5 +1,6 @@
 import type { TableProps, TabPaneProps, TabsProps } from 'antd';
 import { Card, Table, Tabs } from 'antd';
+import type { FormInstance } from 'antd/es/form';
 import type { ColumnType } from 'antd/es/table';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import {
@@ -65,6 +66,8 @@ interface ParamsType {
 }
 
 interface SuperTableRefProps {
+  /** 筛选表单的实例 */
+  form?: FormInstance;
   /** 当前列表接口中的参数 */
   params: ParamsType;
   /** 表格数据 */
@@ -75,8 +78,6 @@ interface SuperTableRefProps {
   freshRequest: (extraParams?: { [key: string]: any }) => void;
   /** 手动触发筛选表单的查询操作 */
   search: () => void;
-  /** 手动设置筛选表单的值 */
-  setFieldsValue: (params) => void;
 }
 
 export interface SuperTableProps {
@@ -279,6 +280,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
     useImperativeHandle(
       ref,
       () => ({
+        form: formRef.current?.form,
         params,
         data,
         request,
@@ -288,9 +290,6 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
         },
         search: () => {
           handleSearch(formRef.current?.form?.getFieldsValue() || {});
-        },
-        setFieldsValue: (params) => {
-          formRef.current?.form?.setFieldsValue(params);
         },
       }),
       [params, data, request, handleSearch],
