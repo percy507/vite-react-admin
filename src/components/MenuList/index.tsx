@@ -82,10 +82,7 @@ export function MenuList(props: MenuListProps) {
   }, [list, location.pathname, menuPosition]);
 
   const items: MenuProps['items'] = list
-    .filter((menu) => {
-      if (!menu.children) return hasPermission(menu.auth);
-      return menu.children.filter((el) => hasPermission(el.auth)).length !== 0;
-    })
+    .filter((menu) => hasPermission(menu.auth))
     .map((menu) => {
       const children = menu.children || [];
       if (children.length === 0) {
