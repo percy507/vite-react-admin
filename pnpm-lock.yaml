@@ -19,6 +19,9 @@ dependencies:
   '@tanstack/react-virtual':
     specifier: 3.0.0-beta.22
     version: 3.0.0-beta.22(react@18.2.0)
+  '@uiw/react-watermark':
+    specifier: ^1.0.1
+    version: 1.0.1(react-dom@18.2.0)(react@18.2.0)
   '@vercel/analytics':
     specifier: ^1.1.1
     version: 1.1.1
@@ -1443,6 +1446,21 @@ packages:
       '@typescript-eslint/types': 5.30.6
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@uiw/react-watermark@1.0.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-vgredbDTD0YUjLICXiAFEt7z+lmBGAos+iApedsBdEBkkTxxINCsA3cNYKGJTohMOfa4kFQ/+RR7ygVSsisnfw==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+    dependencies:
+      '@uiw/watermark.js': 1.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@uiw/watermark.js@1.0.1:
+    resolution: {integrity: sha512-ymn0LPfp9f4UhMIFonSEHtRnuF32OCLieQs3dQu0gJpXXqz4bnAdMU4Gx+qLr2oWdS6l3IMrDQLEYAhDytxLuA==}
+    dev: false
 
   /@use-gesture/core@10.2.20:
     resolution: {integrity: sha512-4lFhHc8so4yIHkBEs641DnEsBxPyhJ5GEjB4PURFDH4p/FcZriH6w99knZgI63zN/MBFfylMyb8+PDuj6RIXKQ==}

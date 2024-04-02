@@ -90,6 +90,12 @@
     width: 100%;
     height: calc(100% - @headerHeight);
     overflow: hidden;
+
+    :global {
+      .w-watermark {
+        z-index: 99999 !important;
+      }
+    }
   }
 }
 

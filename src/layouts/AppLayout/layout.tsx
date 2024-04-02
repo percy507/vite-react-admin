@@ -1,4 +1,5 @@
 import { BellOutlined, DownOutlined } from '@ant-design/icons';
+import ReactWatermark from '@uiw/react-watermark';
 import { Avatar, Badge, Dropdown, Empty, Layout, Menu, Popover, Spin } from 'antd';
 import { useAtom } from 'jotai';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
@@ -79,11 +80,31 @@ export default function AppMainLayout() {
             </div>
           </Header>
           <Layout className={styles.content}>
-            <Outlet />
+            <Watermark>
+              <Outlet />
+            </Watermark>
           </Layout>
         </Fragment>
       )}
     </Layout>
+  );
+}
+
+function Watermark({ children }) {
+  const text = ['高度机密，请勿外传', '违者处以雷鞭之刑'];
+  return (
+    <ReactWatermark
+      style={{ width: '100%', height: '100%' }}
+      content={text}
+      rotate={15}
+      gapX={120}
+      gapY={120}
+      width={100}
+      height={5}
+      fontSize={12}
+      fontColor="rgba(0, 0, 0, 0.07)">
+      {children}
+    </ReactWatermark>
   );
 }
 
