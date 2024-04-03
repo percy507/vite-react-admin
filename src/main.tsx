@@ -20,7 +20,9 @@ moment.locale('zh-cn');
 zhCN.DatePicker!.lang.rangePlaceholder = ['开始时间', '结束时间'];
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <ConfigProvider locale={zhCN}>
+  <ConfigProvider
+    locale={zhCN}
+    getPopupContainer={(trigger) => trigger?.parentNode as HTMLElement}>
     <ErrorBoundary>
       <Provider>
         <AppLayout />
