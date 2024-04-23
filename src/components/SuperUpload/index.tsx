@@ -39,9 +39,12 @@ export interface SuperUploadProps extends Omit<UploadProps, 'value' | 'onChange'
   children?: React.ReactNode;
   /** 是否仅允许上传图片，默认false */
   onlyImage?: boolean;
-  /** 单个文件的最大大小(单位字节)，默认20MB。 2MB = 2\*1024\*1024 字节 */
+  /**
+   * 单个文件的最大大小(单位字节)，默认20MB。 2MB = 2\*1024\*1024 字节；
+   * 当值为-1时，不显示相关提示文案
+   */
   maxFileSize?: number;
-  /** 允许上传的图片数量，默认1 */
+  /** 允许上传的图片数量，默认1； 当值为-1时，不显示相关提示文案 */
   maxFileNum?: number;
   /**
    * 允许上传的图片的宽高比例。如果该字段不为空且设置了onlyImage字段，则会触发裁剪图片的弹窗。
@@ -175,9 +178,11 @@ export function SuperUpload(props: SuperUploadProps) {
   };
 
   const UploadTips = useCallback(() => {
-    const tipMaxFileNum = `最多可以上传 ${maxFileNum} 份文件`;
+    const tipMaxFileNum = maxFileNum !== -1 ? `最多可以上传 ${maxFileNum} 份文件` : null;
     const tipAccept = `支持的格式: ${accept || '任意类型'}`;
-    const tipMaxSize = `单个文件大小不能超过 ${maxFileSize / 1024 / 1024}MB`;
+    const tipMaxSize =
+      maxFileSize !== -1 ? `单个文件大小不能超过 ${maxFileSize / 1024 / 1024}MB` : null;
+
     const conditions = [tipMaxFileNum, tipAccept, tipMaxSize].filter((el) => !!el);
 
     return showTips ? (
@@ -201,7 +206,7 @@ export function SuperUpload(props: SuperUploadProps) {
     accept,
     fileList: innerFileList,
     beforeUpload: async (file) => {
-      if (maxFileSize && file.size > maxFileSize) {
+      if (maxFileSize && maxFileSize !== -1 && file.size > maxFileSize) {
         message.error('文件大小超过限制');
         return Upload.LIST_IGNORE;
       }
@@ -239,7 +244,7 @@ export function SuperUpload(props: SuperUploadProps) {
   return (
     <div
       className={clsx(styles.superUpload, className, {
-        [styles.hideUploadBtn]: innerFileList.length >= maxFileNum,
+        [styles.hideUploadBtn]: maxFileNum !== -1 && innerFileList.length >= maxFileNum,
         [styles.disabled]: disabled,
         [styles.tipsOnRight]: showTipsOnRight,
       })}>
