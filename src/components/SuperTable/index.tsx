@@ -199,7 +199,8 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
     useEffect(() => {
       if (isFirstRenderRef.current) {
         let form = formRef.current?.form;
-        let searchParams = lastParamsRef.current || form?.getFieldsValue() || {};
+        let searchParams =
+          lastParamsRef.current || formRef.current?.getSearchParams() || {};
         if (lastParamsRef.current) {
           form?.setFieldsValue(deconvertFormValuesRef.current(lastParamsRef.current));
         }
@@ -289,7 +290,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
           setParams({ ...extraParams, [T_CURRENT]: 1, [T_SIZE]: params[T_SIZE] });
         },
         search: () => {
-          handleSearch(formRef.current?.form?.getFieldsValue() || {});
+          handleSearch(formRef.current?.getSearchParams() || {});
         },
       }),
       [params, data, request, handleSearch],

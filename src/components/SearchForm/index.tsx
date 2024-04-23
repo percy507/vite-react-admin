@@ -2,7 +2,7 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import type { FormInstance } from 'antd';
 import { Button, Col, Divider, Form, Row, Space } from 'antd';
 import moment from 'moment';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import styles from './style.module.less';
 
@@ -44,116 +44,127 @@ export interface SearchFormProps {
   enableFold?: boolean;
 }
 
-export const SearchForm = forwardRef<{ form: FormInstance }, SearchFormProps>(
-  function InnerSearchForm(props, ref) {
-    const {
-      onSearch,
-      items,
-      extraButton,
-      actionBar,
-      buttonFloatRight = false,
-      enableFold = false,
-    } = props;
-    const [form] = Form.useForm();
-    const [folded, setFolded] = useState(false);
+export const SearchForm = forwardRef<
+  { form: FormInstance; getSearchParams: () => Record<string, any> },
+  SearchFormProps
+>(function InnerSearchForm(props, ref) {
+  const {
+    onSearch,
+    items,
+    extraButton,
+    actionBar,
+    buttonFloatRight = false,
+    enableFold = false,
+  } = props;
+  const [form] = Form.useForm();
+  const [folded, setFolded] = useState(false);
 
-    useImperativeHandle(ref, () => ({ form }), [form]);
-
-    const convertValues = (values: any) => {
-      let params = { ...values };
-      items.forEach((el) => {
-        if (el && el.converter && params[el.name] != null) {
-          // 如果是日期范围类型的表单，开始时间取选中日期的00:00:00，结束时间取选中日期的23:59:59
-          if (
-            Array.isArray(params[el.name]) &&
-            params[el.name].length === 2 &&
-            params[el.name].every((el) => moment.isMoment(el))
-          ) {
-            params[el.name][0] = params[el.name][0].startOf('day');
-            params[el.name][1] = params[el.name][1].endOf('day');
-          }
-
-          let realParams = el.converter(params[el.name]);
-          params = { ...params, ...realParams };
-          if (Object.prototype.hasOwnProperty.call(realParams, el.name)) return;
-          else delete params[el.name];
+  const convertValues = (values: any) => {
+    let params = { ...values };
+    items.forEach((el) => {
+      if (el && el.converter && params[el.name] != null) {
+        // 如果是日期范围类型的表单，开始时间取选中日期的00:00:00，结束时间取选中日期的23:59:59
+        if (
+          Array.isArray(params[el.name]) &&
+          params[el.name].length === 2 &&
+          params[el.name].every((el) => moment.isMoment(el))
+        ) {
+          params[el.name][0] = params[el.name][0].startOf('day');
+          params[el.name][1] = params[el.name][1].endOf('day');
         }
-      });
-      return params;
-    };
 
-    return (
-      <div className={styles.root}>
-        <Form
-          form={form}
-          layout="inline"
-          labelWrap
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          onFinish={(values) => {
-            if (onSearch) onSearch(convertValues(values));
-          }}>
-          <Row style={{ width: '100%' }}>
-            {items.map((el, index) => {
-              if (enableFold && !folded && index >= 2) return null;
-              return (
-                <Col span={8} key={index} style={{ marginBottom: 16 }}>
-                  {!el ? (
-                    '\u0020'
-                  ) : (
-                    <Form.Item
-                      name={el.name}
-                      label={el.label}
-                      initialValue={el.initialValue}>
-                      {el.children}
-                    </Form.Item>
-                  )}
-                </Col>
-              );
-            })}
-            <Col span={8} style={{ marginBottom: 16 }}>
-              <Form.Item wrapperCol={{ offset: 8 }}>
-                <Space style={buttonFloatRight ? { float: 'right' } : undefined}>
-                  {extraButton}
-                  <Button type="primary" htmlType="submit">
-                    查询
-                  </Button>
+        let realParams = el.converter(params[el.name]);
+        params = { ...params, ...realParams };
+        if (Object.prototype.hasOwnProperty.call(realParams, el.name)) return;
+        else delete params[el.name];
+      }
+    });
+    return params;
+  };
+
+  const convertValuesRef = useRef(convertValues);
+  convertValuesRef.current = convertValues;
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      form,
+      getSearchParams: () => convertValuesRef.current(form.getFieldsValue() || {}),
+    }),
+    [form],
+  );
+
+  return (
+    <div className={styles.root}>
+      <Form
+        form={form}
+        layout="inline"
+        labelWrap
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        onFinish={(values) => {
+          if (onSearch) onSearch(convertValues(values));
+        }}>
+        <Row style={{ width: '100%' }}>
+          {items.map((el, index) => {
+            if (enableFold && !folded && index >= 2) return null;
+            return (
+              <Col span={8} key={index} style={{ marginBottom: 16 }}>
+                {!el ? (
+                  '\u0020'
+                ) : (
+                  <Form.Item
+                    name={el.name}
+                    label={el.label}
+                    initialValue={el.initialValue}>
+                    {el.children}
+                  </Form.Item>
+                )}
+              </Col>
+            );
+          })}
+          <Col span={8} style={{ marginBottom: 16 }}>
+            <Form.Item wrapperCol={{ offset: 8 }}>
+              <Space style={buttonFloatRight ? { float: 'right' } : undefined}>
+                {extraButton}
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+                <Button
+                  htmlType="button"
+                  onClick={() => {
+                    form.resetFields();
+                    if (onSearch) onSearch(convertValues(form.getFieldsValue()));
+                  }}>
+                  重置
+                </Button>
+                {!folded && enableFold && (
                   <Button
-                    htmlType="button"
-                    onClick={() => {
-                      form.resetFields();
-                      if (onSearch) onSearch(convertValues(form.getFieldsValue()));
-                    }}>
-                    重置
+                    type="link"
+                    icon={<DownOutlined />}
+                    onClick={() => setFolded(true)}>
+                    展开
                   </Button>
-                  {!folded && enableFold && (
-                    <Button
-                      type="link"
-                      icon={<DownOutlined />}
-                      onClick={() => setFolded(true)}>
-                      展开
-                    </Button>
-                  )}
-                  {folded && enableFold && (
-                    <Button
-                      type="link"
-                      icon={<UpOutlined />}
-                      onClick={() => setFolded(false)}>
-                      收起
-                    </Button>
-                  )}
-                </Space>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-        {actionBar && (
-          <>
-            <Divider />
-            <div>{actionBar}</div>
-          </>
-        )}
-      </div>
-    );
-  },
-);
+                )}
+                {folded && enableFold && (
+                  <Button
+                    type="link"
+                    icon={<UpOutlined />}
+                    onClick={() => setFolded(false)}>
+                    收起
+                  </Button>
+                )}
+              </Space>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+      {actionBar && (
+        <>
+          <Divider />
+          <div>{actionBar}</div>
+        </>
+      )}
+    </div>
+  );
+});
