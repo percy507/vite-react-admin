@@ -50,13 +50,16 @@ export function MenuList(props: MenuListProps) {
         shouldSelectedKeys = [el.key || el.label];
       } else if (
         el.link === location.pathname ||
-        (el.link && location.pathname.startsWith(el.link))
+        (el.link && location.pathname.startsWith(`${el.link}/`))
       ) {
         shouldSelectedKeys = [el.key || el.label];
       }
 
       (el.children || []).forEach((el2) => {
-        if (el2.link && location.pathname.startsWith(el2.link)) {
+        if (
+          el2.link === location.pathname ||
+          (el2.link && location.pathname.startsWith(`${el2.link}/`))
+        ) {
           shouldOpenKeys = [el.key || el.label];
           shouldSelectedKeys = [el2.key || el2.label];
         }
