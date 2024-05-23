@@ -13,6 +13,7 @@ export const isIOS = !!navigator.platform.match(/iPhone|iPod|iPad/);
  * @return {string}
  */
 export function toAdaptedPx(value: number): number {
+  if (!window.__adaptorWidth) return value;
   return value / (uiConfig.width / window.__adaptorWidth);
 }
 

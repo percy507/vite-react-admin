@@ -1,6 +1,6 @@
 import { ConfigProvider } from 'antd-mobile';
 import zhCN from 'antd-mobile/es/locales/zh-CN';
-import { lazy, useEffect, useReducer } from 'react';
+import { lazy, useEffect, useLayoutEffect, useReducer } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import VConsole from 'vconsole';
 
@@ -24,9 +24,12 @@ const setupFontSize = () => {
 export default function MobileLayout() {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
+  useLayoutEffect(() => {
+    setupFontSize();
+  }, []);
+
   useEffect(() => {
     const resizeHandler = debounce(() => (setupFontSize(), forceUpdate()), 200);
-    setupFontSize();
     window.addEventListener('resize', resizeHandler);
 
     return () => {
