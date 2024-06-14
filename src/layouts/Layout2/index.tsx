@@ -20,6 +20,7 @@ export default function Layout2() {
         color,
         background: bg,
         overflow: 'auto',
+        height: '100%',
       }}>
       <div className={styles.title}>
         配色数据来源于{' '}
