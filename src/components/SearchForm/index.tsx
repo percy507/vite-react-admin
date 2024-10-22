@@ -42,6 +42,8 @@ export interface SearchFormProps {
   buttonFloatRight?: boolean;
   /** 是否启用筛选项的收起展开 */
   enableFold?: boolean;
+  /** 收起时展示3个表单项，默认展示两个 */
+  showThreeFieldsOnFold?: boolean;
 }
 
 export const SearchForm = forwardRef<
@@ -55,6 +57,7 @@ export const SearchForm = forwardRef<
     actionBar,
     buttonFloatRight = false,
     enableFold = false,
+    showThreeFieldsOnFold = false,
   } = props;
   const [form] = Form.useForm();
   const [folded, setFolded] = useState(false);
@@ -107,7 +110,10 @@ export const SearchForm = forwardRef<
         }}>
         <Row style={{ width: '100%' }}>
           {items.map((el, index) => {
-            if (enableFold && !folded && index >= 2) return null;
+            if (enableFold && !folded && index >= (showThreeFieldsOnFold ? 3 : 2)) {
+              return null;
+            }
+
             return (
               <Col span={8} key={index} style={{ marginBottom: 16 }}>
                 {!el ? (
@@ -123,6 +129,7 @@ export const SearchForm = forwardRef<
               </Col>
             );
           })}
+          {enableFold && !folded && showThreeFieldsOnFold ? <Col span={16}></Col> : null}
           <Col span={8} style={{ marginBottom: 16 }}>
             <Form.Item wrapperCol={{ offset: 8 }}>
               <Space style={buttonFloatRight ? { float: 'right' } : undefined}>
