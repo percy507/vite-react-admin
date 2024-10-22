@@ -18,11 +18,7 @@ import { Authorized, useHasPermission } from '@/components/Authorized';
 import { PageWrapper } from '@/components/PageWrapper';
 import { PreviewImage } from '@/components/PreviewImage';
 import type { ColumnsType, SearchFormProps } from '@/components/SuperTable';
-import {
-  deconverterDateRange,
-  SuperTable,
-  useSaveListPageState,
-} from '@/components/SuperTable';
+import { deconverterDateRange, SuperTable } from '@/components/SuperTable';
 import { requestDelete, requestList, requestPublish } from '@/services/demo';
 import {
   enumTag,
@@ -71,7 +67,6 @@ const cities = [
 ];
 
 export default function ListPage() {
-  const saveListPageState = useSaveListPageState();
   const hasPermission = useHasPermission();
   const nav = useNavigate();
   const tableRef = useRef<React.ElementRef<typeof SuperTable>>(null);
@@ -189,7 +184,6 @@ export default function ListPage() {
           <Authorized>
             <a
               onClick={() => {
-                saveListPageState(tableRef.current?.params);
                 nav('./detail/' + record.id);
               }}>
               查看详情

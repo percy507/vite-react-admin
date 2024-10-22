@@ -23,20 +23,12 @@ export { deconverterDateRange } from '@/components/SearchForm';
 export type { ColumnsType } from 'antd/es/table';
 
 /** 基于路由缓存列表页的筛选、分页状态 */
-export const atomListPageState = atom<Record<string, string | undefined>>({});
+const atomListPageState = atom<Record<string, string | undefined>>({});
 
 const pathKey = () => location.pathname.replace(/\/+$/, '');
 
-/**
- * @example
- * ```ts
- * const saveListPageState = useSaveListPageState();
- * onClick={() => {
- *   saveListPageState(tableRef.current?.params);
- * }}
- * ```
- */
-export function useSaveListPageState() {
+/** 基于路由缓存对象 */
+function useSaveListPageState() {
   const set = useSetAtom(atomListPageState);
   return (params: Record<string, any> = {}) => {
     set((old) => ({ ...old, [pathKey()]: JSON.stringify(params) }));
@@ -85,6 +77,8 @@ export interface SuperTableProps {
   searchForm?:
     | Omit<SearchFormProps, 'onSearch' | 'ref'>
     | ((data: DataType) => Omit<SearchFormProps, 'onSearch' | 'ref'>);
+  /** 是否基于路由缓存搜索项，默认 true */
+  cacheSearch?: boolean;
   /** 用于配置 Table 组件上方展示的 Tabs 组件 */
   tabs?: {
     /**
@@ -121,6 +115,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
   function InnerSuperTable(props, ref) {
     const {
       searchForm,
+      cacheSearch = true,
       tabs,
       tableProps,
       service,
@@ -229,14 +224,18 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       return el;
     });
 
+    const saveListPageState = useSaveListPageState();
+
     const pageSize = params[T_SIZE];
     const handleSearch = useCallback(
       (values) => {
-        const obj = { [T_CURRENT]: 1, [T_SIZE]: pageSize };
-        if (JSON.stringify(values) === '{}') setParams({ ...obj });
-        else setParams({ ...values, ...obj });
+        let obj = { [T_CURRENT]: 1, [T_SIZE]: pageSize };
+        if (JSON.stringify(values) === '{}') obj = { ...obj };
+        else obj = { ...values, ...obj };
+        setParams(obj);
+        if (cacheSearch) saveListPageState(obj);
       },
-      [pageSize],
+      [pageSize, cacheSearch, saveListPageState],
     );
 
     const content = (
