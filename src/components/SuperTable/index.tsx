@@ -95,6 +95,12 @@ export interface SuperTableProps {
   tableProps: TableProps<any> | ((params: ParamsType) => TableProps<any>);
   /** 是否增加首行为序号行 @defaultValue `true`  */
   enableIndex?: boolean | 'fixedLeft';
+  /**
+   * 启用随机rowKey。多个接口复用一个表格，在数据切换时，如果数据间存在相同的rowKey，
+   * 可能会造成数据错乱，此时可使用随机rowKey
+   * @defaultValue `false`
+   */
+  enableRandomRowKey?: boolean;
   /** 是否禁止在最外层包裹一个 Card 组件，默认不禁止 */
   noCard?: boolean;
   /** 请求列表数据的api服务 */
@@ -123,6 +129,7 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       afterService,
       mapData,
       enableIndex = true,
+      enableRandomRowKey = false,
       noCard = false,
       serviceParams,
       paginationParams,
@@ -155,17 +162,30 @@ export const SuperTable = forwardRef<SuperTableRefProps, SuperTableProps>(
       service(val)
         .then(({ data }) => {
           if (data != null) {
-            setData(mapDataRef.current ? mapDataRef.current(data) : data);
+            let val2 = mapDataRef.current ? mapDataRef.current(data) : data;
+            if (enableRandomRowKey) {
+              val2 = {
+                ...val2,
+                list: (val2.list || []).map((el) => ({
+                  ...el,
+                  __randomId: Math.random().toString(16).slice(2, 10),
+                })),
+              };
+            }
+            setData(val2);
           }
           if (afterService) afterService(val, data);
         })
         .finally(() => setLoading(false));
-    }, [service, params, afterService]);
+    }, [service, params, afterService, enableRandomRowKey]);
 
-    const __tableProps =
-      typeof tableProps === 'function' ? tableProps(params) : tableProps;
+    let __tableProps = typeof tableProps === 'function' ? tableProps(params) : tableProps;
     const __searchFormProps =
       typeof searchForm === 'function' ? searchForm(data) : searchForm;
+
+    if (enableRandomRowKey) {
+      __tableProps = { ...__tableProps, rowKey: '__randomId' };
+    }
 
     const deconvertFormValues = (values: Record<string, any>) => {
       if (!__searchFormProps) return;
