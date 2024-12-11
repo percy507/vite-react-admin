@@ -36,12 +36,19 @@ export function useFormProtector(form: FormInstance) {
     return () => window.removeEventListener('beforeunload', handler);
   }, [hasFormData]);
 
-  if (blocker.state === 'blocked') {
-    Modal.confirm({
+  const modalRef = useRef<any>(null);
+  if (blocker.state === 'blocked' && modalRef.current == null) {
+    modalRef.current = Modal.confirm({
       title: '页面数据即将丢失，是否继续离开此页面？',
       icon: <ExclamationCircleOutlined style={{ color: '#FAAD14' }} />,
-      onOk: () => blocker.proceed?.(),
-      onCancel: () => blocker.reset?.(),
+      onOk: () => {
+        blocker.proceed?.();
+        modalRef.current = null;
+      },
+      onCancel: () => {
+        blocker.reset?.();
+        modalRef.current = null;
+      },
     });
   }
 
