@@ -38,12 +38,14 @@ export interface SearchFormProps {
   actionBar?: JSX.Element;
   /** 点击查询按钮的回调函数 */
   onSearch?: (value?: any) => void;
-  /** 查询和重置的按钮组是否向右浮动，默认不浮动 */
+  /** 查询和重置的按钮组是否向右浮动，默认不浮动 @defaultValue false */
   buttonFloatRight?: boolean;
-  /** 是否启用筛选项的收起展开 */
+  /** 是否启用筛选项的收起展开 @defaultValue false */
   enableFold?: boolean;
-  /** 收起时展示3个表单项，默认展示两个 */
-  showThreeFieldsOnFold?: boolean;
+  /** 是否默认展开筛选项 @defaultValue false */
+  defaultFoldOpen?: boolean;
+  /** 收起时展示的表单项数量 @defaultValue 2 */
+  defaultNumOnFold?: number;
 }
 
 export const SearchForm = forwardRef<
@@ -57,10 +59,11 @@ export const SearchForm = forwardRef<
     actionBar,
     buttonFloatRight = false,
     enableFold = false,
-    showThreeFieldsOnFold = false,
+    defaultFoldOpen = false,
+    defaultNumOnFold = 2,
   } = props;
   const [form] = Form.useForm();
-  const [folded, setFolded] = useState(false);
+  const [folded, setFolded] = useState(defaultFoldOpen);
 
   const convertValues = (values: any) => {
     let params = { ...values };
@@ -110,7 +113,7 @@ export const SearchForm = forwardRef<
         }}>
         <Row style={{ width: '100%' }}>
           {items.map((el, index) => {
-            if (enableFold && !folded && index >= (showThreeFieldsOnFold ? 3 : 2)) {
+            if (enableFold && !folded && index >= defaultNumOnFold) {
               return null;
             }
 
@@ -129,7 +132,9 @@ export const SearchForm = forwardRef<
               </Col>
             );
           })}
-          {enableFold && !folded && showThreeFieldsOnFold ? <Col span={16}></Col> : null}
+          {enableFold && !folded && defaultNumOnFold % 3 != 2 ? (
+            <Col span={defaultNumOnFold % 3 == 0 ? 16 : 8}></Col>
+          ) : null}
           <Col span={8} style={{ marginBottom: 16 }}>
             <Form.Item wrapperCol={{ offset: 8 }}>
               <Space style={buttonFloatRight ? { float: 'right' } : undefined}>
