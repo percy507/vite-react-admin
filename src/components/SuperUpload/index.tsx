@@ -113,12 +113,12 @@ export function SuperUpload(props: SuperUploadProps) {
     if (value?.length > 0 || list.length > 0) onChange(list);
 
     setInnerFileList(
-      fileList.map((el) => {
+      fileList?.map((el) => {
         // 当文件在上传中时，禁用 antd Upload 组件默认的预览
         // 否则会过度占用内存（尤其是上传大文件时，容易让页面崩溃😅）
         if (el.status === 'uploading') delete el.originFileObj;
         return el;
-      }),
+      }) || [],
     );
   };
 
@@ -127,9 +127,9 @@ export function SuperUpload(props: SuperUploadProps) {
     // FIX: 在上传A文件的过程中，同时上传B文件，结果最后只显示最先完成上传的文件
     if (innerFileList.find((el) => el.status === 'uploading')) return;
     setInnerFileList(
-      value.map((el, index) => ({
+      value?.map((el, index) => ({
         ...{ uid: `${index}`, status: 'done', name: el[VALUE_NAME], url: el[VALUE_URL] },
-      })),
+      })) || [],
     );
     prevValueRef.current = value;
   }, [value, innerFileList]);
